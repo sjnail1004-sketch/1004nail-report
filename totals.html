@@ -1,0 +1,278 @@
+<meta charset="utf-8">
+<title>생활용품 판매 상품 합계</title>
+<meta name="description" content="로켓그로스 생활용품 중 판매 실적이 있는 상품만 8월·9월·합계로 정리한 표">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --ground:#f5f5f7; --surface:#ffffff; --surface-2:#f5f5f7; --fill:#e8e8ed;
+  --ink:#1d1d1f; --ink-2:#6e6e73; --ink-3:#86868b; --hair:#d2d2d7; --hair-2:#e8e8ed;
+  --aug:#0071e3; --sep:#f56300; --neg:#e30000; --unsold:#86868b;
+  --barfill:#d6e8fb; --shadow:0 2px 12px rgba(0,0,0,.06), 0 0 0 .5px rgba(0,0,0,.04);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#000000; --surface:#1d1d1f; --surface-2:#2c2c2e; --fill:#3a3a3c;
+    --ink:#f5f5f7; --ink-2:#a1a1a6; --ink-3:#86868b; --hair:#424245; --hair-2:#333336;
+    --aug:#2997ff; --sep:#f0620f; --neg:#ff453a; --unsold:#8e8e93;
+    --barfill:#1b3a5c; --shadow:0 0 0 .5px rgba(255,255,255,.06);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#000000; --surface:#1d1d1f; --surface-2:#2c2c2e; --fill:#3a3a3c;
+  --ink:#f5f5f7; --ink-2:#a1a1a6; --ink-3:#86868b; --hair:#424245; --hair-2:#333336;
+  --aug:#2997ff; --sep:#f0620f; --neg:#ff453a; --unsold:#8e8e93;
+  --barfill:#1b3a5c; --shadow:0 0 0 .5px rgba(255,255,255,.06);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",Helvetica,Arial,sans-serif;font-size:15px;line-height:1.47;padding-inline:clamp(20px,5vw,48px);padding-block:56px 96px;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased;letter-spacing:-.01em}
+.wrap{max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:48px}
+h1,h2,h3{margin:0;text-wrap:balance;letter-spacing:-.025em}
+h1{font-size:clamp(34px,5vw,48px);font-weight:700;line-height:1.08}
+h2{font-size:26px;font-weight:700;line-height:1.15}
+h3{font-size:19px;font-weight:600;letter-spacing:-.02em}
+p{margin:0}
+
+header{display:flex;flex-direction:column;gap:14px;align-items:center;text-align:center;padding-top:8px}
+.eyebrow{font-size:13px;font-weight:600;color:var(--aug);letter-spacing:0}
+header .sub{color:var(--ink-2);max-width:56ch;font-size:19px;line-height:1.4;font-weight:400;letter-spacing:-.015em}
+.scope{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:6px}
+.scope span{display:inline-flex;align-items:center;background:var(--surface);box-shadow:var(--shadow);border-radius:999px;padding:6px 14px;font-size:13px;color:var(--ink-2)}
+.scope b{color:var(--ink);font-weight:600;margin-right:4px}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px}
+.dot.aug{background:var(--aug)}.dot.sep{background:var(--sep)}
+
+.sum{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.tile{background:var(--surface);border-radius:18px;padding:22px 22px 20px;display:flex;flex-direction:column;gap:6px;box-shadow:var(--shadow)}
+.tile .l{font-size:13px;color:var(--ink-2);font-weight:500}
+.tile .v{font-size:30px;font-weight:700;line-height:1.1;letter-spacing:-.03em}
+.tile .v small{font-weight:500;font-size:13px;color:var(--ink-3);margin-left:3px;letter-spacing:-.01em}
+.tile .d{font-size:12.5px;color:var(--ink-3);margin-top:4px}
+@media (max-width:760px){.sum{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:420px){.sum{grid-template-columns:1fr}}
+
+.card{background:var(--surface);border-radius:18px;box-shadow:var(--shadow);padding:8px 0 14px;overflow:hidden}
+.tblwrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:860px}
+th,td{padding:10px 16px;text-align:right;border-bottom:.5px solid var(--hair-2);white-space:nowrap;vertical-align:middle}
+thead th{font-size:12px;font-weight:600;color:var(--ink-2);border-bottom:.5px solid var(--hair);position:sticky;top:0;background:var(--surface);z-index:1}
+thead tr.grp th{border-bottom:0;padding:12px 16px 4px;color:var(--ink);font-size:13px;font-weight:600;text-align:center}
+thead tr.grp th.g8 .dot,thead tr.grp th.g9 .dot{margin-right:6px}
+th:first-child,td:first-child{text-align:left;padding-left:22px}
+th:last-child,td:last-child{padding-right:22px}
+td.name{white-space:normal;min-width:280px;max-width:420px}
+tr.prod td{background:var(--surface-2);font-weight:600;border-top:.5px solid var(--hair)}
+tr.prod .pn{font-weight:700;font-size:15px;letter-spacing:-.02em}
+tr.prod .cnt{font-weight:500;font-size:12px;color:var(--ink-3);margin-left:8px}
+tr.opt td{color:var(--ink-2);font-size:13.5px}
+tr.opt td.name{padding-left:38px}
+td.tot{font-weight:600;color:var(--ink)}
+tr.opt td.tot{font-weight:500}
+td.zero{color:var(--ink-3)}
+td.neg{color:var(--neg)}
+td.share{position:relative;min-width:140px}
+td.share .bar{position:absolute;left:10px;top:10px;bottom:10px;background:var(--barfill);border-radius:999px;max-width:calc(100% - 70px)}
+td.share span:not(.bar){position:relative;font-size:12.5px;color:var(--ink-2)}
+tr.prod td.share span:not(.bar){font-weight:600;color:var(--ink)}
+tfoot td{font-weight:700;border-top:1px solid var(--ink);border-bottom:0;background:var(--surface);font-size:15px;padding-top:14px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 22px;font-size:12.5px;color:var(--ink-3);padding:14px 22px 0}
+.legend .neg{color:var(--neg)}
+
+section.sku{display:flex;flex-direction:column;gap:18px}
+.sec-head{display:flex;flex-direction:column;gap:4px}
+.sec-head .note{font-size:14px;color:var(--ink-2)}
+.card.pad,.card.skucard{padding:24px 26px;display:flex;flex-direction:column;gap:16px}
+.stack{display:flex;flex-direction:column;gap:14px}
+.srow{display:grid;grid-template-columns:120px 1fr 170px;gap:16px;align-items:center;font-size:14px}
+.srow .k{font-weight:600;letter-spacing:-.02em}
+.srow .k small{display:block;font-weight:400;font-size:12px;color:var(--ink-3);letter-spacing:-.01em}
+.srow .bar{display:flex;height:30px;border-radius:999px;overflow:hidden;gap:2px;background:var(--surface)}
+.srow .seg{display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:13px;min-width:0}
+.srow .seg.sold{background:var(--aug)}
+.srow .seg.unsold{background:var(--unsold)}
+.srow .n{color:var(--ink-2);font-size:13px;text-align:right}
+.srow .n b{color:var(--ink);font-weight:600}
+.legend .sw{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px}
+.sw.sold{background:var(--aug)}.sw.unsold{background:var(--unsold)}
+.skucard .legend{padding:0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:760px){.two{grid-template-columns:1fr}.srow{grid-template-columns:96px 1fr}.srow .n{grid-column:2;text-align:left}}
+table.mini{min-width:0;font-size:14px}
+table.mini th,table.mini td{padding:9px 10px}
+table.mini th:first-child,table.mini td:first-child{padding-left:0}
+table.mini th:last-child,table.mini td:last-child{padding-right:0}
+table.mini thead th{position:static}
+table.mini tr.hl td{font-weight:600;color:var(--aug)}
+table.mini tbody tr:last-child td{border-bottom:0}
+.caption{font-size:12.5px;color:var(--ink-3)}
+ul.unsold{margin:0;padding:0;list-style:none;display:flex;flex-direction:column}
+ul.unsold li{display:grid;grid-template-columns:1fr auto;gap:12px;padding:8px 0;border-bottom:.5px solid var(--hair-2);font-size:13.5px;color:var(--ink-2)}
+ul.unsold li:last-child{border-bottom:0}
+ul.unsold li .p{color:var(--ink);font-weight:500}
+ul.unsold li .o{color:var(--ink-3)}
+ul.unsold li .m{font-size:12px;color:var(--ink-3);white-space:nowrap}
+ul.unsold li .m.c{color:var(--neg)}
+footer{font-size:12.5px;color:var(--ink-3);border-top:.5px solid var(--hair);padding-top:18px;max-width:84ch;line-height:1.6;align-self:center;text-align:center}
+@media print{body{background:#fff;padding:0}.card,.tile,.scope span{box-shadow:none;border:.5px solid #d2d2d7}thead th{position:static}}
+</style>
+<style id="sitenav-css">
+.sitenav{position:sticky;top:0;z-index:20;backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);background:rgba(251,251,253,.8);border-bottom:.5px solid rgba(0,0,0,.08);margin:0 calc(-1 * clamp(16px,5vw,48px));padding:0 clamp(16px,5vw,48px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sitenav{background:rgba(29,29,31,.72);border-bottom-color:rgba(255,255,255,.1)}}
+:root[data-theme="dark"] .sitenav{background:rgba(29,29,31,.72);border-bottom-color:rgba(255,255,255,.1)}
+.sitenav .in{max-width:1000px;margin:0 auto;display:flex;align-items:center;gap:22px;height:46px;font-size:13px;overflow-x:auto;white-space:nowrap}
+.sitenav a{color:inherit;text-decoration:none;opacity:.75}
+.sitenav a:hover,.sitenav a.on{opacity:1}
+.sitenav a.on{font-weight:600}
+.sitenav .brand{font-weight:600;opacity:1;margin-right:auto;letter-spacing:-.01em}
+</style>
+
+<nav class="sitenav"><div class="in"><a class="brand" href="index.html">1004nail · 로켓그로스</a><a href="daily.html">일일 보고</a><a href="monthly.html">월별 분석</a><a href="totals.html" class=on>판매 상품 합계</a></div></nav>
+<div class="wrap">
+<header>
+  <p class="eyebrow">쿠팡 로켓그로스 · 생활용품</p>
+  <h1>판매된 상품, 두 달 합계.</h1>
+  <p class="sub">8월 또는 9월에 한 개라도 팔린 옵션만 남기고 상품별로 묶었습니다. 두 달 모두 판매 0인 옵션 12개는 제외했습니다.</p>
+  <div class="scope">
+    <span><i class="dot aug"></i><b>8월</b> 1일 ~ 31일</span>
+    <span><i class="dot sep"></i><b>9월</b> 1일 ~ 14일, 진행 중</span>
+    <span><b>순 판매 금액</b> 전체 거래 − 취소, 단위 원</span>
+  </div>
+</header>
+
+<div class="sum">
+  <div class="tile"><span class="l">두 달 합계 순매출</span><span class="v">4,406,020원</span><span class="d">8월 2,920,770원 · 9월 1,485,250원</span></div>
+  <div class="tile"><span class="l">두 달 합계 수량</span><span class="v">403<small>개</small></span><span class="d">8월 263개 · 9월 140개</span></div>
+  <div class="tile"><span class="l">판매된 상품</span><span class="v">9<small>개</small></span><span class="d">전체 노출상품 13개 중</span></div>
+  <div class="tile"><span class="l">판매된 SKU</span><span class="v">19<small>/ 32개</small></span><span class="d">미판매 SKU 13개 · 옵션ID 기준</span></div>
+</div>
+
+<section class="sku">
+  <div class="sec-head"><h2>SKU 판매 현황</h2><span class="note">SKU는 옵션ID 하나. 두 달 순 판매 수량이 1개 이상이면 판매로 봅니다.</span></div>
+  <div class="card skucard">
+    <div class="stack">
+      <div class="srow"><div class="k">두 달 합계<small>옵션ID 합집합</small></div><div class="bar"><div class="seg sold" style="width:59.4%">19</div><div class="seg unsold" style="width:40.6%">13</div></div><div class="n">판매 <b>19</b> · 미판매 <b>13</b> / 32개</div></div>
+<div class="srow"><div class="k">8월<small>8월 파일 기준</small></div><div class="bar"><div class="seg sold" style="width:53.6%">15</div><div class="seg unsold" style="width:46.4%">13</div></div><div class="n">판매 <b>15</b> · 미판매 <b>13</b> / 28개</div></div>
+<div class="srow"><div class="k">9월<small>9월 파일 기준</small></div><div class="bar"><div class="seg sold" style="width:61.9%">13</div><div class="seg unsold" style="width:38.1%">8</div></div><div class="n">판매 <b>13</b> · 미판매 <b>8</b> / 21개</div></div>
+    </div>
+    <div class="legend"><span><i class="sw sold"></i>판매된 SKU</span><span><i class="sw unsold"></i>판매 안 된 SKU</span><span>두 달 합계는 8월·9월 파일의 옵션ID 합집합</span></div>
+  </div>
+  <div class="two">
+    <div class="card pad">
+      <h3>카테고리별 SKU</h3>
+      <table class="mini">
+        <thead><tr><th>카테고리</th><th>전체 SKU</th><th>판매</th><th>미판매</th><th>판매율</th></tr></thead>
+        <tbody><tr class="hl"><td>생활용품</td><td>32</td><td>19</td><td>13</td><td>59%</td></tr><tr class=""><td>뷰티</td><td>244</td><td>120</td><td>124</td><td>49%</td></tr><tr class=""><td>전체</td><td>276</td><td>139</td><td>137</td><td>50%</td></tr></tbody>
+      </table>
+      <p class="caption">뷰티(네일)까지 포함한 스토어 전체 기준. 이 페이지의 나머지 표는 생활용품만 다룹니다.</p>
+    </div>
+    <div class="card pad">
+      <h3>생활용품 미판매 SKU 13개</h3>
+      <ul class="unsold"><li><span><span class="p">PVC 방수 앞치마</span> <span class="o">검정, 3개</span></span><span class="m">8월 등록 · 주문 0</span></li><li><span><span class="p">무타공 도난방지 드라이기 거치대</span> <span class="o">15.5cmx9cmx8.8cm, 1개</span></span><span class="m c">8월 · 주문 4건 전부 취소</span></li><li><span><span class="p">무타공 포켓 드라이어 거치대</span> <span class="o">22.6cmX11.2cmX9.8cm, 1개</span></span><span class="m">8월 9월 등록 · 주문 0</span></li><li><span><span class="p">스텐 스퀴지 스크래퍼</span> <span class="o">사이즈 31cm, 3개</span></span><span class="m">8월 등록 · 주문 0</span></li><li><span><span class="p">스텐 스퀴지 스크래퍼</span> <span class="o">사이즈 35cm, 3개</span></span><span class="m">8월 등록 · 주문 0</span></li><li><span><span class="p">스텐304 행주 걸이</span> <span class="o">2개, 30cmx20cm-24cmx7.5cm</span></span><span class="m">8월 등록 · 주문 0</span></li><li><span><span class="p">스텐304 행주 걸이</span> <span class="o">3개, 30cmx20cm-24cmx7.5cm</span></span><span class="m">8월 등록 · 주문 0</span></li><li><span><span class="p">슬라임 토핑 1호 (파우더)</span> <span class="o">1세트, 혼합색상</span></span><span class="m">9월 등록 · 주문 0</span></li><li><span><span class="p">슬라임 토핑 데코 2호</span> <span class="o">1세트, 혼합색상</span></span><span class="m">9월 등록 · 주문 0</span></li><li><span><span class="p">슬라임 토핑 데코 2호</span> <span class="o">2세트, 혼합색상</span></span><span class="m">8월 등록 · 주문 0</span></li><li><span><span class="p">쓰팩 자동 물빠짐 수세미 거치대</span> <span class="o">화이트, 2개</span></span><span class="m">9월 등록 · 주문 0</span></li><li><span><span class="p">쓰팩 자동 물빠짐 수세미 거치대</span> <span class="o">화이트, 3개</span></span><span class="m">8월 9월 등록 · 주문 0</span></li><li><span><span class="p">흑단원목 냄비 받침대</span> <span class="o">1개, 지름18cmX두께11mm</span></span><span class="m">8월 9월 등록 · 주문 0</span></li></ul>
+    </div>
+  </div>
+</section>
+
+<section class="sku">
+  <div class="sec-head"><h2>상품별 합계</h2><span class="note">상품 행 아래에 옵션 행. 순매출 합계 순으로 정렬했습니다.</span></div>
+  <div class="card">
+  <div class="tblwrap"><table>
+  <thead>
+  <tr class="grp"><th></th><th class="g8" colspan="2"><i class="dot aug"></i>8월</th><th class="g9" colspan="2"><i class="dot sep"></i>9월</th><th class="gt" colspan="2">합계</th><th></th></tr>
+  <tr><th>상품 / 옵션</th><th>순매출</th><th>수량</th><th>순매출</th><th>수량</th><th>순매출</th><th>수량</th><th>합계 비중</th></tr>
+  </thead>
+  <tbody>
+  <tr class="prod"><td class="name"><span class="pn">스텐 스퀴지 스크래퍼</span><span class="cnt">7개 옵션</span></td>
+<td>1,846,370</td><td>132</td><td>841,420</td><td>63</td>
+<td class="tot">2,687,790</td><td class="tot">195</td>
+<td class="share"><span class="bar" style="width:61.0%"></span><span>61.0%</span></td></tr>
+<tr class="opt"><td class="name">사이즈 35cm, 1개</td>
+<td>1,106,000</td><td>79</td><td>527,870</td><td>38</td>
+<td class="tot">1,633,870</td><td class="tot">117</td><td class="share"></td></tr>
+<tr class="opt"><td class="name">사이즈 25cm, 1개</td>
+<td>226,100</td><td>19</td><td>238,000</td><td>20</td>
+<td class="tot">464,100</td><td class="tot">39</td><td class="share"></td></tr>
+<tr class="opt"><td class="name">사이즈 31cm, 1개</td>
+<td>361,200</td><td>28</td><td>51,600</td><td>4</td>
+<td class="tot">412,800</td><td class="tot">32</td><td class="share"></td></tr>
+<tr class="opt"><td class="name">사이즈 31cm, 2개</td>
+<td>47,900</td><td>2</td><td>23,950</td><td>1</td>
+<td class="tot">71,850</td><td class="tot">3</td><td class="share"></td></tr>
+<tr class="opt"><td class="name">사이즈 35cm, 2개</td>
+<td>51,580</td><td>2</td><td class="zero">–</td><td class="zero">–</td>
+<td class="tot">51,580</td><td class="tot">2</td><td class="share"></td></tr>
+<tr class="opt"><td class="name">사이즈 25cm, 3개</td>
+<td>32,000</td><td>1</td><td class="zero">–</td><td class="zero">–</td>
+<td class="tot">32,000</td><td class="tot">1</td><td class="share"></td></tr>
+<tr class="opt"><td class="name">사이즈 25cm, 2개</td>
+<td>21,590</td><td>1</td><td class="zero">–</td><td class="zero">–</td>
+<td class="tot">21,590</td><td class="tot">1</td><td class="share"></td></tr>
+<tr class="prod"><td class="name"><span class="pn">슬라임 토핑 데코 1호</span><span class="cnt">1개 옵션</span></td>
+<td>345,800</td><td>26</td><td>359,100</td><td>27</td>
+<td class="tot">704,900</td><td class="tot">53</td>
+<td class="share"><span class="bar" style="width:16.0%"></span><span>16.0%</span></td></tr>
+<tr class="opt"><td class="name">1세트, 혼합색상</td>
+<td>345,800</td><td>26</td><td>359,100</td><td>27</td>
+<td class="tot">704,900</td><td class="tot">53</td><td class="share"></td></tr>
+<tr class="prod"><td class="name"><span class="pn">웨이브렉 비누·수세미 거치대</span><span class="cnt">1개 옵션</span></td>
+<td>199,020</td><td>41</td><td>181,300</td><td>37</td>
+<td class="tot">380,320</td><td class="tot">78</td>
+<td class="share"><span class="bar" style="width:8.6%"></span><span>8.6%</span></td></tr>
+<tr class="opt"><td class="name">1개, 실버</td>
+<td>199,020</td><td>41</td><td>181,300</td><td>37</td>
+<td class="tot">380,320</td><td class="tot">78</td><td class="share"></td></tr>
+<tr class="prod"><td class="name"><span class="pn">스텐304 행주 걸이</span><span class="cnt">1개 옵션</span></td>
+<td>369,900</td><td>45</td><td class="zero">–</td><td class="zero">–</td>
+<td class="tot">369,900</td><td class="tot">45</td>
+<td class="share"><span class="bar" style="width:8.4%"></span><span>8.4%</span></td></tr>
+<tr class="opt"><td class="name">1개, 30cmx20cm-24cmx7.5cm</td>
+<td>369,900</td><td>45</td><td class="zero">–</td><td class="zero">–</td>
+<td class="tot">369,900</td><td class="tot">45</td><td class="share"></td></tr>
+<tr class="prod"><td class="name"><span class="pn">PVC 방수 앞치마</span><span class="cnt">2개 옵션</span></td>
+<td>106,980</td><td>14</td><td>63,650</td><td>8</td>
+<td class="tot">170,630</td><td class="tot">22</td>
+<td class="share"><span class="bar" style="width:3.9%"></span><span>3.9%</span></td></tr>
+<tr class="opt"><td class="name">검정, 1개</td>
+<td>106,980</td><td>14</td><td>51,260</td><td>7</td>
+<td class="tot">158,240</td><td class="tot">21</td><td class="share"></td></tr>
+<tr class="opt"><td class="name">검정, 2개</td>
+<td class="zero">–</td><td class="zero">–</td><td>12,390</td><td>1</td>
+<td class="tot">12,390</td><td class="tot">1</td><td class="share"></td></tr>
+<tr class="prod"><td class="name"><span class="pn">슬라임 토핑 1호 (파우더)</span><span class="cnt">1개 옵션</span></td>
+<td class="zero">–</td><td class="zero">–</td><td>39,980</td><td>4</td>
+<td class="tot">39,980</td><td class="tot">4</td>
+<td class="share"><span class="bar" style="width:0.9%"></span><span>0.9%</span></td></tr>
+<tr class="opt"><td class="name">1세트, 혼합색상</td>
+<td class="zero">–</td><td class="zero">–</td><td>39,980</td><td>4</td>
+<td class="tot">39,980</td><td class="tot">4</td><td class="share"></td></tr>
+<tr class="prod"><td class="name"><span class="pn">쓰팩 자동 물빠짐 수세미 거치대</span><span class="cnt">1개 옵션</span></td>
+<td>7,900</td><td>1</td><td>15,800</td><td>2</td>
+<td class="tot">23,700</td><td class="tot">3</td>
+<td class="share"><span class="bar" style="width:0.5%"></span><span>0.5%</span></td></tr>
+<tr class="opt"><td class="name">화이트, 1개</td>
+<td>7,900</td><td>1</td><td>15,800</td><td>2</td>
+<td class="tot">23,700</td><td class="tot">3</td><td class="share"></td></tr>
+<tr class="prod"><td class="name"><span class="pn">호두나무 드라이어 거치대</span><span class="cnt">1개 옵션</span></td>
+<td>44,800</td><td>4</td><td class="neg">-22,400</td><td class="neg">-2</td>
+<td class="tot">22,400</td><td class="tot">2</td>
+<td class="share"><span class="bar" style="width:0.5%"></span><span>0.5%</span></td></tr>
+<tr class="opt"><td class="name">1개, 실버월넛</td>
+<td>44,800</td><td>4</td><td class="neg">-22,400</td><td class="neg">-2</td>
+<td class="tot">22,400</td><td class="tot">2</td><td class="share"></td></tr>
+<tr class="prod"><td class="name"><span class="pn">흡착식 비누받침대</span><span class="cnt">1개 옵션</span></td>
+<td class="zero">–</td><td class="zero">–</td><td>6,400</td><td>1</td>
+<td class="tot">6,400</td><td class="tot">1</td>
+<td class="share"><span class="bar" style="width:0.1%"></span><span>0.1%</span></td></tr>
+<tr class="opt"><td class="name">8.8cmx11.5cmx10cm, 1개</td>
+<td class="zero">–</td><td class="zero">–</td><td>6,400</td><td>1</td>
+<td class="tot">6,400</td><td class="tot">1</td><td class="share"></td></tr>
+  </tbody>
+  <tfoot><tr><td>생활용품 합계 · 9개 상품</td><td>2,920,770</td><td>263</td><td>1,485,250</td><td>140</td><td>4,406,020</td><td>403</td><td class="share"><span>100%</span></td></tr></tfoot>
+  </table></div>
+  <p class="legend"><span>– : 해당 월 판매 없음</span><span class="neg">빨간 숫자 : 전월 주문이 이달 취소되어 순매출이 마이너스</span><span>같은 이름으로 중복 등록된 옵션은 합산</span></p>
+  </div>
+</section>
+
+<footer>출처: 로켓그로스 2026년 8월.xlsx, 로켓그로스 2026년 9월.xlsx (판매현황 시트, 카테고리 = 생활용품). 9월 파일은 9월 14일 기준이라 합계는 8월 한 달 + 9월 보름치입니다. 상품은 노출상품ID 단위로 묶었고, 옵션명은 공통 접두어(쓰레빠팩토리)와 상품명을 뺀 부분만 표시했습니다.</footer>
+</div>

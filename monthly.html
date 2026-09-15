@@ -1,0 +1,339 @@
+<meta charset="utf-8">
+<title>쓰레빠팩토리 생활용품 월별 판매</title>
+<meta name="description" content="로켓그로스 생활용품 카테고리 8월·9월 판매 비교">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@700;800&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --ground:#f3f5f7; --surface:#ffffff; --surface-2:#eaeef2;
+  --ink:#151a20; --ink-2:#4d5866; --ink-3:#7b8794; --hair:#d5dbe2; --hair-2:#e6eaef;
+  --aug:#2a78d6; --sep:#eb6834;
+  --neg:#c73b3b; --neg-soft:#f9e0e0; --warn:#a8720a; --warn-soft:#f8ecd0;
+  --focus:#2a78d6;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#14171b; --surface:#1c2025; --surface-2:#242930;
+    --ink:#eef1f4; --ink-2:#b2bbc6; --ink-3:#8791a0; --hair:#2f353d; --hair-2:#282e35;
+    --aug:#3987e5; --sep:#d95926;
+    --neg:#e66767; --neg-soft:#4a2222; --warn:#e0a93a; --warn-soft:#4a3a14;
+    --focus:#3987e5;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#14171b; --surface:#1c2025; --surface-2:#242930;
+  --ink:#eef1f4; --ink-2:#b2bbc6; --ink-3:#8791a0; --hair:#2f353d; --hair-2:#282e35;
+  --aug:#3987e5; --sep:#d95926;
+  --neg:#e66767; --neg-soft:#4a2222; --warn:#e0a93a; --warn-soft:#4a3a14;
+  --focus:#3987e5;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:"IBM Plex Sans KR",system-ui,-apple-system,"Malgun Gothic","Apple SD Gothic Neo",sans-serif;font-size:15px;line-height:1.55;padding-inline:clamp(16px,4vw,40px);padding-block:32px 64px;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;gap:36px}
+h1,h2,h3{margin:0;text-wrap:balance;font-family:"Gothic A1","IBM Plex Sans KR",system-ui,sans-serif}
+h1{font-size:clamp(26px,3.6vw,36px);font-weight:800;letter-spacing:-.02em;line-height:1.2}
+h2{font-size:18px;font-weight:800;letter-spacing:-.01em}
+p{margin:0}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+header{display:flex;flex-direction:column;gap:12px;padding-bottom:24px;border-bottom:1px solid var(--hair)}
+header .sub{color:var(--ink-2);max-width:62ch}
+.scope{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px;color:var(--ink-2)}
+.scope b{color:var(--ink);font-weight:600}
+.dot{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.dot.aug{background:var(--aug)} .dot.sep{background:var(--sep)}
+section{display:flex;flex-direction:column;gap:14px}
+.sec-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 16px}
+.sec-head .note{font-size:13px;color:var(--ink-3)}
+
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.kpi{background:var(--surface);border:1px solid var(--hair);border-radius:6px;padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+.kpi .lbl{font-size:13px;color:var(--ink-2);font-weight:500}
+.kpi .row{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;align-items:baseline}
+.kpi .m{font-size:12px;color:var(--ink-3);display:flex;align-items:center;white-space:nowrap}
+.kpi .v{font-family:"Gothic A1",sans-serif;font-weight:800;font-size:22px;letter-spacing:-.01em;line-height:1.15}
+.kpi .v small{font-family:"IBM Plex Sans KR",sans-serif;font-weight:500;font-size:12px;color:var(--ink-3);margin-left:2px}
+.kpi .delta{font-size:12px;color:var(--ink-3);border-top:1px dashed var(--hair);padding-top:8px}
+.kpi .delta b{font-weight:600;color:var(--ink-2)}
+@media (max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:420px){.kpis{grid-template-columns:1fr}}
+
+.card{background:var(--surface);border:1px solid var(--hair);border-radius:6px;padding:18px 20px;display:flex;flex-direction:column;gap:14px}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between}
+.legend{display:flex;gap:16px;font-size:13px;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center}
+.seg{display:inline-flex;border:1px solid var(--hair);border-radius:5px;overflow:hidden;background:var(--surface-2)}
+.seg button{appearance:none;border:0;background:transparent;color:var(--ink-2);font:inherit;font-size:13px;font-weight:500;padding:6px 12px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:inset 0 0 0 1px var(--hair)}
+.seg button:focus-visible,.tabs button:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
+.chart{position:relative;width:100%}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart .lab{font-size:12.5px;fill:var(--ink);font-family:inherit}
+.chart .tick{font-size:11px;fill:var(--ink-3)}
+.chart .grid{stroke:var(--hair-2);stroke-width:1}
+.chart .axis{stroke:var(--hair);stroke-width:1}
+.chart .bar{transition:opacity .15s}
+.chart .hit{fill:transparent;cursor:default}
+.chart g.row:hover .bar{opacity:.8}
+.chart .val{font-size:11px;fill:var(--ink-2)}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--ground);font-size:12px;line-height:1.4;padding:8px 10px;border-radius:4px;white-space:nowrap;opacity:0;transform:translate(-50%,calc(-100% - 12px));transition:opacity .1s;z-index:2;box-shadow:0 4px 14px rgba(0,0,0,.18)}
+.tip b{font-weight:600}
+.tip.on{opacity:1}
+.caption{font-size:13px;color:var(--ink-3)}
+
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:760px){.two{grid-template-columns:1fr}}
+
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--hair)}
+.tabs button{appearance:none;border:0;background:transparent;color:var(--ink-3);font:inherit;font-size:13.5px;font-weight:500;padding:8px 12px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink)}
+.tblwrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:720px}
+th,td{padding:8px 10px;text-align:right;border-bottom:1px solid var(--hair-2);vertical-align:top;white-space:nowrap}
+th{font-weight:600;color:var(--ink-2);font-size:12.5px;border-bottom:1px solid var(--hair)}
+th:first-child,td:first-child{text-align:left}
+td.name{max-width:360px;white-space:normal;color:var(--ink)}
+td.name .opt{color:var(--ink-3);font-size:12px}
+tr.zero td{color:var(--ink-3)}
+tr.neg td,tr.neg td.name{color:var(--neg)}
+tfoot td{font-weight:600;border-top:1px solid var(--hair);border-bottom:0}
+.chip{display:inline-block;font-size:11px;font-weight:600;padding:1px 6px;border-radius:3px;line-height:1.5;margin-left:6px;vertical-align:1px;white-space:nowrap}
+.chip.warn{background:var(--warn-soft);color:var(--warn)}
+.chip.neg{background:var(--neg-soft);color:var(--neg)}
+.chip.win{background:var(--surface-2);color:var(--ink-3)}
+
+.notes{display:flex;flex-direction:column}
+.note-item{display:grid;grid-template-columns:130px 1fr;gap:12px;padding:12px 0;border-top:1px solid var(--hair-2)}
+.note-item:last-child{border-bottom:1px solid var(--hair-2)}
+.note-item .k{font-weight:600;font-size:13.5px;color:var(--ink)}
+.note-item .d{color:var(--ink-2);font-size:14px;max-width:70ch}
+@media (max-width:560px){.note-item{grid-template-columns:1fr;gap:4px}}
+footer{font-size:12.5px;color:var(--ink-3);border-top:1px solid var(--hair);padding-top:16px;max-width:80ch}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+<style id="sitenav-css">
+.sitenav{position:sticky;top:0;z-index:20;backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);background:rgba(251,251,253,.8);border-bottom:.5px solid rgba(0,0,0,.08);margin:0 calc(-1 * clamp(16px,5vw,48px));padding:0 clamp(16px,5vw,48px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sitenav{background:rgba(29,29,31,.72);border-bottom-color:rgba(255,255,255,.1)}}
+:root[data-theme="dark"] .sitenav{background:rgba(29,29,31,.72);border-bottom-color:rgba(255,255,255,.1)}
+.sitenav .in{max-width:1000px;margin:0 auto;display:flex;align-items:center;gap:22px;height:46px;font-size:13px;overflow-x:auto;white-space:nowrap}
+.sitenav a{color:inherit;text-decoration:none;opacity:.75}
+.sitenav a:hover,.sitenav a.on{opacity:1}
+.sitenav a.on{font-weight:600}
+.sitenav .brand{font-weight:600;opacity:1;margin-right:auto;letter-spacing:-.01em}
+</style>
+
+
+<nav class="sitenav"><div class="in"><a class="brand" href="index.html">1004nail · 로켓그로스</a><a href="daily.html">일일 보고</a><a href="monthly.html" class=on>월별 분석</a><a href="totals.html">판매 상품 합계</a></div></nav>
+<div class="wrap">
+<header>
+  <p class="eyebrow">쿠팡 로켓그로스 · 카테고리 생활용품</p>
+  <h1>쓰레빠팩토리 생활용품 월별 판매</h1>
+  <p class="sub">로켓그로스 판매현황 파일에서 생활용품 카테고리만 떼어 8월과 9월을 나란히 놓았습니다. 뷰티(네일) 상품은 제외했습니다.</p>
+  <div class="scope">
+    <span><i class="dot aug"></i><b>2026년 8월</b> 1일 ~ 31일 (31일)</span>
+    <span><i class="dot sep"></i><b>2026년 9월</b> 1일 ~ 14일 (14일, 진행 중)</span>
+    <span>금액은 <b>순 판매 금액</b> = 전체 거래 금액 − 취소 금액</span>
+  </div>
+</header>
+
+<section>
+  <div class="kpis" id="kpis"></div>
+</section>
+
+<section>
+  <div class="sec-head"><h2>상품별 순매출 비교</h2><span class="note">노출상품 단위로 옵션 합산 · 두 달 모두 0원인 상품은 아래 표에만 표시</span></div>
+  <div class="card">
+    <div class="toolbar">
+      <div class="legend"><span><i class="dot aug"></i>8월</span><span><i class="dot sep"></i>9월</span></div>
+      <div class="seg" role="group" aria-label="금액 기준">
+        <button id="mode-actual" aria-pressed="true">실제 금액</button>
+        <button id="mode-daily" aria-pressed="false">일평균 환산</button>
+      </div>
+    </div>
+    <div class="chart" id="prod-chart"><div class="tip" id="tip"></div></div>
+    <p class="caption" id="prod-caption"></p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><h2>스텐 스퀴지 스크래퍼, 사이즈별</h2><span class="note">생활용품 매출의 절반 이상을 내는 대표 상품</span></div>
+  <div class="two">
+    <div class="card">
+      <div class="legend"><span><i class="dot aug"></i>8월</span><span><i class="dot sep"></i>9월</span></div>
+      <div class="chart" id="sq-chart"></div>
+      <p class="caption">순 판매 수량(개). 1개·2개·3개 묶음 옵션을 사이즈별로 합산.</p>
+    </div>
+    <div class="card" id="sq-facts"></div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><h2>옵션별 상세</h2><span class="note">판매현황 파일 원본 행 그대로, 순매출 순 정렬</span></div>
+  <div class="card">
+    <div class="tabs" role="tablist">
+      <button role="tab" aria-selected="true" data-m="8월" id="tab-8">8월 · <span id="cnt-8"></span>개 옵션</button>
+      <button role="tab" aria-selected="false" data-m="9월" id="tab-9">9월 · <span id="cnt-9"></span>개 옵션</button>
+    </div>
+    <div class="tblwrap"><table id="opt-table">
+      <thead><tr><th>옵션명</th><th>아이템위너</th><th>순 판매 금액</th><th>순 수량</th><th>전체 거래</th><th>취소</th><th>취소율</th></tr></thead>
+      <tbody></tbody><tfoot></tfoot>
+    </table></div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><h2>읽어볼 점</h2></div>
+  <div class="notes" id="notes"></div>
+</section>
+
+<footer>출처: 로켓그로스 2026년 8월.xlsx, 로켓그로스 2026년 9월.xlsx (판매현황 시트). 9월 파일은 9월 14일에 내려받은 것으로, 일평균 환산은 14일 기준입니다. 순 판매 금액이 음수인 행은 이전 달 주문이 이번 달에 취소된 건입니다.</footer>
+</div>
+
+<script>
+const DATA = {"prods": [{"pid": "9546137524", "name": "스텐 스퀴지 스크래퍼", "8월": {"net": 1846370, "qty": 132, "gross": 1884170, "gqty": 135, "cancel": 37800, "cqty": 3, "opts": 10, "sold": 7}, "9월": {"net": 841420, "qty": 63, "gross": 855420, "gqty": 64, "cancel": 14000, "cqty": 1, "opts": 5, "sold": 5}}, {"pid": "9690746256", "name": "슬라임 토핑 데코 1호", "8월": {"net": 345800, "qty": 26, "gross": 345800, "gqty": 26, "cancel": 0, "cqty": 0, "opts": 1, "sold": 1}, "9월": {"net": 359100, "qty": 27, "gross": 399000, "gqty": 30, "cancel": 39900, "cqty": 3, "opts": 1, "sold": 1}}, {"pid": "9544826437", "name": "웨이브렉 비누·수세미 거치대", "8월": {"net": 199020, "qty": 41, "gross": 233320, "gqty": 48, "cancel": 34300, "cqty": 7, "opts": 2, "sold": 2}, "9월": {"net": 181300, "qty": 37, "gross": 220500, "gqty": 45, "cancel": 39200, "cqty": 8, "opts": 1, "sold": 1}}, {"pid": "9596125940", "name": "스텐304 행주 걸이", "8월": {"net": 369900, "qty": 45, "gross": 411000, "gqty": 50, "cancel": 41100, "cqty": 5, "opts": 3, "sold": 1}, "9월": {"net": 0, "qty": 0, "gross": 0, "gqty": 0, "cancel": 0, "cqty": 0, "opts": 1, "sold": 0}}, {"pid": "9606327208", "name": "PVC 방수 앞치마", "8월": {"net": 106980, "qty": 14, "gross": 136170, "gqty": 17, "cancel": 29190, "cqty": 3, "opts": 4, "sold": 2}, "9월": {"net": 63650, "qty": 8, "gross": 77030, "gqty": 10, "cancel": 13380, "cqty": 2, "opts": 3, "sold": 3}}, {"pid": "9707461682", "name": "슬라임 토핑 1호 (파우더)", "8월": {"net": 0, "qty": 0, "gross": 0, "gqty": 0, "cancel": 0, "cqty": 0, "opts": 0, "sold": 0}, "9월": {"net": 39980, "qty": 4, "gross": 50070, "gqty": 5, "cancel": 10090, "cqty": 1, "opts": 2, "sold": 1}}, {"pid": "9606407948", "name": "쓰팩 자동 물빠짐 수세미 거치대", "8월": {"net": 7900, "qty": 1, "gross": 7900, "gqty": 1, "cancel": 0, "cqty": 0, "opts": 2, "sold": 1}, "9월": {"net": 15800, "qty": 2, "gross": 23700, "gqty": 3, "cancel": 7900, "cqty": 1, "opts": 3, "sold": 1}}, {"pid": "9596056977", "name": "호두나무 드라이어 거치대", "8월": {"net": 44800, "qty": 4, "gross": 89600, "gqty": 8, "cancel": 44800, "cqty": 4, "opts": 1, "sold": 1}, "9월": {"net": -22400, "qty": -2, "gross": 11200, "gqty": 1, "cancel": 33600, "cqty": 3, "opts": 1, "sold": 0}}, {"pid": "9596151952", "name": "흡착식 비누받침대", "8월": {"net": 0, "qty": 0, "gross": 0, "gqty": 0, "cancel": 0, "cqty": 0, "opts": 1, "sold": 0}, "9월": {"net": 6400, "qty": 1, "gross": 6400, "gqty": 1, "cancel": 0, "cqty": 0, "opts": 1, "sold": 1}}, {"pid": "9597154963", "name": "무타공 도난방지 드라이기 거치대", "8월": {"net": 0, "qty": 0, "gross": 22800, "gqty": 4, "cancel": 22800, "cqty": 4, "opts": 1, "sold": 0}, "9월": {"net": 0, "qty": 0, "gross": 0, "gqty": 0, "cancel": 0, "cqty": 0, "opts": 0, "sold": 0}}, {"pid": "9597593182", "name": "흑단원목 냄비 받침대", "8월": {"net": 0, "qty": 0, "gross": 0, "gqty": 0, "cancel": 0, "cqty": 0, "opts": 1, "sold": 0}, "9월": {"net": 0, "qty": 0, "gross": 0, "gqty": 0, "cancel": 0, "cqty": 0, "opts": 1, "sold": 0}}, {"pid": "9597918419", "name": "무타공 포켓 드라이어 거치대", "8월": {"net": 0, "qty": 0, "gross": 0, "gqty": 0, "cancel": 0, "cqty": 0, "opts": 1, "sold": 0}, "9월": {"net": 0, "qty": 0, "gross": 0, "gqty": 0, "cancel": 0, "cqty": 0, "opts": 1, "sold": 0}}, {"pid": "9708641612", "name": "슬라임 토핑 데코 2호", "8월": {"net": 0, "qty": 0, "gross": 0, "gqty": 0, "cancel": 0, "cqty": 0, "opts": 1, "sold": 0}, "9월": {"net": 0, "qty": 0, "gross": 0, "gqty": 0, "cancel": 0, "cqty": 0, "opts": 1, "sold": 0}}], "sq": {"35": {"8월": {"net": 1157580, "qty": 81}, "9월": {"net": 527870, "qty": 38}}, "31": {"8월": {"net": 409100, "qty": 30}, "9월": {"net": 75550, "qty": 5}}, "25": {"8월": {"net": 279690, "qty": 21}, "9월": {"net": 238000, "qty": 20}}}, "tot": {"8월": {"net": 2920770, "qty": 263, "gross": 3130760, "gqty": 289, "cancel": 209990, "cqty": 26, "opts": 28, "sold": 15, "prods": 12}, "9월": {"net": 1485250, "qty": 140, "gross": 1643320, "gqty": 159, "cancel": 158070, "cqty": 19, "opts": 21, "sold": 13, "prods": 12}}, "opts": {"8월": [{"pid": "9546137524", "oid": "95587873969", "name": "쓰레빠팩토리 욕실 스텐 물기제거기 유리창 스퀴지 스크래퍼 청소도구 3종 (선택), 스텐 물기제거 스퀴지 스크래퍼 (35cm), 1개, 사이즈 35cm", "winner": 99.4, "net": 1106000, "qty": 79, "gross": 1120000, "gqty": 80, "cancel": 14000, "cqty": 1}, {"pid": "9596125940", "oid": "95589407264", "name": "쓰레빠팩토리 스텐304 높낮이 평행 행주 걸이, 1개, 30cmx20cm-24cmx7.5cm", "winner": 97.0, "net": 369900, "qty": 45, "gross": 411000, "gqty": 50, "cancel": 41100, "cqty": 5}, {"pid": "9544826437", "oid": "95740401782", "name": "쓰레빠팩토리 스텐304 거치형 웨이브렉 비누 수세미거치대, 1개, 실버", "winner": 98.4, "net": 191100, "qty": 39, "gross": 225400, "gqty": 46, "cancel": 34300, "cqty": 7}, {"pid": "9546137524", "oid": "95587873967", "name": "쓰레빠팩토리 욕실 스텐 물기제거기 유리창 스퀴지 스크래퍼 청소도구 3종 (선택), 스텐 물기제거 스퀴지 스크래퍼 (31cm), 1개, 사이즈 31cm", "winner": 99.8, "net": 361200, "qty": 28, "gross": 361200, "gqty": 28, "cancel": 0, "cqty": 0}, {"pid": "9690746256", "oid": "95912392739", "name": "쓰레빠팩토리 DIY 슬라임 토핑 데코 비즈 파츠 장식 1호 (데코 10종 + 스티커 10종 세트) (랜덤발송), 1세트, 혼합색상", "winner": 97.8, "net": 345800, "qty": 26, "gross": 345800, "gqty": 26, "cancel": 0, "cqty": 0}, {"pid": "9546137524", "oid": "95587873973", "name": "쓰레빠팩토리 욕실 스텐 물기제거기 유리창 스퀴지 스크래퍼 청소도구 3종 (선택), 스텐 물기제거 스퀴지 스크래퍼 (25cm), 1개, 사이즈 25cm", "winner": 100.0, "net": 226100, "qty": 19, "gross": 249900, "gqty": 21, "cancel": 23800, "cqty": 2}, {"pid": "9606327208", "oid": "95595137708", "name": "쓰레빠팩토리 주방 카페 업소용 PVC 롱 H형 방수 앞치마 (110x80cm 남녀성인), 검정, 1개", "winner": 98.1, "net": 101400, "qty": 13, "gross": 117000, "gqty": 15, "cancel": 15600, "cqty": 2}, {"pid": "9596056977", "oid": "95589041553", "name": "쓰레빠팩토리 무타공 호두나무 헤어드라이어 거치대, 1개, 실버월넛", "winner": 100.0, "net": 44800, "qty": 4, "gross": 89600, "gqty": 8, "cancel": 44800, "cqty": 4}, {"pid": "9546137524", "oid": "95620341975", "name": "쓰레빠팩토리 욕실 스텐 물기제거기 유리창 스퀴지 스크래퍼 청소도구 3종 (선택), 스텐 물기제거 스퀴지 스크래퍼 (35cm), 2개, 사이즈 35cm", "winner": 100.0, "net": 51580, "qty": 2, "gross": 51580, "gqty": 2, "cancel": 0, "cqty": 0}, {"pid": "9546137524", "oid": "95620341978", "name": "쓰레빠팩토리 욕실 스텐 물기제거기 유리창 스퀴지 스크래퍼 청소도구 3종 (선택), 스텐 물기제거 스퀴지 스크래퍼 (31cm), 2개, 사이즈 31cm", "winner": 100.0, "net": 47900, "qty": 2, "gross": 47900, "gqty": 2, "cancel": 0, "cqty": 0}, {"pid": "9544826437", "oid": "95875534279", "name": "쓰레빠팩토리 스텐304 거치형 웨이브렉 비누 수세미거치대, 1개, 실버", "winner": 0.0, "net": 7920, "qty": 2, "gross": 7920, "gqty": 2, "cancel": 0, "cqty": 0}, {"pid": "9606407948", "oid": "95594065220", "name": "쓰팩 자동 물빠짐 수세미 주방세제 거치대, 화이트, 1개", "winner": 100.0, "net": 7900, "qty": 1, "gross": 7900, "gqty": 1, "cancel": 0, "cqty": 0}, {"pid": "9546137524", "oid": "95620341976", "name": "쓰레빠팩토리 욕실 스텐 물기제거기 유리창 스퀴지 스크래퍼 청소도구 3종 (선택), 스텐 물기제거 스퀴지 스크래퍼 (25cm), 3개, 사이즈 25cm", "winner": 100.0, "net": 32000, "qty": 1, "gross": 32000, "gqty": 1, "cancel": 0, "cqty": 0}, {"pid": "9546137524", "oid": "95620341977", "name": "쓰레빠팩토리 욕실 스텐 물기제거기 유리창 스퀴지 스크래퍼 청소도구 3종 (선택), 스텐 물기제거 스퀴지 스크래퍼 (25cm), 2개, 사이즈 25cm", "winner": 100.0, "net": 21590, "qty": 1, "gross": 21590, "gqty": 1, "cancel": 0, "cqty": 0}, {"pid": "9606327208", "oid": "95818915508", "name": "쓰레빠팩토리 주방 카페 업소용 PVC 롱 H형 방수 앞치마 (110x80cm 남녀성인), 검정, 1개", "winner": 0.0, "net": 5580, "qty": 1, "gross": 5580, "gqty": 1, "cancel": 0, "cqty": 0}, {"pid": "9596151952", "oid": "95589309708", "name": "쓰레빠팩토리 흡착식 비누받침대(월넛메탈그레이), 8.8cmx11.5cmx10cm, 1개", "winner": 100.0, "net": 0, "qty": 0, "gross": 0, "gqty": 0, "cancel": 0, "cqty": 0}, {"pid": "9597154963", "oid": "95592252810", "name": "쓰레빠팩토리 무타공 도난방지 드라이기 거치대, 15.5cmx9cmx8.8cm, 1개", "winner": 100.0, "net": 0, "qty": 0, "gross": 22800, "gqty": 4, "cancel": 22800, "cqty": 4}, {"pid": "9597593182", "oid": "95593615264", "name": "쓰레빠팩토리 흑단원목 내열냄비 받침대, 1개, 지름18cmX두께11mm", "winner": 100.0, "net": 0, "qty": 0, "gross": 0, "gqty": 0, "cancel": 0, "cqty": 0}, {"pid": "9597918419", "oid": "95594537382", "name": "쓰레빠팩토리 무타공 포켓 헤어드라이어 거치대 (실버), 22.6cmX11.2cmX9.8cm, 1개", "winner": 100.0, "net": 0, "qty": 0, "gross": 0, "gqty": 0, "cancel": 0, "cqty": 0}, {"pid": "9606407948", "oid": "95620094238", "name": "쓰팩 자동 물빠짐 수세미 주방세제 거치대, 화이트, 3개", "winner": 100.0, "net": 0, "qty": 0, "gross": 0, "gqty": 0, "cancel": 0, "cqty": 0}, {"pid": "9546137524", "oid": "95620341979", "name": "쓰레빠팩토리 욕실 스텐 물기제거기 유리창 스퀴지 스크래퍼 청소도구 3종 (선택), 스텐 물기제거 스퀴지 스크래퍼 (31cm), 3개, 사이즈 31cm", "winner": 100.0, "net": 0, "qty": 0, "gross": 0, "gqty": 0, "cancel": 0, "cqty": 0}, {"pid": "9546137524", "oid": "95620341980", "name": "쓰레빠팩토리 욕실 스텐 물기제거기 유리창 스퀴지 스크래퍼 청소도구 3종 (선택), 스텐 물기제거 스퀴지 스크래퍼 (35cm), 3개, 사이즈 35cm", "winner": 100.0, "net": 0, "qty": 0, "gross": 0, "gqty": 0, "cancel": 0, "cqty": 0}, {"pid": "9606327208", "oid": "95620346448", "name": "쓰레빠팩토리 주방 카페 업소용 PVC 롱 H형 방수 앞치마 (110x80cm 남녀성인), 검정, 2개", "winner": 100.0, "net": 0, "qty": 0, "gross": 13590, "gqty": 1, "cancel": 13590, "cqty": 1}, {"pid": "9606327208", "oid": "95620346449", "name": "쓰레빠팩토리 주방 카페 업소용 PVC 롱 H형 방수 앞치마 (110x80cm 남녀성인), 검정, 3개", "winner": 0.0, "net": 0, "qty": 0, "gross": 0, "gqty": 0, "cancel": 0, "cqty": 0}, {"pid": "9596125940", "oid": "95872809902", "name": "쓰레빠팩토리 스텐304 높낮이 평행 행주 걸이, 3개, 30cmx20cm-24cmx7.5cm", "winner": 100.0, "net": 0, "qty": 0, "gross": 0, "gqty": 0, "cancel": 0, "cqty": 0}, {"pid": "9596125940", "oid": "95872809903", "name": "쓰레빠팩토리 스텐304 높낮이 평행 행주 걸이, 2개, 30cmx20cm-24cmx7.5cm", "winner": 100.0, "net": 0, "qty": 0, "gross": 0, "gqty": 0, "cancel": 0, "cqty": 0}, {"pid": "9546137524", "oid": "95962082159", "name": "쓰레빠팩토리 욕실 스텐 물기제거기 유리창 스퀴지 스크래퍼 청소도구 3종 (선택), 스텐 물기제거 스퀴지 스크래퍼 (35cm), 1개, 사이즈 35cm", "winner": 0.0, "net": 0, "qty": 0, "gross": 0, "gqty": 0, "cancel": 0, "cqty": 0}, {"pid": "9708641612", "oid": "95973693471", "name": "쓰레빠팩토리 DIY 슬라임 토핑 데코 비즈 파츠 장식 2호 (데코 10종 + 스티커 10종 세트) (랜덤발송), 2세트, 혼합색상", "winner": 100.0, "net": 0, "qty": 0, "gross": 0, "gqty": 0, "cancel": 0, "cqty": 0}], "9월": [{"pid": "9546137524", "oid": "95587873969", "name": "쓰레빠팩토리 욕실 스텐 물기제거기 유리창 스퀴지 스크래퍼 청소도구 3종 (선택), 스텐 물기제거 스퀴지 스크래퍼 (35cm), 1개, 사이즈 35cm", "winner": 98.7, "net": 518000, "qty": 37, "gross": 532000, "gqty": 38, "cancel": 14000, "cqty": 1}, {"pid": "9544826437", "oid": "95740401782", "name": "쓰레빠팩토리 스텐304 거치형 웨이브렉 비누 수세미거치대, 1개, 실버", "winner": 100.0, "net": 181300, "qty": 37, "gross": 220500, "gqty": 45, "cancel": 39200, "cqty": 8}, {"pid": "9690746256", "oid": "95912392739", "name": "쓰레빠팩토리 DIY 슬라임 토핑 데코 비즈 파츠 장식 1호 (데코 10종 + 스티커 10종 세트) (랜덤발송), 1세트, 혼합색상", "winner": 99.9, "net": 359100, "qty": 27, "gross": 399000, "gqty": 30, "cancel": 39900, "cqty": 3}, {"pid": "9546137524", "oid": "95587873973", "name": "쓰레빠팩토리 욕실 스텐 물기제거기 유리창 스퀴지 스크래퍼 청소도구 3종 (선택), 스텐 물기제거 스퀴지 스크래퍼 (25cm), 1개, 사이즈 25cm", "winner": 100.0, "net": 238000, "qty": 20, "gross": 238000, "gqty": 20, "cancel": 0, "cqty": 0}, {"pid": "9606327208", "oid": "95595137708", "name": "쓰레빠팩토리 주방 카페 업소용 PVC 롱 H형 방수 앞치마 (110x80cm 남녀성인), 검정, 1개", "winner": 96.6, "net": 46800, "qty": 6, "gross": 54600, "gqty": 7, "cancel": 7800, "cqty": 1}, {"pid": "9546137524", "oid": "95587873967", "name": "쓰레빠팩토리 욕실 스텐 물기제거기 유리창 스퀴지 스크래퍼 청소도구 3종 (선택), 스텐 물기제거 스퀴지 스크래퍼 (31cm), 1개, 사이즈 31cm", "winner": 100.0, "net": 51600, "qty": 4, "gross": 51600, "gqty": 4, "cancel": 0, "cqty": 0}, {"pid": "9707461682", "oid": "95969826300", "name": "쓰레빠팩토리 DIY 슬라임 토핑 데코 비즈 파츠 장식 1호 (토핑 12종 + 파우더 2종(랜덤)), 1세트, 혼합색상", "winner": 78.1, "net": 39980, "qty": 4, "gross": 50070, "gqty": 5, "cancel": 10090, "cqty": 1}, {"pid": "9606407948", "oid": "95594065220", "name": "쓰팩 자동 물빠짐 수세미 주방세제 거치대, 화이트, 1개", "winner": 100.0, "net": 15800, "qty": 2, "gross": 23700, "gqty": 3, "cancel": 7900, "cqty": 1}, {"pid": "9596151952", "oid": "95589309708", "name": "쓰레빠팩토리 흡착식 비누받침대(월넛메탈그레이), 8.8cmx11.5cmx10cm, 1개", "winner": 100.0, "net": 6400, "qty": 1, "gross": 6400, "gqty": 1, "cancel": 0, "cqty": 0}, {"pid": "9546137524", "oid": "95620341978", "name": "쓰레빠팩토리 욕실 스텐 물기제거기 유리창 스퀴지 스크래퍼 청소도구 3종 (선택), 스텐 물기제거 스퀴지 스크래퍼 (31cm), 2개, 사이즈 31cm", "winner": 100.0, "net": 23950, "qty": 1, "gross": 23950, "gqty": 1, "cancel": 0, "cqty": 0}, {"pid": "9606327208", "oid": "95620346448", "name": "쓰레빠팩토리 주방 카페 업소용 PVC 롱 H형 방수 앞치마 (110x80cm 남녀성인), 검정, 2개", "winner": 100.0, "net": 12390, "qty": 1, "gross": 12390, "gqty": 1, "cancel": 0, "cqty": 0}, {"pid": "9606327208", "oid": "95818915508", "name": "쓰레빠팩토리 주방 카페 업소용 PVC 롱 H형 방수 앞치마 (110x80cm 남녀성인), 검정, 1개", "winner": 0.0, "net": 4460, "qty": 1, "gross": 10040, "gqty": 2, "cancel": 5580, "cqty": 1}, {"pid": "9546137524", "oid": "95962082159", "name": "쓰레빠팩토리 욕실 스텐 물기제거기 유리창 스퀴지 스크래퍼 청소도구 3종 (선택), 스텐 물기제거 스퀴지 스크래퍼 (35cm), 1개, 사이즈 35cm", "winner": 0.0, "net": 9870, "qty": 1, "gross": 9870, "gqty": 1, "cancel": 0, "cqty": 0}, {"pid": "9596125940", "oid": "95589407264", "name": "쓰레빠팩토리 스텐304 높낮이 평행 행주 걸이, 1개, 30cmx20cm-24cmx7.5cm", "winner": 0.0, "net": 0, "qty": 0, "gross": 0, "gqty": 0, "cancel": 0, "cqty": 0}, {"pid": "9597593182", "oid": "95593615264", "name": "쓰레빠팩토리 흑단원목 내열냄비 받침대, 1개, 지름18cmX두께11mm", "winner": 100.0, "net": 0, "qty": 0, "gross": 0, "gqty": 0, "cancel": 0, "cqty": 0}, {"pid": "9597918419", "oid": "95594537382", "name": "쓰레빠팩토리 무타공 포켓 헤어드라이어 거치대 (실버), 22.6cmX11.2cmX9.8cm, 1개", "winner": 100.0, "net": 0, "qty": 0, "gross": 0, "gqty": 0, "cancel": 0, "cqty": 0}, {"pid": "9606407948", "oid": "95620094238", "name": "쓰팩 자동 물빠짐 수세미 주방세제 거치대, 화이트, 3개", "winner": 0.0, "net": 0, "qty": 0, "gross": 0, "gqty": 0, "cancel": 0, "cqty": 0}, {"pid": "9606407948", "oid": "95620094239", "name": "쓰팩 자동 물빠짐 수세미 주방세제 거치대, 화이트, 2개", "winner": 100.0, "net": 0, "qty": 0, "gross": 0, "gqty": 0, "cancel": 0, "cqty": 0}, {"pid": "9708641612", "oid": "95973693466", "name": "쓰레빠팩토리 DIY 슬라임 토핑 데코 비즈 파츠 장식 2호 (데코 10종 + 스티커 10종 세트) (랜덤발송), 1세트, 혼합색상", "winner": 87.2, "net": 0, "qty": 0, "gross": 0, "gqty": 0, "cancel": 0, "cqty": 0}, {"pid": "9707461682", "oid": "95973890876", "name": "쓰레빠팩토리 DIY 슬라임 토핑 데코 비즈 파츠 장식 1호 (토핑 12종 + 파우더 2종(랜덤)), 1세트, 혼합색상", "winner": 7.7, "net": 0, "qty": 0, "gross": 0, "gqty": 0, "cancel": 0, "cqty": 0}, {"pid": "9596056977", "oid": "95589041553", "name": "쓰레빠팩토리 무타공 호두나무 헤어드라이어 거치대, 1개, 실버월넛", "winner": 100.0, "net": -22400, "qty": -2, "gross": 11200, "gqty": 1, "cancel": 33600, "cqty": 3}]}};
+const fmt = n => Math.round(n).toLocaleString('ko-KR');
+const won = n => fmt(n) + '원';
+const DAYS = {'8월':31,'9월':14};
+const M = ['8월','9월'];
+const COL = {'8월':'var(--aug)','9월':'var(--sep)'};
+const pct = (a,b) => b ? (a/b*100) : 0;
+
+/* KPI */
+(function(){
+  const t = DATA.tot;
+  const d8 = t['8월'].net/DAYS['8월'], d9 = t['9월'].net/DAYS['9월'];
+  const c8 = pct(t['8월'].cqty,t['8월'].gqty), c9 = pct(t['9월'].cqty,t['9월'].gqty);
+  const tiles = [
+    {lbl:'순 판매 금액', v8: won(t['8월'].net), v9: won(t['9월'].net), delta:`일평균 <b>${won(d8)}</b> → <b>${won(d9)}</b> (${d9>=d8?'+':''}${fmt((d9/d8-1)*100)}%)`},
+    {lbl:'순 판매 수량', v8: fmt(t['8월'].qty)+'<small>개</small>', v9: fmt(t['9월'].qty)+'<small>개</small>', delta:`일평균 <b>${(t['8월'].qty/31).toFixed(1)}개</b> → <b>${(t['9월'].qty/14).toFixed(1)}개</b>`},
+    {lbl:'취소율 (수량 기준)', v8: c8.toFixed(1)+'<small>%</small>', v9: c9.toFixed(1)+'<small>%</small>', delta:`취소 <b>${t['8월'].cqty}개</b> / ${t['8월'].gqty}개 → <b>${t['9월'].cqty}개</b> / ${t['9월'].gqty}개`},
+    {lbl:'판매된 옵션', v8: `${t['8월'].sold}<small>/ ${t['8월'].opts}개</small>`, v9: `${t['9월'].sold}<small>/ ${t['9월'].opts}개</small>`, delta:`노출상품 <b>${t['8월'].prods}개</b> → <b>${t['9월'].prods}개</b>, 옵션 절반 가까이 판매 0`},
+  ];
+  document.getElementById('kpis').innerHTML = tiles.map(x=>`
+    <div class="kpi"><div class="lbl">${x.lbl}</div>
+      <div class="row"><span class="m"><i class="dot aug"></i>8월</span><span class="v">${x.v8}</span>
+      <span class="m"><i class="dot sep"></i>9월</span><span class="v">${x.v9}</span></div>
+      <div class="delta">${x.delta}</div></div>`).join('');
+})();
+
+/* product grouped bars */
+const prodChart = document.getElementById('prod-chart');
+const tip = document.getElementById('tip');
+let mode = 'actual';
+function niceStep(range, n){ const raw = range/n, p = Math.pow(10, Math.floor(Math.log10(raw))); const f = raw/p; return (f<1.5?1:f<3?2:f<7?5:10)*p; }
+function barPath(xa, xb, y, h, r, positive){
+  const w = Math.max(0, xb - xa); if (w <= 0) return '';
+  const rr = Math.min(r, w);
+  return positive
+    ? `M${xa},${y} h${w-rr} a${rr},${rr} 0 0 1 ${rr},${rr} v${h-2*rr} a${rr},${rr} 0 0 1 -${rr},${rr} h-${w-rr} z`
+    : `M${xb},${y} h-${w-rr} a${rr},${rr} 0 0 0 -${rr},${rr} v${h-2*rr} a${rr},${rr} 0 0 0 ${rr},${rr} h${w-rr} z`;
+}
+function drawProducts(){
+  const rows = DATA.prods.filter(p => p['8월'].net!==0 || p['9월'].net!==0);
+  const val = (p,m) => mode==='daily' ? p[m].net/DAYS[m] : p[m].net;
+  const all = rows.flatMap(p=>M.map(m=>val(p,m)));
+  const maxV = Math.max(...all), minV = Math.min(0, ...all);
+  const W = 1000, labW = 230, right = 90, top = 22, rowH = 44, barH = 14, gap = 3;
+  const H = top + rows.length*rowH + 10;
+  const x0 = labW, x1 = W - right;
+  const scale = v => x0 + (v - minV) / (maxV - minV) * (x1 - x0);
+  const step = niceStep(maxV - minV, 5);
+  const ticks = []; for (let t = Math.ceil(minV/step)*step; t <= maxV + 1e-9; t += step) ticks.push(t);
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="상품별 8월 9월 순매출 막대 그래프">`;
+  ticks.forEach(t=>{ const x=scale(t); s+=`<line class="grid" x1="${x}" x2="${x}" y1="${top-6}" y2="${H-10}"/><text class="tick" x="${x}" y="${top-10}" text-anchor="middle">${t===0?'0':fmt(t/10000)+'만'}</text>`; });
+  s += `<line class="axis" x1="${scale(0)}" x2="${scale(0)}" y1="${top-6}" y2="${H-10}"/>`;
+  rows.forEach((p,i)=>{
+    const y = top + i*rowH;
+    s += `<g class="row"><text class="lab" x="${labW-14}" y="${y+rowH/2+4}" text-anchor="end">${p.name}</text>`;
+    M.forEach((m,j)=>{
+      const v = val(p,m); const by = y + 6 + j*(barH+gap);
+      const xa = scale(Math.min(0,v)), xb = scale(Math.max(0,v));
+      s += `<path class="bar" d="${barPath(xa,xb,by,barH,4,v>=0)}" fill="${COL[m]}"/>`;
+      if (v!==0) s += `<text class="val" x="${v>=0?xb+6:xa-6}" y="${by+barH-3}" text-anchor="${v>=0?'start':'end'}">${fmt(v)}</text>`;
+    });
+    s += `<rect class="hit" x="0" y="${y}" width="${W}" height="${rowH}" data-i="${i}"/></g>`;
+  });
+  s += `</svg>`;
+  prodChart.innerHTML = s; prodChart.appendChild(tip);
+  document.getElementById('prod-caption').textContent = mode==='daily'
+    ? '일평균 = 순 판매 금액 ÷ 일수(8월 31일, 9월 14일). 9월은 아직 진행 중이라 참고치입니다.'
+    : '9월은 14일치라 실제 금액은 8월보다 작게 보입니다. 페이스를 비교하려면 일평균 환산을 누르세요.';
+  prodChart.querySelectorAll('.hit').forEach(h=>{
+    h.addEventListener('mousemove', e=>{
+      const p = rows[+h.dataset.i]; const r = prodChart.getBoundingClientRect();
+      tip.innerHTML = `<b>${p.name}</b><br>` + M.map(m=>`${m}: ${won(p[m].net)} · ${p[m].qty}개` + (p[m].cqty?` · 취소 ${p[m].cqty}개`:'') + (mode==='daily'?` · 일평균 ${won(p[m].net/DAYS[m])}`:'')).join('<br>');
+      tip.style.left = (e.clientX - r.left) + 'px'; tip.style.top = (e.clientY - r.top) + 'px'; tip.classList.add('on');
+    });
+    h.addEventListener('mouseleave', ()=>tip.classList.remove('on'));
+  });
+}
+function setSeg(){ document.getElementById('mode-actual').setAttribute('aria-pressed', mode==='actual'); document.getElementById('mode-daily').setAttribute('aria-pressed', mode==='daily'); }
+document.getElementById('mode-actual').onclick = ()=>{ mode='actual'; setSeg(); drawProducts(); };
+document.getElementById('mode-daily').onclick = ()=>{ mode='daily'; setSeg(); drawProducts(); };
+drawProducts();
+
+/* squeegee sizes */
+(function(){
+  const sizes = ['25','31','35']; const sq = DATA.sq;
+  const W = 480, top = 20, left = 60, right = 40, rowH = 50, barH = 14, gap = 3;
+  const H = top + sizes.length*rowH;
+  const maxQ = Math.max(...sizes.flatMap(z=>M.map(m=>sq[z][m].qty)));
+  const sc = v => left + v/maxQ*(W-left-right);
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="스퀴지 사이즈별 8월 9월 판매 수량">`;
+  [0,20,40,60,80].filter(t=>t<=maxQ).forEach(t=>{ s+=`<line class="grid" x1="${sc(t)}" x2="${sc(t)}" y1="${top-6}" y2="${H}"/><text class="tick" x="${sc(t)}" y="${top-10}" text-anchor="middle">${t}</text>`; });
+  s += `<line class="axis" x1="${sc(0)}" x2="${sc(0)}" y1="${top-6}" y2="${H}"/>`;
+  sizes.forEach((z,i)=>{
+    const y = top + i*rowH;
+    s += `<text class="lab" x="${left-12}" y="${y+rowH/2+4}" text-anchor="end">${z}cm</text>`;
+    M.forEach((m,j)=>{ const q = sq[z][m].qty, by = y+9+j*(barH+gap), w = sc(q)-sc(0);
+      s += `<rect class="bar" x="${sc(0)}" y="${by}" width="${w}" height="${barH}" rx="4" fill="${COL[m]}"><title>${z}cm ${m}: ${q}개 · ${won(sq[z][m].net)}</title></rect><text class="val" x="${sc(q)+6}" y="${by+barH-3}">${q}</text>`; });
+  });
+  s += `</svg>`;
+  document.getElementById('sq-chart').innerHTML = s;
+  const t8 = sizes.reduce((a,z)=>a+sq[z]['8월'].net,0), t9 = sizes.reduce((a,z)=>a+sq[z]['9월'].net,0);
+  const share8 = pct(t8, DATA.tot['8월'].net), share9 = pct(t9, DATA.tot['9월'].net);
+  document.getElementById('sq-facts').innerHTML = `
+    <div class="kpi" style="border:0;padding:0;gap:12px">
+      <div class="lbl">생활용품 매출에서 차지하는 비중</div>
+      <div class="row"><span class="m"><i class="dot aug"></i>8월</span><span class="v">${share8.toFixed(0)}<small>% · ${won(t8)}</small></span>
+      <span class="m"><i class="dot sep"></i>9월</span><span class="v">${share9.toFixed(0)}<small>% · ${won(t9)}</small></span></div>
+      <div class="delta">35cm가 두 달 모두 1위. 9월엔 31cm가 30개에서 5개로 급감한 반면 25cm는 21개 → 20개로 8월 한 달치를 보름 만에 채웠습니다. 31cm의 재고와 노출 상태를 확인해 볼 만합니다.</div>
+    </div>`;
+})();
+
+/* option table */
+function splitName(n){
+  n = n.replace(/^쓰레빠팩토리 /,'').replace(/^쓰팩 /,'');
+  const parts = n.split(', ');
+  if (/스퀴지/.test(parts[0]) && parts.length > 1) return [parts[1], ...parts.slice(2)];
+  return [parts[0], ...parts.slice(1)];
+}
+function drawTable(m){
+  const rows = [...DATA.opts[m]].sort((a,b)=>b.net-a.net);
+  const tb = document.querySelector('#opt-table tbody'), tf = document.querySelector('#opt-table tfoot');
+  tb.innerHTML = rows.map(r=>{
+    const cr = pct(r.cqty, r.gqty); const cls = r.net<0?'neg':r.net===0?'zero':'';
+    const chips = (r.net<0?'<span class="chip neg">전월 주문 취소</span>':'') + (r.gqty>=5 && cr>=15?'<span class="chip warn">취소율 높음</span>':'') + (r.winner<50?'<span class="chip win">위너 '+r.winner+'%</span>':'');
+    const [head, ...rest] = splitName(r.name);
+    return `<tr class="${cls}"><td class="name">${head}${chips}<div class="opt">${rest.join(', ')}</div></td><td>${r.winner}%</td><td>${won(r.net)}</td><td>${r.qty}</td><td>${won(r.gross)} · ${r.gqty}개</td><td>${r.cqty?won(r.cancel)+' · '+r.cqty+'개':'–'}</td><td>${r.gqty?cr.toFixed(1)+'%':'–'}</td></tr>`;
+  }).join('');
+  const t = DATA.tot[m];
+  tf.innerHTML = `<tr><td>${m} 합계 · ${t.opts}개 옵션</td><td></td><td>${won(t.net)}</td><td>${t.qty}</td><td>${won(t.gross)} · ${t.gqty}개</td><td>${won(t.cancel)} · ${t.cqty}개</td><td>${pct(t.cqty,t.gqty).toFixed(1)}%</td></tr>`;
+}
+document.getElementById('cnt-8').textContent = DATA.tot['8월'].opts; document.getElementById('cnt-9').textContent = DATA.tot['9월'].opts;
+document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click', ()=>{
+  document.querySelectorAll('.tabs button').forEach(x=>x.setAttribute('aria-selected', x===b)); drawTable(b.dataset.m);
+}));
+drawTable('8월');
+
+/* notes */
+document.getElementById('notes').innerHTML = [
+  ['페이스', '9월 생활용품 일평균 순매출은 약 10만 6천원으로 8월(약 9만 4천원)보다 13% 높습니다. 절대 금액이 절반인 건 보름치이기 때문입니다.'],
+  ['스퀴지 의존', '스텐 스퀴지 한 상품이 8월 63%, 9월 57%를 차지합니다. 이 상품의 재고와 아이템위너 유지가 생활용품 실적 그 자체입니다.'],
+  ['행주 걸이 실종', '스텐304 행주 걸이는 8월 45개·37만원을 팔았는데 9월엔 0건이고 아이템위너 비율도 0%입니다. 품절 또는 위너 이탈 여부를 먼저 확인해야 합니다.'],
+  ['슬라임 토핑', '데코 1호는 9월 보름 만에 8월 한 달 판매량(27개 vs 26개)을 넘겼습니다. 파우더 구성 1호도 9월 신규로 4개 팔렸으나 위너 비율 7.7%인 중복 옵션이 하나 섞여 있습니다.'],
+  ['취소 관리', '웨이브렉 비누·수세미 거치대는 두 달 연속 취소율 15~18%로 생활용품 중 가장 높습니다. 호두나무 드라이어 거치대는 8월 8건 중 4건 취소, 9월엔 전월 취소가 반영돼 순매출이 −22,400원입니다.'],
+  ['판매 0 옵션', '냄비 받침대, 포켓 드라이어 거치대, 슬라임 데코 2호, 2·3개 묶음 옵션 등은 두 달 모두 판매가 없습니다. 묶음 옵션은 정리하고, 단품은 노출 상태를 점검할 대상입니다.'],
+].map(([k,d])=>`<div class="note-item"><div class="k">${k}</div><div class="d">${d}</div></div>`).join('');
+</script>

@@ -1,0 +1,103 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>로켓그로스 일일 판매 보고</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap">
+<style>
+:root{color-scheme:light;--ground:#f5f5f7;--surface:#fff;--ink:#1d1d1f;--ink-2:#6e6e73;--ink-3:#86868b;--hair:#e8e8ed;--blue:#0071e3;--up:#1a7f37;--down:#d70015;--barfill:#0071e3;--barsoft:#c7dcf5;--shadow:0 2px 12px rgba(0,0,0,.06),0 0 0 .5px rgba(0,0,0,.04)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--ground:#000;--surface:#1d1d1f;--ink:#f5f5f7;--ink-2:#a1a1a6;--ink-3:#86868b;--hair:#333336;--blue:#2997ff;--up:#30d158;--down:#ff453a;--barfill:#2997ff;--barsoft:#1f3c5e;--shadow:0 0 0 .5px rgba(255,255,255,.06)}}
+:root[data-theme="dark"]{color-scheme:dark;--ground:#000;--surface:#1d1d1f;--ink:#f5f5f7;--ink-2:#a1a1a6;--ink-3:#86868b;--hair:#333336;--blue:#2997ff;--up:#30d158;--down:#ff453a;--barfill:#2997ff;--barsoft:#1f3c5e;--shadow:0 0 0 .5px rgba(255,255,255,.06)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;font-size:15px;line-height:1.45;padding-inline:clamp(16px,5vw,40px);padding-block:40px 64px;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased;letter-spacing:-.01em}
+.wrap{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+header{text-align:center;display:flex;flex-direction:column;gap:6px;margin-bottom:6px}
+.eyebrow{font-size:13px;font-weight:600;color:var(--blue);margin:0}
+h1{margin:0;font-size:clamp(28px,6vw,36px);font-weight:700;letter-spacing:-.03em;line-height:1.1}
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tile{background:var(--surface);border-radius:18px;box-shadow:var(--shadow);padding:20px 20px 18px;display:flex;flex-direction:column;gap:6px}
+.tile .l{font-size:13px;color:var(--ink-2);font-weight:500}
+.tile .v{font-size:clamp(26px,6vw,34px);font-weight:700;letter-spacing:-.035em;line-height:1.05}
+.tile .v small{font-size:14px;font-weight:500;color:var(--ink-3);margin-left:2px;letter-spacing:-.01em}
+.d{font-size:12.5px;font-weight:500;margin-top:2px}
+.d.up{color:var(--up)}.d.down{color:var(--down)}.d.flat{color:var(--ink-3)}
+.split{display:flex;justify-content:space-between;gap:8px;background:var(--surface);border-radius:18px;box-shadow:var(--shadow);padding:14px 20px;font-size:13.5px;color:var(--ink-2)}
+.split b{color:var(--ink);font-weight:600}
+.card{background:var(--surface);border-radius:18px;box-shadow:var(--shadow);padding:18px 20px;display:flex;flex-direction:column;gap:12px}
+.card h2{margin:0;font-size:15px;font-weight:600;letter-spacing:-.02em}
+.card h2 small{font-weight:400;color:var(--ink-3);font-size:12.5px;margin-left:6px}
+.trend{display:flex;gap:4px;align-items:flex-end;overflow-x:auto;padding-bottom:2px}
+.day{flex:1 1 0;min-width:30px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10.5px;color:var(--ink-3)}
+.day .bars{height:80px;width:100%;display:flex;align-items:flex-end;justify-content:center}
+.day .bar{width:70%;max-width:30px;background:var(--barsoft);border-radius:5px 5px 2px 2px}
+.day.cur .bar{background:var(--barfill)}
+.day .v{font-weight:600;color:var(--ink-2);font-size:11px}
+.day.cur .v,.day.cur .l{color:var(--blue);font-weight:600}
+.mtd{background:var(--surface);border-radius:18px;box-shadow:var(--shadow);padding:12px 20px;font-size:13px;color:var(--ink-2);text-align:center}
+.mtd b{color:var(--ink);font-weight:600}
+.mtd b.up{color:var(--up)}.mtd b.down{color:var(--down)}
+ul.top{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+ul.top li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:.5px solid var(--hair);font-size:13.5px}
+ul.top li:last-child{border-bottom:0}
+ul.top .n{color:var(--ink);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ul.top .a{color:var(--ink-2);white-space:nowrap}
+details{background:var(--surface);border-radius:18px;box-shadow:var(--shadow);padding:0 20px}
+summary{cursor:pointer;padding:14px 0;font-size:14px;font-weight:600;color:var(--ink-2);list-style:none;display:flex;justify-content:space-between}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"＋";color:var(--ink-3)}
+details[open] summary::after{content:"－"}
+.tblwrap{overflow-x:auto;padding-bottom:14px}
+table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:560px}
+th,td{padding:7px 8px;text-align:right;border-bottom:.5px solid var(--hair);white-space:nowrap}
+th{color:var(--ink-2);font-weight:600;font-size:11.5px}
+th:first-child,td:first-child{text-align:left;padding-left:0}
+td.note{color:var(--ink-3);font-size:11.5px;text-align:left}
+tr.cur td{font-weight:600}
+tbody tr:last-child td{border-bottom:0}
+.warn{margin:0;background:var(--surface);border-radius:14px;box-shadow:var(--shadow);padding:12px 16px;font-size:13px;color:var(--down)}
+footer{font-size:12px;color:var(--ink-3);text-align:center;line-height:1.6}
+@media print{body{background:#fff;padding:0}.tile,.card,.split,details,.warn{box-shadow:none;border:.5px solid #d2d2d7}}
+</style>
+<style id="sitenav-css">
+.sitenav{position:sticky;top:0;z-index:20;backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);background:rgba(251,251,253,.8);border-bottom:.5px solid rgba(0,0,0,.08);margin:0 calc(-1 * clamp(16px,5vw,48px));padding:0 clamp(16px,5vw,48px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sitenav{background:rgba(29,29,31,.72);border-bottom-color:rgba(255,255,255,.1)}}
+:root[data-theme="dark"] .sitenav{background:rgba(29,29,31,.72);border-bottom-color:rgba(255,255,255,.1)}
+.sitenav .in{max-width:1000px;margin:0 auto;display:flex;align-items:center;gap:22px;height:46px;font-size:13px;overflow-x:auto;white-space:nowrap}
+.sitenav a{color:inherit;text-decoration:none;opacity:.75}
+.sitenav a:hover,.sitenav a.on{opacity:1}
+.sitenav a.on{font-weight:600}
+.sitenav .brand{font-weight:600;opacity:1;margin-right:auto;letter-spacing:-.01em}
+</style>
+
+<nav class="sitenav"><div class="in"><a class="brand" href="index.html">1004nail · 로켓그로스</a><a href="daily.html" class=on>일일 보고</a><a href="monthly.html">월별 분석</a><a href="totals.html">판매 상품 합계</a></div></nav>
+<div class="wrap">
+<header>
+  <p class="eyebrow">쿠팡 로켓그로스 · 일일 판매</p>
+  <h1>9월 14일 (월)</h1>
+</header>
+
+<div class="hero">
+  <div class="tile"><span class="l">판매 금액</span><span class="v">803,860<small>원</small></span><span class="d up">▲ 159,750원 (+25%) 전일 대비</span></div>
+  <div class="tile"><span class="l">판매 수량</span><span class="v">79<small>개</small></span><span class="d up">▲ 10개 (+14%) 전일 대비</span></div>
+</div>
+<div class="split">
+  <span>뷰티 <b>719,920원</b> · 70개</span>
+  <span>생활용품 <b>83,940원</b> · 9개</span>
+  <span>취소 <b>51,470원</b> · 5개</span>
+</div>
+<div class="card">
+  <h2>이달 판매 흐름<small>순 판매 금액, 만원 단위</small></h2>
+  <div class="trend"><div class="day" title="9월 1일 (화) · 607,380원 · 54개"><div class="bars"><div class="bar" style="height:69%"></div></div><div class="v">61</div><div class="l">1일</div></div><div class="day" title="9월 2일 (수) · 571,700원 · 68개"><div class="bars"><div class="bar" style="height:65%"></div></div><div class="v">57</div><div class="l">2일</div></div><div class="day" title="9월 3일 (목) · 717,630원 · 77개"><div class="bars"><div class="bar" style="height:82%"></div></div><div class="v">72</div><div class="l">3일</div></div><div class="day" title="9월 4일 (금) · 685,770원 · 73개"><div class="bars"><div class="bar" style="height:78%"></div></div><div class="v">69</div><div class="l">4일</div></div><div class="day" title="9월 5일 (토) · 803,150원 · 98개"><div class="bars"><div class="bar" style="height:91%"></div></div><div class="v">80</div><div class="l">5일</div></div><div class="day" title="9월 6일 (일) · 558,390원 · 61개"><div class="bars"><div class="bar" style="height:63%"></div></div><div class="v">56</div><div class="l">6일</div></div><div class="day" title="9월 7일 (월) · 731,900원 · 84개"><div class="bars"><div class="bar" style="height:83%"></div></div><div class="v">73</div><div class="l">7일</div></div><div class="day" title="9월 8일 (화) · 730,070원 · 74개"><div class="bars"><div class="bar" style="height:83%"></div></div><div class="v">73</div><div class="l">8일</div></div><div class="day" title="9월 9일 (수) · 744,340원 · 87개"><div class="bars"><div class="bar" style="height:85%"></div></div><div class="v">74</div><div class="l">9일</div></div><div class="day" title="9월 10일 (목) · 693,690원 · 87개"><div class="bars"><div class="bar" style="height:79%"></div></div><div class="v">69</div><div class="l">10일</div></div><div class="day" title="9월 11일 (금) · 879,610원 · 91개"><div class="bars"><div class="bar" style="height:100%"></div></div><div class="v">88</div><div class="l">11일</div></div><div class="day" title="9월 12일 (토) · 797,640원 · 85개"><div class="bars"><div class="bar" style="height:91%"></div></div><div class="v">80</div><div class="l">12일</div></div><div class="day" title="9월 13일 (일) · 644,110원 · 69개"><div class="bars"><div class="bar" style="height:73%"></div></div><div class="v">64</div><div class="l">13일</div></div><div class="day cur" title="9월 14일 (월) · 803,860원 · 79개"><div class="bars"><div class="bar" style="height:91%"></div></div><div class="v">80</div><div class="l">14일</div></div></div>
+</div>
+<div class="mtd"><span>9월 1~14일 누계 <b>9,969,240원</b> · 1,087개 · 일평균 712,089원 · 최근 7일 평균 745,909원 대비 <b class="up">+57,951원</b></span></div>
+<div class="card">
+  <h2>오늘 많이 팔린 상품<small>순 판매 금액 순</small></h2>
+  <ul class="top"><li><span class="n">닥터크랄레 페디에센스, 1개</span><span class="a">287,070원 · 21개</span></li><li><span class="n">루핀 인조손, 1개</span><span class="a">136,000원 · 17개</span></li><li><span class="n">루핀 젤 글루 핑크라벨 네일국가고시, 1개</span><span class="a">55,000원 · 11개</span></li><li><span class="n">루핀 인조손, 6개</span><span class="a">41,330원 · 1개</span></li><li><span class="n">닥터크랄레 페디에센스, 4개</span><span class="a">38,960원 · 1개</span></li></ul>
+</div>
+<details>
+  <summary>일별 상세 표</summary>
+  <div class="tblwrap"><table>
+    <thead><tr><th>날짜</th><th>판매 금액</th><th>수량</th><th>뷰티</th><th>생활용품</th><th>취소</th><th></th></tr></thead>
+    <tbody><tr class=cur><td>9월 14일 (월)</td><td>803,860</td><td>79</td><td>719,920</td><td>83,940</td><td>51,470 · 5개</td><td class="note"></td></tr><tr><td>9월 13일 (일)</td><td>644,110</td><td>69</td><td>485,660</td><td>158,450</td><td>40,200 · 6개</td><td class="note"></td></tr><tr><td>9월 12일 (토)</td><td>797,640</td><td>85</td><td>748,040</td><td>49,600</td><td>68,100 · 7개</td><td class="note"></td></tr><tr><td>9월 11일 (금)</td><td>879,610</td><td>91</td><td>686,090</td><td>193,520</td><td>60,140 · 7개</td><td class="note"></td></tr><tr><td>9월 10일 (목)</td><td>693,690</td><td>87</td><td>632,470</td><td>61,220</td><td>41,800 · 6개</td><td class="note"></td></tr><tr><td>9월 9일 (수)</td><td>744,340</td><td>87</td><td>661,150</td><td>83,190</td><td>73,640 · 9개</td><td class="note"></td></tr><tr><td>9월 8일 (화)</td><td>730,070</td><td>74</td><td>578,270</td><td>151,800</td><td>50,000 · 7개</td><td class="note"></td></tr><tr><td>9월 7일 (월)</td><td>731,900</td><td>84</td><td>640,300</td><td>91,600</td><td>17,900 · 3개</td><td class="note"></td></tr><tr><td>9월 6일 (일)</td><td>558,390</td><td>61</td><td>482,540</td><td>75,850</td><td>40,500 · 5개</td><td class="note"></td></tr><tr><td>9월 5일 (토)</td><td>803,150</td><td>98</td><td>579,130</td><td>224,020</td><td>50,680 · 6개</td><td class="note"></td></tr><tr><td>9월 4일 (금)</td><td>685,770</td><td>73</td><td>621,370</td><td>64,400</td><td>53,500 · 7개</td><td class="note"></td></tr><tr><td>9월 3일 (목)</td><td>717,630</td><td>77</td><td>625,730</td><td>91,900</td><td>37,170 · 5개</td><td class="note"></td></tr><tr><td>9월 2일 (수)</td><td>571,700</td><td>68</td><td>416,700</td><td>155,000</td><td>32,340 · 3개</td><td class="note"></td></tr><tr><td>9월 1일 (화)</td><td>607,380</td><td>54</td><td>522,680</td><td>84,700</td><td>48,490 · 6개</td><td class="note"></td></tr></tbody>
+  </table></div>
+</details>
+<footer>순 판매 금액 = 전체 거래 금액 − 취소 금액 · 생활용품에는 주방용품·완구를 포함 · 출처: 로켓그로스 판매통계 일별 파일 14개<br>보고 시각 기준 파일: Statistics-20260914</footer>
+</div>
