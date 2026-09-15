@@ -21,7 +21,7 @@ body{margin:0;background:var(--ground);color:var(--ink);font-family:-apple-syste
 .sitenav .brand{font-weight:600;opacity:1;margin-right:auto;letter-spacing:-.01em}
 </style>
 
-<nav class="sitenav"><div class="in"><a class="brand" href="index.html">1004nail · 로켓그로스</a><a href="daily.html">일일 보고</a><a href="monthly.html">월별 분석</a><a href="totals.html">판매 상품 합계</a></div></nav>
+<nav class="sitenav"><div class="in"><a class="brand" href="index.html">1004nail · 로켓그로스</a><a href="daily.html">일일 보고</a><a href="monthly.html">월별 분석</a><a href="totals.html">판매 상품 합계</a><a href="unsold.html">판매 0 옵션</a></div></nav>
 <div class="wrap" style="max-width:880px;margin:0 auto;display:flex;flex-direction:column;gap:28px;padding-top:56px">
 <style>
 header{text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center}
@@ -38,7 +38,7 @@ h1{margin:0;font-size:clamp(32px,6vw,48px);font-weight:700;letter-spacing:-.03em
 .today .d{display:block;font-size:12.5px;font-weight:500;color:var(--ink-3)}
 .today .d.up{color:var(--up)}.today .d.down{color:var(--down)}
 .today .mtd{grid-column:1/-1;font-size:13px;color:var(--ink-2);border-top:.5px solid rgba(128,128,128,.25);padding-top:12px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
 .card{background:var(--surface);border-radius:18px;box-shadow:var(--shadow);padding:22px 22px 18px;display:flex;flex-direction:column;gap:8px;text-decoration:none;color:inherit;transition:transform .15s}
 .card:hover{transform:translateY(-2px)}
 .card .k{font-size:18px;font-weight:600;letter-spacing:-.02em}
@@ -73,6 +73,11 @@ footer{font-size:12px;color:var(--ink-3);text-align:center;line-height:1.6}
   <a class="card" href="totals.html">
     <span class="k">판매 상품 합계</span>
     <span class="t">판매된 상품만 두 달 합계, SKU 판매·미판매 현황</span>
+    <span class="go">열기 ›</span>
+  </a>
+  <a class="card" href="unsold.html">
+    <span class="k">판매 0 옵션</span>
+    <span class="t">월별로 한 개도 안 팔린 옵션 목록, 전 카테고리</span>
     <span class="go">열기 ›</span>
   </a>
 </div>
