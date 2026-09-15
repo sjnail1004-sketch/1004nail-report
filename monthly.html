@@ -294,7 +294,7 @@ drawProducts();
   document.getElementById("sq-facts").innerHTML = `
     <h3>생활용품 매출에서 차지하는 비중</h3>
     <div class="big">${MK.map(k => `<div class="r"><span class="m">${k}</span><span class="v">${pct(sum(k), D.tot[k].net).toFixed(0)}<small>% · ${won(sum(k))}</small></span></div>`).join("")}</div>
-    <p>두 달 합쳐 <b>${top1[0]}cm</b>가 ${top1[1]}개로 가장 많이 팔렸습니다. 사이즈별 재고와 아이템위너 상태를 함께 보세요.</p>`;
+    <p>누계로 <b>${top1[0]}cm</b>가 ${top1[1]}개로 가장 많이 팔렸습니다. 사이즈별 재고와 아이템위너 상태를 함께 보세요.</p>`;
 })();
 
 /* 옵션 표 */
