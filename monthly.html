@@ -26,10 +26,10 @@ h1{font-size:clamp(32px,5vw,46px);font-weight:700;line-height:1.08}
 h2{font-size:26px;font-weight:700;line-height:1.16}
 h3{font-size:16px;font-weight:600;letter-spacing:-.02em}
 p{margin:0}
-header{display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center}
+header{display:flex;flex-direction:column;gap:12px;align-items:flex-start;text-align:left}
 .eyebrow{font-size:13px;font-weight:600;color:var(--m1)}
 header .sub{color:var(--ink-2);max-width:60ch;font-size:18px;line-height:1.5}
-.scope{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:4px}
+.scope{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
 .scope span{display:inline-flex;align-items:center;background:var(--surface);box-shadow:var(--shadow);border-radius:999px;padding:6px 14px;font-size:13px;color:var(--ink-2)}
 .scope b{color:var(--ink);font-weight:600;margin-right:4px}
 .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px}
@@ -102,7 +102,7 @@ tbody tr:last-child td{border-bottom:.5px solid var(--hair)}
 .note .k{font-size:13px;font-weight:600;color:var(--m1)}
 .note .d{font-size:14px;color:var(--ink-2);line-height:1.5}
 @media (max-width:700px){.notes{grid-template-columns:1fr}}
-footer{font-size:12px;color:var(--ink-3);text-align:center;line-height:1.6;max-width:80ch;align-self:center}
+footer{font-size:12px;color:var(--ink-3);line-height:1.6;max-width:80ch}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 <style id="sitenav-css">
@@ -121,7 +121,7 @@ footer{font-size:12px;color:var(--ink-3);text-align:center;line-height:1.6;max-w
 <header>
   <p class="eyebrow">쿠팡 로켓그로스 · 쓰레빠팩토리 생활용품</p>
   <h1>생활용품 월별 판매</h1>
-  <p class="sub">월별 판매현황 파일에서 생활용품만 떼어 달별로 나란히 놓았습니다.<br>뷰티(네일) 상품은 들어 있지 않습니다.</p>
+  <p class="sub">월별 판매현황 파일에서 생활용품만 떼어 월별로 나란히 놓았습니다.<br>뷰티(네일) 상품은 들어 있지 않습니다.</p>
   <div class="scope" id="scope"></div>
 </header>
 
