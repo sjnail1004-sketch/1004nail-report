@@ -104,7 +104,7 @@ function render() {
         </li>`).join("")}</ol>`
         : '<p class="empty">판매된 상품이 없습니다.</p>'}
       <div class="foot">상위 5개 합계 ${f(m.top5_qty)}개 · 이 달 전체 ${f(m.total_qty)}개의 ${(m.top5_qty / (m.total_qty || 1) * 100).toFixed(0)}%</div>
-      <div class="foot2">쿠팡 판매 수량 기준으로는 ${f(m.sold_qty)}개 (묶음 1건을 1개로 계산)</div>
+      <div class="foot2">쿠팡 판매 수량으로는 ${f(m.sold_qty)}건 (2개 묶음도 1건으로 집계)</div>
     </div>`).join("");
   document.getElementById("note").textContent =
     g === "전체" ? "뷰티와 생활용품을 합친 전체 순위입니다." : g + " 상품만 모아 다시 매긴 순위입니다.";
