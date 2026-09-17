@@ -69,6 +69,7 @@ table.cprod .na{color:var(--ink-3);cursor:help}
 .ctabs button[aria-selected="true"]{background:var(--ink);color:var(--ground)}
 .ctabs button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 .cpane{display:flex;flex-direction:column;gap:12px}
+.cpane[hidden]{display:none}   /* display:flex 가 기본 hidden 규칙을 덮어쓰는 것 방지 */
 table.cprod tr.ok td{background:var(--okbg)}
 table.cprod tr.best td{background:var(--bestbg)}
 table.cprod tr.best .rk{color:var(--ink-2)}
