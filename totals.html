@@ -104,6 +104,7 @@ ul.unsold li .o{color:var(--ink-3)}
 ul.unsold li .m{font-size:12px;color:var(--ink-3);white-space:nowrap}
 ul.unsold li .m.c{color:var(--neg)}
 ul.unsold li .m.d{color:var(--blue)}
+ul.unsold li .tags{display:flex;gap:10px;align-items:baseline;white-space:nowrap}
 footer{font-size:12.5px;color:var(--ink-3);border-top:.5px solid var(--hair);padding-top:18px;max-width:84ch;line-height:1.6}
 @media print{body{background:#fff;padding:0}.card,.tile,.scope span{box-shadow:none;border:.5px solid #d2d2d7}thead th{position:static}}
 </style>
@@ -127,27 +128,27 @@ footer{font-size:12.5px;color:var(--ink-3);border-top:.5px solid var(--hair);pad
   <div class="scope"><span><i class="dot m0"></i><b>5월</b> 1~31일</span><span><i class="dot m1"></i><b>6월</b> 1~30일</span><span><i class="dot m2"></i><b>7월</b> 1~31일</span><span><i class="dot m3"></i><b>8월</b> 1~31일</span><span><i class="dot m4"></i><b>9월</b> 1~16일, 진행 중</span><span><b>순 판매 금액</b> 전체 거래 − 취소, 단위 원</span></div>
 </header>
 
-<div class="sum"><div class="tile"><span class="l">누계 순매출</span><span class="v">5,526,570원</span><span class="d">5월 0원 · 6월 146,290원 · 7월 974,260원 · 8월 2,920,770원 · 9월 1,485,250원</span></div><div class="tile"><span class="l">누계 수량</span><span class="v">491<small>개</small></span><span class="d">5월 0개 · 6월 12개 · 7월 76개 · 8월 263개 · 9월 140개</span></div><div class="tile"><span class="l">판매된 상품</span><span class="v">10<small>개</small></span><span class="d">전체 노출상품 13개 중</span></div><div class="tile"><span class="l">판매된 단품 SKU</span><span class="v">16<small>/ 20개</small></span><span class="d">미판매 4개 · 묶음 옵션 제외</span></div></div>
+<div class="sum"><div class="tile"><span class="l">누계 순매출</span><span class="v">5,526,570원</span><span class="d">5월 0원 · 6월 146,290원 · 7월 974,260원 · 8월 2,920,770원 · 9월 1,485,250원</span></div><div class="tile"><span class="l">누계 수량</span><span class="v">491<small>개</small></span><span class="d">5월 0개 · 6월 12개 · 7월 76개 · 8월 263개 · 9월 140개</span></div><div class="tile"><span class="l">판매된 상품</span><span class="v">10<small>개</small></span><span class="d">전체 노출상품 13개 중</span></div><div class="tile"><span class="l">판매된 단품 SKU</span><span class="v">12<small>/ 15개</small></span><span class="d">미판매 3개 · 묶음 옵션 제외</span></div></div>
 
 <section class="sku">
-  <div class="sec-head"><h2>SKU 판매 현황</h2><span class="note">SKU는 옵션ID 하나. 5월~9월 순 판매 수량이 1개 이상이면 판매로 봅니다. 2개·3개 묶음 옵션은 빼고 단품만 셉니다.</span></div>
+  <div class="sec-head"><h2>SKU 판매 현황</h2><span class="note">SKU는 상품·옵션명 하나(같은 옵션명이 옵션ID 여러 개면 하나로 묶음). 5월~9월 순 판매 수량이 1개 이상이면 판매로 봅니다. 2개·3개 묶음 옵션은 빼고 단품만 셉니다.</span></div>
   <div class="card skucard">
-    <div class="stack"><div class="srow"><div class="k">누계<small>옵션ID 합집합</small></div><div class="bar"><div class="seg sold" style="width:80.0%">16</div><div class="seg unsold" style="width:20.0%">4</div></div><div class="n">판매 <b>16</b> · 미판매 <b>4</b> / 20개</div></div><div class="srow"><div class="k">5월<small>31일치</small></div><div class="bar"><div class="seg sold" style="width:0.0%">0</div><div class="seg unsold" style="width:0.0%">0</div></div><div class="n">등록된 단품 없음</div></div><div class="srow"><div class="k">6월<small>30일치</small></div><div class="bar"><div class="seg sold" style="width:45.5%">5</div><div class="seg unsold" style="width:54.5%">6</div></div><div class="n">판매 <b>5</b> · 미판매 <b>6</b> / 11개</div></div><div class="srow"><div class="k">7월<small>31일치</small></div><div class="bar"><div class="seg sold" style="width:69.2%">9</div><div class="seg unsold" style="width:30.8%">4</div></div><div class="n">판매 <b>9</b> · 미판매 <b>4</b> / 13개</div></div><div class="srow"><div class="k">8월<small>31일치</small></div><div class="bar"><div class="seg sold" style="width:68.8%">11</div><div class="seg unsold" style="width:31.2%">5</div></div><div class="n">판매 <b>11</b> · 미판매 <b>5</b> / 16개</div></div><div class="srow"><div class="k">9월<small>16일치</small></div><div class="bar"><div class="seg sold" style="width:64.7%">11</div><div class="seg unsold" style="width:35.3%">6</div></div><div class="n">판매 <b>11</b> · 미판매 <b>6</b> / 17개</div></div></div>
-    <div class="legend"><span><i class="sw sold"></i>판매된 SKU</span><span><i class="sw unsold"></i>판매 안 된 SKU</span><span>누계는 월별 파일의 옵션ID 합집합 · 단품 기준</span></div>
+    <div class="stack"><div class="srow"><div class="k">누계<small>상품·옵션명 합집합</small></div><div class="bar"><div class="seg sold" style="width:80.0%">12</div><div class="seg unsold" style="width:20.0%">3</div></div><div class="n">판매 <b>12</b> · 미판매 <b>3</b> / 15개</div></div><div class="srow"><div class="k">5월<small>31일치</small></div><div class="bar"><div class="seg sold" style="width:0.0%">0</div><div class="seg unsold" style="width:0.0%">0</div></div><div class="n">등록된 단품 없음</div></div><div class="srow"><div class="k">6월<small>30일치</small></div><div class="bar"><div class="seg sold" style="width:45.5%">5</div><div class="seg unsold" style="width:54.5%">6</div></div><div class="n">판매 <b>5</b> · 미판매 <b>6</b> / 11개</div></div><div class="srow"><div class="k">7월<small>31일치</small></div><div class="bar"><div class="seg sold" style="width:66.7%">8</div><div class="seg unsold" style="width:33.3%">4</div></div><div class="n">판매 <b>8</b> · 미판매 <b>4</b> / 12개</div></div><div class="srow"><div class="k">8월<small>31일치</small></div><div class="bar"><div class="seg sold" style="width:69.2%">9</div><div class="seg unsold" style="width:30.8%">4</div></div><div class="n">판매 <b>9</b> · 미판매 <b>4</b> / 13개</div></div><div class="srow"><div class="k">9월<small>16일치</small></div><div class="bar"><div class="seg sold" style="width:64.3%">9</div><div class="seg unsold" style="width:35.7%">5</div></div><div class="n">판매 <b>9</b> · 미판매 <b>5</b> / 14개</div></div></div>
+    <div class="legend"><span><i class="sw sold"></i>판매된 SKU</span><span><i class="sw unsold"></i>판매 안 된 SKU</span><span>누계는 월별 파일의 상품·옵션명 합집합 · 단품 기준</span></div>
   </div>
   <div class="two">
     <div class="card pad">
       <h3>카테고리별 SKU</h3>
       <table class="mini">
         <thead><tr><th>카테고리</th><th>전체 SKU</th><th>판매</th><th>미판매</th><th>판매율</th></tr></thead>
-        <tbody><tr class="hl"><td>생활용품</td><td>20</td><td>16</td><td>4</td><td>80%</td></tr><tr><td>뷰티</td><td>157</td><td>138</td><td>19</td><td>88%</td></tr><tr><td>전체</td><td>177</td><td>154</td><td>23</td><td>87%</td></tr></tbody>
+        <tbody><tr class="hl"><td>생활용품</td><td>15</td><td>12</td><td>3</td><td>80%</td></tr><tr><td>뷰티</td><td>138</td><td>126</td><td>12</td><td>91%</td></tr><tr><td>전체</td><td>153</td><td>138</td><td>15</td><td>90%</td></tr></tbody>
       </table>
       <p class="caption">뷰티(네일)까지 포함한 스토어 전체의 단품 SKU 기준. 이 페이지의 나머지 표는 생활용품만 다룹니다.</p>
     </div>
     <div class="card pad">
-      <h3>생활용품 미판매 단품 4개<small>5월~9월 내내 0</small></h3>
-      <ul class="unsold"><li><span><span class="p">무타공 도난방지 드라이기 거치대</span> <span class="o">15.5cmx9cmx8.8cm, 1개</span></span><span class="m c">주문 4건 전부 취소</span></li><li><span><span class="p">무타공 포켓 드라이어 거치대</span> <span class="o">22.6cmX11.2cmX9.8cm, 1개</span></span><span class="m">주문 0</span></li><li><span><span class="p">슬라임 토핑 데코 2호</span> <span class="o">1세트, 혼합색상</span></span><span class="m">주문 0</span></li><li><span><span class="p">슬라임 은화1호(파우더)</span> <span class="o">1세트, 혼합색상</span></span><span class="m d">중복 옵션ID · 다른 ID로 4개 판매</span></li></ul>
-      <p class="caption">파란 표시는 같은 상품·같은 옵션명이 옵션ID 두 개로 중복 등록된 경우로, 팔리지 않은 쪽만 여기 나옵니다 (1개). 상품 자체가 안 팔린 것과는 다릅니다.</p>
+      <h3>생활용품 미판매 단품 3개<small>5월~9월 내내 0</small></h3>
+      <ul class="unsold"><li><span><span class="p">무타공 도난방지 드라이기 거치대</span> <span class="o">15.5cmx9cmx8.8cm, 1개</span></span><span class="tags"><span class="m c">주문 4건 전부 취소</span></span></li><li><span><span class="p">무타공 포켓 드라이어 거치대</span> <span class="o">22.6cmX11.2cmX9.8cm, 1개</span></span><span class="tags"><span class="m">주문 0</span></span></li><li><span><span class="p">슬라임 토핑 데코 2호</span> <span class="o">1세트, 혼합색상</span></span><span class="tags"><span class="m">주문 0</span></span></li></ul>
+      <p class="caption">상품·옵션명 기준으로 셉니다. 같은 옵션명이 옵션ID 여러 개로 중복 등록된 5건은 하나로 묶었기 때문에, 한쪽 옵션ID만 팔렸어도 판매된 것으로 봅니다.</p>
     </div>
   </div>
 </section>
