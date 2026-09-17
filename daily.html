@@ -47,12 +47,16 @@ ul.top li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;bord
 ul.top li:last-child{border-bottom:0}
 ul.top li.none{justify-content:center;color:var(--ink-3);padding:18px 0}
 .hint{font-size:12px;color:var(--ink-3);margin-top:-4px}
-table.cprod{min-width:620px}
-table.cprod td.pn{font-weight:600;color:var(--ink);white-space:nowrap}
+table.cprod{min-width:0;width:100%;font-size:12px}
+table.cprod th,table.cprod td{padding:7px 4px}
+table.cprod th{white-space:normal;line-height:1.25}
+table.cprod th:first-child,table.cprod td:first-child{padding-left:0}
+table.cprod th:last-child,table.cprod td:last-child{padding-right:0}
+table.cprod td.pn{font-weight:600;color:var(--ink);white-space:normal;line-height:1.3;min-width:92px}
 table.cprod td.cq{font-weight:600;color:var(--down)}
 table.cprod td.dd{color:var(--ink-3);font-size:11.5px}
 table.cprod .na{color:var(--ink-3);cursor:help}
-table.cprod .fn{display:block;font-weight:400;font-size:11px;color:var(--ink-3);white-space:nowrap}
+table.cprod .fn{display:block;font-weight:400;font-size:10.5px;color:var(--ink-3);white-space:normal;line-height:1.3}
 table.cprod tfoot td{border-top:1px solid var(--ink);border-bottom:0;font-weight:700;padding-top:10px}
 ul.top .n{color:var(--ink);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 ul.top .a{color:var(--ink-2);white-space:nowrap}
@@ -63,8 +67,9 @@ summary .shint{font-weight:400;font-size:11.5px;color:var(--ink-3);margin-left:8
 summary::after{content:"＋";color:var(--ink-3)}
 details[open] summary::after{content:"－"}
 .tblwrap{overflow-x:auto;padding-bottom:14px}
-table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:560px}
-th,td{padding:7px 8px;text-align:right;border-bottom:.5px solid var(--hair);white-space:nowrap}
+table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:0}
+th,td{padding:7px 5px;text-align:right;border-bottom:.5px solid var(--hair);white-space:nowrap}
+thead th{white-space:normal;line-height:1.25}
 th{color:var(--ink-2);font-weight:600;font-size:11.5px}
 th:first-child,td:first-child{text-align:left;padding-left:0}
 td.note{color:var(--ink-3);font-size:11.5px;text-align:left}
@@ -140,7 +145,7 @@ footer{font-size:12px;color:var(--ink-3);line-height:1.6}
   <div class="tblwrap"><table class="cprod">
     <thead><tr><th>상품</th><th>총 판매 수량</th><th>총 판매 금액</th><th>취소 수량</th><th>취소 금액</th><th>취소율</th><th>발생 일수</th></tr></thead>
     <tbody><tr><td class="pn">찐딱 젤컬러 젤네일</td><td>384</td><td>2,617,980</td><td class="cq">34</td><td>231,200</td><td>8.9%</td><td class="dd">13 / 16일</td></tr><tr><td class="pn">루핀브러쉬온젤10g</td><td>241</td><td>1,353,200</td><td class="cq">15</td><td>78,900</td><td>6.2%</td><td class="dd">10 / 16일</td></tr><tr><td class="pn">닥터크랄레 페디에센스</td><td>282</td><td>4,126,420</td><td class="cq">13</td><td>184,470</td><td>4.6%</td><td class="dd">8 / 16일</td></tr><tr><td class="pn">루핀 인조손</td><td>233</td><td>2,084,010</td><td class="cq">11</td><td>87,760</td><td>4.7%</td><td class="dd">8 / 16일</td></tr><tr><td class="pn">웨이브렉 비누·수세미 거치대</td><td>51</td><td>249,900</td><td class="cq">8</td><td>39,200</td><td>15.7%</td><td class="dd">7 / 16일</td></tr><tr><td class="pn">찐딱 베이스젤·탑젤 세트</td><td>6</td><td>90,000</td><td class="cq">3</td><td>45,000</td><td>50.0%</td><td class="dd">3 / 16일</td></tr><tr><td class="pn">슬라임 한솔 1호</td><td>39</td><td>513,140</td><td class="cq">3</td><td>39,900</td><td>7.7%</td><td class="dd">2 / 16일</td></tr><tr><td class="pn">호두나무 드라이어 거치대</td><td>2</td><td>20,720</td><td class="cq">3</td><td>33,600</td><td><span class="na" title="이 기간 밖 주문이 취소되어 비율을 낼 수 없습니다">–</span></td><td class="dd">1 / 16일</td></tr><tr><td class="pn">슬라임 은화1호(파우더)</td><td>8</td><td>79,770</td><td class="cq">2</td><td>19,990</td><td>25.0%</td><td class="dd">2 / 16일</td></tr><tr><td class="pn">PVC 방수 앞치마</td><td>13</td><td>100,430</td><td class="cq">2</td><td>13,380</td><td>15.4%</td><td class="dd">2 / 16일</td></tr><tr><td class="pn">스텐 스퀴지 스크래퍼</td><td>80</td><td>1,069,920</td><td class="cq">1</td><td>14,000</td><td>1.2%</td><td class="dd">1 / 16일</td></tr><tr><td class="pn">루핀 썸젤 자석젤</td><td>11</td><td>121,000</td><td class="cq">1</td><td>11,000</td><td>9.1%</td><td class="dd">1 / 16일</td></tr><tr><td class="pn">자동 물빠짐 수세미 거치대</td><td>4</td><td>31,600</td><td class="cq">1</td><td>7,900</td><td>25.0%</td><td class="dd">1 / 16일</td></tr></tbody>
-    <tfoot><tr><td>합계 · 상품 13개<span class="fn">취소가 있었던 상품만, 취소 전 금액</span></td><td>1,354</td><td>12,458,090</td><td class="cq">97</td><td>806,300</td><td>7.2%</td><td class="dd"></td></tr></tfoot>
+    <tfoot><tr><td>합계 · 상품 13개<span class="fn">취소 있던 상품만 · 취소 전</span></td><td>1,354</td><td>12,458,090</td><td class="cq">97</td><td>806,300</td><td>7.2%</td><td class="dd"></td></tr></tfoot>
   </table></div>
   <p class="hint">이 표는 취소가 한 건이라도 있었던 상품만 담습니다. 취소가 없던 상품까지 더한 뒤 취소를 빼면 위 표의 9월 1~16일 누계 순 판매 11,803,390원이 됩니다.<br>총 판매는 취소 전 전체 거래 기준이고, 여기서 취소를 빼면 순 판매가 됩니다. 취소율은 취소 수량 ÷ 총 판매 수량입니다. 이 기간 밖 주문이 취소된 경우는 –로 둡니다. 발생 일수는 취소가 하루라도 있었던 날의 수입니다. 쿠팡 판매통계의 취소에는 반품이 포함됩니다.</p>
 </div>
