@@ -1,0 +1,129 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>중복 옵션ID</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap">
+<style>
+:root{color-scheme:light;--ground:#f5f5f7;--surface:#fff;--surface-2:#f5f5f7;--ink:#1d1d1f;--ink-2:#6e6e73;--ink-3:#86868b;--hair:#e8e8ed;--blue:#0071e3;--warn:#f56300;--neg:#e30000;--shadow:0 2px 12px rgba(0,0,0,.06),0 0 0 .5px rgba(0,0,0,.04)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--ground:#000;--surface:#1d1d1f;--surface-2:#2c2c2e;--ink:#f5f5f7;--ink-2:#a1a1a6;--ink-3:#86868b;--hair:#333336;--blue:#2997ff;--warn:#f0620f;--neg:#ff453a;--shadow:0 0 0 .5px rgba(255,255,255,.06)}}
+:root[data-theme="dark"]{color-scheme:dark;--ground:#000;--surface:#1d1d1f;--surface-2:#2c2c2e;--ink:#f5f5f7;--ink-2:#a1a1a6;--ink-3:#86868b;--hair:#333336;--blue:#2997ff;--warn:#f0620f;--neg:#ff453a;--shadow:0 0 0 .5px rgba(255,255,255,.06)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;font-size:15px;line-height:1.45;padding-inline:clamp(16px,5vw,48px);padding-block:0 72px;font-variant-numeric:tabular-nums;word-break:keep-all;overflow-wrap:break-word;-webkit-font-smoothing:antialiased;letter-spacing:-.01em}
+.wrap{max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:22px;padding-top:56px}
+header{text-align:center;display:flex;flex-direction:column;gap:10px}
+.eyebrow{margin:0;font-size:13px;font-weight:600;color:var(--blue)}
+h1{margin:0;font-size:clamp(30px,5vw,44px);font-weight:700;letter-spacing:-.03em;line-height:1.08}
+.sub{margin:0 auto;color:var(--ink-2);font-size:16px;max-width:60ch;text-align:left}
+.hero{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.tile{background:var(--surface);border-radius:18px;box-shadow:var(--shadow);padding:16px 18px;display:flex;flex-direction:column;gap:2px}
+.tile .l{font-size:12.5px;color:var(--ink-2);font-weight:500}
+.tile .v{font-size:30px;font-weight:700;letter-spacing:-.03em}
+.tile .v small{font-size:15px;font-weight:600;color:var(--ink-3);margin-left:3px}
+.tile .d{font-size:12px;color:var(--ink-3)}
+.card{background:var(--surface);border-radius:18px;box-shadow:var(--shadow);padding:18px 22px;display:flex;flex-direction:column;gap:12px}
+.card h2{margin:0;font-size:17px;font-weight:600;letter-spacing:-.02em}
+.card h2 small{font-weight:400;color:var(--ink-3);font-size:12.5px;margin-left:6px}
+.tblwrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:720px;font-size:13.5px}
+th,td{padding:8px 10px;text-align:left;border-bottom:.5px solid var(--hair);white-space:nowrap}
+th{font-size:12px;color:var(--ink-2);font-weight:600}
+td.num,th.num{text-align:right}
+tr.ghead td{border-bottom:0;padding-top:18px;white-space:normal}
+tr.ghead .pn{font-weight:600;font-size:14.5px}
+tr.ghead .on{color:var(--ink-2);margin-left:8px;font-size:13px}
+tr.ghead .pid{color:var(--ink-3);margin-left:8px;font-size:11.5px}
+tr.ghead .pill{display:inline-block;font-size:11px;font-weight:600;padding:1px 8px;border-radius:999px;background:var(--surface-2);color:var(--ink-2);margin-left:8px}
+tr.ghead .pill.b{color:var(--blue)}
+td.oid{font-variant-numeric:tabular-nums;font-weight:600}
+tr.drop td.oid{color:var(--warn)}
+tr.keep td{color:var(--ink-2)}
+td.flow{color:var(--ink-3);font-size:12px}
+.tg{display:inline-block;font-size:11px;font-weight:600;padding:1px 8px;border-radius:999px}
+.tg.k{background:var(--surface-2);color:var(--ink-2)}
+.tg.d{background:rgba(245,99,0,.12);color:var(--warn)}
+.tg.w{background:transparent;color:var(--ink-3);font-weight:400;margin-left:6px}
+.copy{display:flex;flex-direction:column;gap:10px}
+.copy .bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.copy button{appearance:none;border:0;background:var(--ink);color:var(--ground);font:inherit;font-size:13px;font-weight:600;padding:8px 16px;border-radius:999px;cursor:pointer}
+.copy button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.copy .ok{font-size:12.5px;color:var(--ink-3)}
+pre{margin:0;background:var(--surface-2);border-radius:12px;padding:14px 16px;font-size:13px;line-height:1.8;overflow-x:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.caption{margin:0;font-size:12.5px;color:var(--ink-3);line-height:1.6}
+footer{color:var(--ink-3);font-size:12px;text-align:center;line-height:1.7}
+@media (max-width:760px){.hero{grid-template-columns:1fr}}
+</style>
+<style id="sitenav-css">
+.sitenav{position:sticky;top:0;z-index:20;backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);background:rgba(251,251,253,.8);border-bottom:.5px solid rgba(0,0,0,.08);margin:0 calc(-1 * clamp(16px,5vw,48px));padding:0 clamp(16px,5vw,48px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sitenav{background:rgba(29,29,31,.72);border-bottom-color:rgba(255,255,255,.1)}}
+:root[data-theme="dark"] .sitenav{background:rgba(29,29,31,.72);border-bottom-color:rgba(255,255,255,.1)}
+.sitenav .in{max-width:1000px;margin:0 auto;display:flex;align-items:center;gap:22px;height:46px;font-size:13px;overflow-x:auto;white-space:nowrap}
+.sitenav a{color:inherit;text-decoration:none;opacity:.75}
+.sitenav a:hover,.sitenav a.on{opacity:1}
+.sitenav a.on{font-weight:600}
+.sitenav .brand{font-weight:600;opacity:1;margin-right:auto;letter-spacing:-.01em}
+</style>
+
+<nav class="sitenav"><div class="in"><a class="brand" href="index.html">1004nail · 로켓그로스</a><a href="daily.html">일일 보고</a><a href="monthly.html">월별 분석</a><a href="totals.html">판매 상품 합계</a><a href="unsold.html">판매 0 옵션</a><a href="ranking.html">판매 순위</a><a href="dupes.html" class=on>중복 옵션ID</a></div></nav>
+<div class="wrap">
+<header>
+  <p class="eyebrow">쿠팡 로켓그로스 · 상품 정리</p>
+  <h1>중복 옵션ID</h1>
+  <p class="sub">같은 상품·같은 옵션인데 옵션ID가 두 개 이상 붙어 있는 경우입니다. 가장 많이 판 쪽이 아이템위너를 가져가고, 나머지는 거의 팔리지 않습니다. 곁가지 쪽은 쿠팡(WING)에서 정리를 검토할 후보입니다.</p>
+</header>
+<div class="hero">
+  <div class="tile"><span class="l">중복된 옵션</span><span class="v">18<small>건</small></span><span class="d">2026년 5월~2026년 9월 판매통계 기준</span></div>
+  <div class="tile"><span class="l">정리 검토 옵션ID</span><span class="v">24<small>개</small></span><span class="d">대표 18개를 뺀 곁가지</span></div>
+  <div class="tile"><span class="l">곁가지가 판 수량</span><span class="v">44<small>개</small></span><span class="d">281,910원 · 16개 ID에서 발생</span></div>
+</div>
+<div class="card">
+  <h2>옵션별 목록<small>생활용품 먼저, 그다음 뷰티</small></h2>
+  <div class="tblwrap"><table>
+    <thead><tr><th>옵션ID</th><th>구분</th><th class="num">아이템위너</th><th class="num">2026년 5월~2026년 9월 판매</th><th class="num">순매출</th><th>월별 판매 흐름</th></tr></thead>
+    <tbody><tr class="ghead"><td colspan="6"><span class="pn">PVC 방수 앞치마</span><span class="on">검정, 1개</span><span class="pill">생활용품</span><span class="pid">노출상품 9606327208</span></td></tr><tr class="keep"><td class="oid">95595137708</td><td><span class="tg k">대표 · 유지</span></td><td class="num">96.6%</td><td class="num">24개</td><td class="num">187,200원</td><td class="flow">6월 1 · 7월 4 · 8월 13 · 9월 6</td></tr><tr class="drop"><td class="oid">95818915508</td><td><span class="tg d">곁가지 · 정리 검토</span><span class="tg w">재고 있음</span></td><td class="num">0.0%</td><td class="num">2개</td><td class="num">10,040원</td><td class="flow">8월 1 · 9월 1</td></tr><tr class="ghead"><td colspan="6"><span class="pn">스텐 스퀴지 스크래퍼</span><span class="on">스텐 물기제거 스퀴지 스크래퍼 (35cm), 1개, 사이즈 35cm</span><span class="pill">생활용품</span><span class="pid">노출상품 9546137524</span></td></tr><tr class="keep"><td class="oid">95587873969</td><td><span class="tg k">대표 · 유지</span></td><td class="num">98.7%</td><td class="num">131개</td><td class="num">1,834,000원</td><td class="flow">6월 3 · 7월 12 · 8월 79 · 9월 37</td></tr><tr class="drop"><td class="oid">95962082159</td><td><span class="tg d">곁가지 · 정리 검토</span><span class="tg w">재고 있음</span></td><td class="num">0.0%</td><td class="num">1개</td><td class="num">9,870원</td><td class="flow">8월 0 · 9월 1</td></tr><tr class="ghead"><td colspan="6"><span class="pn">스텐 스퀴지 스크래퍼</span><span class="on">스텐 물기제거 스퀴지 스크래퍼 (31cm), 1개, 사이즈 31cm</span><span class="pill">생활용품</span><span class="pid">노출상품 9546137524</span></td></tr><tr class="keep"><td class="oid">95587873967</td><td><span class="tg k">대표 · 유지</span></td><td class="num">100.0%</td><td class="num">66개</td><td class="num">851,400원</td><td class="flow">6월 3 · 7월 31 · 8월 28 · 9월 4</td></tr><tr class="drop"><td class="oid">95812437638</td><td><span class="tg d">곁가지 · 정리 검토</span><span class="tg w">재고 있음</span></td><td class="num">0.0%</td><td class="num">1개</td><td class="num">10,370원</td><td class="flow">7월 1</td></tr><tr class="ghead"><td colspan="6"><span class="pn">슬라임 은화1호(파우더)</span><span class="on">1세트, 혼합색상</span><span class="pill">생활용품</span><span class="pid">노출상품 9707461682</span></td></tr><tr class="keep"><td class="oid">95969826300</td><td><span class="tg k">대표 · 유지</span></td><td class="num">78.1%</td><td class="num">4개</td><td class="num">39,980원</td><td class="flow">9월 4</td></tr><tr class="drop"><td class="oid">95973890876</td><td><span class="tg d">곁가지 · 정리 검토</span></td><td class="num">7.7%</td><td class="num">0개</td><td class="num">0원</td><td class="flow">9월 0</td></tr><tr class="ghead"><td colspan="6"><span class="pn">웨이브렉 비누·수세미 거치대</span><span class="on">1개, 실버</span><span class="pill">생활용품</span><span class="pid">노출상품 9544826437</span></td></tr><tr class="keep"><td class="oid">95740401782</td><td><span class="tg k">대표 · 유지</span></td><td class="num">100.0%</td><td class="num">86개</td><td class="num">421,400원</td><td class="flow">7월 10 · 8월 39 · 9월 37</td></tr><tr class="drop"><td class="oid">95875534279</td><td><span class="tg d">곁가지 · 정리 검토</span><span class="tg w">재고 있음</span></td><td class="num">0.0%</td><td class="num">2개</td><td class="num">7,920원</td><td class="flow">8월 2</td></tr><tr class="ghead"><td colspan="6"><span class="pn">닥터크랄레 페디에센스</span><span class="on">1개, 15ml</span><span class="pill b">뷰티</span><span class="pid">노출상품 8664310880</span></td></tr><tr class="keep"><td class="oid">92430373997</td><td><span class="tg k">대표 · 유지</span></td><td class="num">99.3%</td><td class="num">1,241개</td><td class="num">17,528,990원</td><td class="flow">5월 289 · 6월 199 · 7월 242 · 8월 314 · 9월 197</td></tr><tr class="drop"><td class="oid">93761048860</td><td><span class="tg d">곁가지 · 정리 검토</span><span class="tg w">재고 있음</span></td><td class="num">0.0%</td><td class="num">3개</td><td class="num">36,620원</td><td class="flow">6월 1 · 8월 1 · 9월 1</td></tr><tr class="ghead"><td colspan="6"><span class="pn">루핀 에픽 니퍼·푸셔 세트</span><span class="on">1개</span><span class="pill b">뷰티</span><span class="pid">노출상품 8853751891</span></td></tr><tr class="keep"><td class="oid">95781852687</td><td><span class="tg k">대표 · 유지</span></td><td class="num">86.7%</td><td class="num">1개</td><td class="num">16,150원</td><td class="flow">8월 1</td></tr><tr class="drop"><td class="oid">93865364618</td><td><span class="tg d">곁가지 · 정리 검토</span></td><td class="num">20.0%</td><td class="num">0개</td><td class="num">0원</td><td class="flow">5월 0 · 8월 0</td></tr><tr class="ghead"><td colspan="6"><span class="pn">루핀 인조손</span><span class="on">1개, 단품</span><span class="pill b">뷰티</span><span class="pid">노출상품 9340291819</span></td></tr><tr class="keep"><td class="oid">94661259664</td><td><span class="tg k">대표 · 유지</span></td><td class="num">99.9%</td><td class="num">895개</td><td class="num">7,160,000원</td><td class="flow">5월 182 · 6월 198 · 7월 156 · 8월 208 · 9월 151</td></tr><tr class="drop"><td class="oid">94796698927</td><td><span class="tg d">곁가지 · 정리 검토</span><span class="tg w">재고 있음</span></td><td class="num">0.0%</td><td class="num">13개</td><td class="num">87,690원</td><td class="flow">5월 7 · 6월 1 · 7월 3 · 8월 2</td></tr><tr class="drop"><td class="oid">95101241048</td><td><span class="tg d">곁가지 · 정리 검토</span><span class="tg w">재고 있음</span></td><td class="num">0.0%</td><td class="num">2개</td><td class="num">12,320원</td><td class="flow">5월 1 · 6월 1</td></tr><tr class="drop"><td class="oid">94876583621</td><td><span class="tg d">곁가지 · 정리 검토</span><span class="tg w">재고 있음</span></td><td class="num">0.0%</td><td class="num">1개</td><td class="num">6,550원</td><td class="flow">7월 1</td></tr><tr class="drop"><td class="oid">95613315571</td><td><span class="tg d">곁가지 · 정리 검토</span><span class="tg w">재고 있음</span></td><td class="num">0.0%</td><td class="num">1개</td><td class="num">7,470원</td><td class="flow">6월 1 · 8월 1 · 9월 -1</td></tr><tr class="ghead"><td colspan="6"><span class="pn">루핀브러쉬온젤10g</span><span class="on">1개</span><span class="pill b">뷰티</span><span class="pid">노출상품 8743446714</span></td></tr><tr class="keep"><td class="oid">92506819015</td><td><span class="tg k">대표 · 유지</span></td><td class="num">99.2%</td><td class="num">2,728개</td><td class="num">13,640,000원</td><td class="flow">5월 544 · 6월 700 · 7월 845 · 8월 470 · 9월 169</td></tr><tr class="drop"><td class="oid">93955027510</td><td><span class="tg d">곁가지 · 정리 검토</span><span class="tg w">재고 있음</span></td><td class="num">0.0%</td><td class="num">9개</td><td class="num">42,570원</td><td class="flow">5월 3 · 6월 2 · 7월 2 · 8월 1 · 9월 1</td></tr><tr class="drop"><td class="oid">93879237404</td><td><span class="tg d">곁가지 · 정리 검토</span><span class="tg w">재고 있음</span></td><td class="num">0.0%</td><td class="num">4개</td><td class="num">17,520원</td><td class="flow">5월 1 · 6월 1 · 7월 2 · 8월 0</td></tr><tr class="drop"><td class="oid">94813258401</td><td><span class="tg d">곁가지 · 정리 검토</span><span class="tg w">재고 있음</span></td><td class="num">0.0%</td><td class="num">1개</td><td class="num">3,800원</td><td class="flow">5월 1</td></tr><tr class="ghead"><td colspan="6"><span class="pn">윙커래쉬 Sunflower</span><span class="on">1개, 블랙</span><span class="pill b">뷰티</span><span class="pid">노출상품 9207173801</span></td></tr><tr class="keep"><td class="oid">94530668156</td><td><span class="tg k">대표 · 유지</span></td><td class="num">88.9%</td><td class="num">5개</td><td class="num">55,000원</td><td class="flow">5월 3 · 6월 0 · 7월 2 · 8월 0 · 9월 0</td></tr><tr class="drop"><td class="oid">95521838331</td><td><span class="tg d">곁가지 · 정리 검토</span><span class="tg w">재고 있음</span></td><td class="num">0.0%</td><td class="num">1개</td><td class="num">10,670원</td><td class="flow">7월 1 · 8월 0</td></tr><tr class="ghead"><td colspan="6"><span class="pn">찐딱 젤컬러 젤네일</span><span class="on">1개, 10ml, JJ053 (시럽화이트)</span><span class="pill b">뷰티</span><span class="pid">노출상품 9091897094</span></td></tr><tr class="keep"><td class="oid">93728363119</td><td><span class="tg k">대표 · 유지</span></td><td class="num">99.8%</td><td class="num">446개</td><td class="num">3,032,800원</td><td class="flow">5월 70 · 6월 114 · 7월 144 · 8월 72 · 9월 46</td></tr><tr class="drop"><td class="oid">94356414601</td><td><span class="tg d">곁가지 · 정리 검토</span><span class="tg w">재고 있음</span></td><td class="num">0.0%</td><td class="num">1개</td><td class="num">6,600원</td><td class="flow">8월 1 · 9월 0</td></tr><tr class="ghead"><td colspan="6"><span class="pn">찐딱 젤컬러 젤네일</span><span class="on">1개, 10ml, JJ013 (슈가화이트 시럽글리터)</span><span class="pill b">뷰티</span><span class="pid">노출상품 9091897094</span></td></tr><tr class="keep"><td class="oid">93728073492</td><td><span class="tg k">대표 · 유지</span></td><td class="num">100.0%</td><td class="num">16개</td><td class="num">108,800원</td><td class="flow">5월 4 · 6월 5 · 7월 3 · 8월 3 · 9월 1</td></tr><tr class="drop"><td class="oid">94356420168</td><td><span class="tg d">곁가지 · 정리 검토</span></td><td class="num">0.0%</td><td class="num">0개</td><td class="num">0원</td><td class="flow">7월 0</td></tr><tr class="ghead"><td colspan="6"><span class="pn">찐딱 젤컬러 젤네일</span><span class="on">1개, 10ml, JJ034 (베이지 핑크)</span><span class="pill b">뷰티</span><span class="pid">노출상품 9091897094</span></td></tr><tr class="keep"><td class="oid">93728242232</td><td><span class="tg k">대표 · 유지</span></td><td class="num">95.8%</td><td class="num">10개</td><td class="num">68,000원</td><td class="flow">5월 1 · 6월 3 · 7월 2 · 8월 2 · 9월 2</td></tr><tr class="drop"><td class="oid">94930199813</td><td><span class="tg d">곁가지 · 정리 검토</span></td><td class="num">0.0%</td><td class="num">0개</td><td class="num">0원</td><td class="flow">5월 0 · 9월 0</td></tr><tr class="ghead"><td colspan="6"><span class="pn">찐딱 젤컬러 젤네일</span><span class="on">1개, 10ml, JJ061 (슈가그레이 시럽글리터)</span><span class="pill b">뷰티</span><span class="pid">노출상품 9091897094</span></td></tr><tr class="keep"><td class="oid">93728867620</td><td><span class="tg k">대표 · 유지</span></td><td class="num">100.0%</td><td class="num">10개</td><td class="num">68,000원</td><td class="flow">5월 1 · 6월 1 · 7월 4 · 8월 2 · 9월 2</td></tr><tr class="drop"><td class="oid">94006634708</td><td><span class="tg d">곁가지 · 정리 검토</span></td><td class="num">0.0%</td><td class="num">0개</td><td class="num">0원</td><td class="flow">6월 0</td></tr><tr class="ghead"><td colspan="6"><span class="pn">찐딱 젤컬러 젤네일</span><span class="on">1개, 10ml, JJ115 (타로 퍼플)</span><span class="pill b">뷰티</span><span class="pid">노출상품 9091897094</span></td></tr><tr class="keep"><td class="oid">93728835695</td><td><span class="tg k">대표 · 유지</span></td><td class="num">90.0%</td><td class="num">8개</td><td class="num">54,400원</td><td class="flow">5월 3 · 6월 1 · 7월 1 · 8월 0 · 9월 3</td></tr><tr class="drop"><td class="oid">95263004391</td><td><span class="tg d">곁가지 · 정리 검토</span></td><td class="num">0.0%</td><td class="num">0개</td><td class="num">0원</td><td class="flow">6월 0</td></tr><tr class="ghead"><td colspan="6"><span class="pn">찐딱 젤컬러 젤네일</span><span class="on">1개, 10ml, JJ031 (솔티드캐러멜 베이지)</span><span class="pill b">뷰티</span><span class="pid">노출상품 9091897094</span></td></tr><tr class="keep"><td class="oid">93728242226</td><td><span class="tg k">대표 · 유지</span></td><td class="num">100.0%</td><td class="num">7개</td><td class="num">47,600원</td><td class="flow">5월 1 · 6월 3 · 7월 0 · 8월 0 · 9월 3</td></tr><tr class="drop"><td class="oid">93956473492</td><td><span class="tg d">곁가지 · 정리 검토</span><span class="tg w">재고 있음</span></td><td class="num">0.0%</td><td class="num">1개</td><td class="num">5,780원</td><td class="flow">5월 1</td></tr><tr class="drop"><td class="oid">93906198272</td><td><span class="tg d">곁가지 · 정리 검토</span></td><td class="num">0.0%</td><td class="num">0개</td><td class="num">0원</td><td class="flow">8월 0</td></tr><tr class="ghead"><td colspan="6"><span class="pn">찐딱 젤컬러 젤네일</span><span class="on">1개, 10ml, JJ029 (허니 옐로 베이지)</span><span class="pill b">뷰티</span><span class="pid">노출상품 9091897094</span></td></tr><tr class="keep"><td class="oid">93728167182</td><td><span class="tg k">대표 · 유지</span></td><td class="num">0.0%</td><td class="num">4개</td><td class="num">27,200원</td><td class="flow">5월 2 · 6월 0 · 7월 1 · 8월 1 · 9월 0</td></tr><tr class="drop"><td class="oid">93828533914</td><td><span class="tg d">곁가지 · 정리 검토</span><span class="tg w">재고 있음</span></td><td class="num">0.0%</td><td class="num">1개</td><td class="num">6,120원</td><td class="flow">5월 1 · 7월 0 · 8월 0</td></tr><tr class="ghead"><td colspan="6"><span class="pn">찐딱 젤컬러 젤네일</span><span class="on">1개, 10ml, JJ047 (클래식로즈 핑크)</span><span class="pill b">뷰티</span><span class="pid">노출상품 9091897094</span></td></tr><tr class="keep"><td class="oid">93728301858</td><td><span class="tg k">대표 · 유지</span></td><td class="num">100.0%</td><td class="num">3개</td><td class="num">20,400원</td><td class="flow">5월 1 · 6월 1 · 7월 0 · 8월 1 · 9월 0</td></tr><tr class="drop"><td class="oid">93814688457</td><td><span class="tg d">곁가지 · 정리 검토</span></td><td class="num">0.0%</td><td class="num">0개</td><td class="num">0원</td><td class="flow">7월 0</td></tr></tbody>
+  </table></div>
+  <p class="caption">아이템위너 비율은 각 옵션ID가 마지막으로 등장한 달의 값입니다. "재고 있음"은 그 곁가지 ID로도 실제 출고가 있었다는 뜻이라, 쿠팡 물류센터에 재고가 나뉘어 들어가 있을 수 있습니다. 재고 수량 자체는 판매통계에 없으니 WING에서 확인하세요.</p>
+</div>
+<div class="card copy">
+  <h2>곁가지 옵션ID 목록<small>WING 검색에 붙여넣기</small></h2>
+  <div class="bar"><button type="button" id="cp">24개 전부 복사</button><span class="ok" id="ok"></span></div>
+  <pre id="ids">95818915508
+95962082159
+95812437638
+95973890876
+95875534279
+93761048860
+93865364618
+94796698927
+95101241048
+94876583621
+95613315571
+93955027510
+93879237404
+94813258401
+95521838331
+94356414601
+94356420168
+94930199813
+94006634708
+95263004391
+93956473492
+93906198272
+93828533914
+93814688457</pre>
+</div>
+<footer>출처: 로켓그로스 월별 판매현황 파일 (2026년 5월 · 2026년 6월 · 2026년 7월 · 2026년 8월 · 2026년 9월) · 같은 노출상품ID + 같은 옵션명에 옵션ID가 둘 이상인 경우만 모았습니다<br>판매 수량이 가장 많은 옵션ID를 대표로 두고 나머지를 곁가지로 표시합니다</footer>
+</div>
+<script>
+document.getElementById("cp").addEventListener("click", async () => {
+  const text = document.getElementById("ids").textContent.trim();
+  try {
+    await navigator.clipboard.writeText(text);
+    document.getElementById("ok").textContent = "복사했습니다";
+  } catch (e) {
+    const r = document.createRange();
+    r.selectNodeContents(document.getElementById("ids"));
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+    document.getElementById("ok").textContent = "직접 복사하세요 (Ctrl+C)";
+  }
+  setTimeout(() => { document.getElementById("ok").textContent = ""; }, 3000);
+});
+</script>
