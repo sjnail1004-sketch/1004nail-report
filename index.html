@@ -15,6 +15,8 @@ body{margin:0;background:var(--ground);color:var(--ink);font-family:-apple-syste
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sitenav{background:rgba(29,29,31,.72);border-bottom-color:rgba(255,255,255,.1)}}
 :root[data-theme="dark"] .sitenav{background:rgba(29,29,31,.72);border-bottom-color:rgba(255,255,255,.1)}
 .sitenav .in{max-width:1000px;margin:0 auto;display:flex;align-items:center;gap:22px;height:46px;font-size:13px;overflow-x:auto;white-space:nowrap}
+.sitenav .in{scrollbar-width:none}
+.sitenav .in::-webkit-scrollbar{display:none}
 .sitenav a{color:inherit;text-decoration:none;opacity:.75}
 .sitenav a:hover,.sitenav a.on{opacity:1}
 .sitenav a.on{font-weight:600}
