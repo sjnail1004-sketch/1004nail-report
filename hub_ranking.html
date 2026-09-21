@@ -1,0 +1,218 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>로켓HUB 판매 순위</title>
+<meta name="description" content="로켓HUB 입고 금액·수량 기준 SKU 순위">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap">
+<style>
+:root{color-scheme:light;--ground:#f5f5f7;--surface:#fff;--surface-2:#f5f5f7;--ink:#1d1d1f;--ink-2:#6e6e73;--ink-3:#86868b;--hair:#d2d2d7;--hair-2:#e8e8ed;--acc:#f56300;--acc-soft:#fbdcc4;--blue:#0071e3;--up:#1a7f37;--down:#d70015;--shadow:0 2px 12px rgba(0,0,0,.06),0 0 0 .5px rgba(0,0,0,.04)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--ground:#000;--surface:#1d1d1f;--surface-2:#2c2c2e;--ink:#f5f5f7;--ink-2:#a1a1a6;--ink-3:#86868b;--hair:#424245;--hair-2:#333336;--acc:#f0620f;--acc-soft:#4a2a15;--blue:#2997ff;--up:#30d158;--down:#ff453a;--shadow:0 0 0 .5px rgba(255,255,255,.06)}}
+:root[data-theme="dark"]{color-scheme:dark;--ground:#000;--surface:#1d1d1f;--surface-2:#2c2c2e;--ink:#f5f5f7;--ink-2:#a1a1a6;--ink-3:#86868b;--hair:#424245;--hair-2:#333336;--acc:#f0620f;--acc-soft:#4a2a15;--blue:#2997ff;--up:#30d158;--down:#ff453a;--shadow:0 0 0 .5px rgba(255,255,255,.06)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;font-size:15px;line-height:1.45;padding-inline:clamp(16px,5vw,48px);padding-block:0 72px;font-variant-numeric:tabular-nums;word-break:keep-all;overflow-wrap:break-word;-webkit-font-smoothing:antialiased;letter-spacing:-.01em}
+.wrap{max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:26px;padding-top:56px}
+header{display:flex;flex-direction:column;gap:10px}
+header .eyebrow,header h1{text-align:center}
+.eyebrow{margin:0;font-size:13px;font-weight:600;color:var(--acc)}
+h1{margin:0;font-size:clamp(30px,5vw,44px);font-weight:700;letter-spacing:-.03em;line-height:1.08}
+.sub{margin:0;color:var(--ink-2);font-size:16px;line-height:1.5}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media (max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)}}
+.tile{background:var(--surface);border-radius:16px;box-shadow:var(--shadow);padding:16px 18px;display:flex;flex-direction:column;gap:3px;min-width:0}
+.tile .l{font-size:12px;color:var(--ink-2);font-weight:500}
+.tile .v{font-size:clamp(20px,3.2vw,26px);font-weight:700;letter-spacing:-.03em;line-height:1.1}
+.tile .v small{font-size:12.5px;font-weight:500;color:var(--ink-3);margin-left:2px}
+.tile .d{font-size:11.5px;color:var(--ink-3);line-height:1.45}
+.card{background:var(--surface);border-radius:18px;box-shadow:var(--shadow);padding:20px 22px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.card.flush{padding:8px 0 12px}
+.card h2{margin:0;font-size:19px;font-weight:600;letter-spacing:-.02em;display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.card h2 small{font-size:12.5px;font-weight:400;color:var(--ink-3)}
+.sec-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.sec-h h2{margin:0;font-size:22px;font-weight:700;letter-spacing:-.025em}
+.note{font-size:13px;color:var(--ink-2);line-height:1.5}
+.bar-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pills button{appearance:none;border:0;font:inherit;font-size:13.5px;font-weight:500;padding:7px 14px;border-radius:999px;background:var(--surface);color:var(--ink-2);box-shadow:var(--shadow);cursor:pointer}
+.pills button[aria-pressed="true"]{background:var(--ink);color:var(--surface)}
+.seg{display:inline-flex;background:var(--surface-2);border-radius:999px;padding:3px}
+.seg button{appearance:none;border:0;background:transparent;color:var(--ink-2);font:inherit;font-size:13.5px;font-weight:500;padding:6px 15px;border-radius:999px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+button:focus-visible,a:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.vbars{display:flex;align-items:stretch;gap:8px;height:210px}
+.vbars .b{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0}
+.vbars .col{flex:1;width:100%;display:flex;align-items:flex-end;justify-content:center}
+.vbars .col i{display:block;width:100%;max-width:52px;background:var(--acc);border-radius:6px 6px 2px 2px;min-height:2px}
+.vbars .b.part .col i{background:repeating-linear-gradient(135deg,var(--acc) 0 6px,var(--acc-soft) 6px 9px)}
+.vbars .v{font-size:11px;color:var(--ink-2);font-weight:600;white-space:nowrap}
+.vbars .x{font-size:12px;color:var(--ink-3);font-weight:500}
+.dbars{display:flex;align-items:stretch;gap:2px;height:160px}
+.dbars .c{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0}
+.dbars .c .col{flex:1;width:100%;display:flex;align-items:flex-end}
+.dbars .c i{display:block;width:100%;background:var(--acc);border-radius:3px 3px 1px 1px;min-height:2px}
+.dbars .c i.z{background:var(--hair-2)}
+.dbars .c span{font-size:9.5px;color:var(--ink-3)}
+.dbars .c.we span{color:var(--down)}
+.tblwrap{overflow-x:auto}
+.tblwrap-top{overflow-x:auto;overflow-y:hidden;height:14px}
+.tblwrap-top>div{height:1px}
+.tblwrap-top::-webkit-scrollbar,.tblwrap::-webkit-scrollbar{height:10px}
+.tblwrap-top::-webkit-scrollbar-track,.tblwrap::-webkit-scrollbar-track{background:transparent}
+.tblwrap-top::-webkit-scrollbar-thumb,.tblwrap::-webkit-scrollbar-thumb{background:rgba(128,128,128,.42);border-radius:999px;border:2px solid transparent;background-clip:padding-box}
+table.t{width:100%;border-collapse:collapse;font-size:13.5px}
+table.t th,table.t td{padding:9px 10px;text-align:right;border-bottom:.5px solid var(--hair-2);white-space:nowrap;vertical-align:middle}
+table.t thead th{font-size:11.5px;font-weight:600;color:var(--ink-2);border-bottom:.5px solid var(--hair)}
+table.t thead tr.grp th{text-align:center;color:var(--ink);font-size:12.5px;border-bottom:0;padding-bottom:3px}
+table.t thead tr.grp th.g{box-shadow:inset 0 -2px 0 var(--acc)}
+table.t th:first-child,table.t td:first-child{text-align:left;padding-left:22px}
+table.t th:last-child,table.t td:last-child{padding-right:22px}
+table.t td.nm{white-space:normal;min-width:220px;max-width:360px;font-weight:600;line-height:1.35}
+table.t td.nm small{display:block;font-weight:400;font-size:11px;color:var(--ink-3)}
+table.t td.z{color:var(--ink-3)}
+table.t td.neg{color:var(--down)}
+table.t td.tot{font-weight:700}
+table.t tr.sum td{font-weight:700;border-top:.5px solid var(--hair);background:var(--surface-2)}
+table.t.stick th:first-child,table.t.stick td:first-child{position:sticky;left:0;z-index:2;background:var(--surface);box-shadow:1px 0 0 var(--hair-2),7px 0 9px -7px rgba(0,0,0,.16)}
+table.t.stick tr.sum td:first-child{background:var(--surface-2)}
+.sn{display:inline-block;min-width:20px;margin-right:8px;text-align:right;font-size:12px;font-weight:600;color:var(--ink-3)}
+.share{position:relative;min-width:130px}
+.share i{position:absolute;left:10px;top:50%;height:12px;margin-top:-6px;background:var(--acc-soft);border-radius:999px}
+.share span{position:relative;font-size:12px;color:var(--ink-2)}
+.xbtn{appearance:none;border:0;background:var(--surface-2);color:var(--ink);font:inherit;font-size:12.5px;font-weight:600;padding:3px 10px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.xbtn::after{content:" \25BE";font-size:9px;color:var(--ink-3)}
+.xbtn[aria-expanded="true"]{background:var(--acc);color:#fff}
+.xbtn[aria-expanded="true"]::after{content:" \25B4";color:#fff}
+tr.det td{background:var(--surface-2);padding:10px 22px}
+tr.det[hidden]{display:none}
+table.mini{width:100%;border-collapse:collapse;font-size:12.5px}
+table.mini th,table.mini td{padding:4px 10px 4px 0;border-bottom:.5px solid var(--hair-2);text-align:right;white-space:nowrap}
+table.mini th{font-size:11px;color:var(--ink-3);font-weight:600}
+table.mini td:first-child,table.mini th:first-child{text-align:left;white-space:normal;min-width:180px}
+table.mini tr:last-child td{border-bottom:0}
+ol.rank{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+ol.rank li{display:grid;grid-template-columns:26px 1fr auto;gap:10px;align-items:center;padding:9px 0;border-bottom:.5px solid var(--hair-2)}
+ol.rank li:last-child{border-bottom:0}
+.rk{font-size:14px;font-weight:700;color:var(--ink-3);text-align:center}
+li.first .rk{color:var(--acc)}
+.mid{min-width:0;display:flex;flex-direction:column;gap:4px}
+.rn{font-size:13.5px;font-weight:600;line-height:1.35;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.track{height:6px;border-radius:999px;background:var(--surface-2);overflow:hidden}
+.fill{height:100%;border-radius:999px;background:var(--acc-soft)}
+li.first .fill{background:var(--acc)}
+.amt{text-align:right;white-space:nowrap}
+.amt .q{font-size:16px;font-weight:700;letter-spacing:-.02em}
+.amt .q small{font-size:11px;font-weight:500;color:var(--ink-3);margin-left:1px}
+.amt .w{display:block;font-size:11.5px;color:var(--ink-3)}
+.chg{font-size:11px;font-weight:600;padding:1px 7px;border-radius:999px;background:var(--surface-2);color:var(--ink-3);white-space:nowrap}
+.chg.up{color:var(--up)}.chg.down{color:var(--down)}.chg.new{color:var(--acc)}
+.months{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media (max-width:820px){.months{grid-template-columns:1fr}}
+.foot{font-size:12px;color:var(--ink-2);border-top:.5px solid var(--hair-2);padding-top:10px}
+.today{background:var(--surface);border-radius:20px;box-shadow:var(--shadow);padding:22px 26px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px 24px;align-items:end}
+.today .h{grid-column:1/-1;display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.today .h b{font-size:17px;font-weight:600;letter-spacing:-.02em}
+.today .h a{font-size:13px;color:var(--acc);text-decoration:none;font-weight:500}
+.today .l{display:block;font-size:12.5px;color:var(--ink-2);font-weight:500}
+.today .v{display:block;font-size:clamp(24px,4.5vw,32px);font-weight:700;letter-spacing:-.035em;line-height:1.05;margin:2px 0}
+.today .v small{font-size:14px;font-weight:500;color:var(--ink-3);margin-left:2px}
+.today .d{display:block;font-size:12.5px;color:var(--ink-3)}
+.today .mtd{grid-column:1/-1;font-size:13px;color:var(--ink-2);border-top:.5px solid var(--hair-2);padding-top:12px}
+@media (max-width:700px){.today{grid-template-columns:1fr}}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media (max-width:700px){.grid{grid-template-columns:1fr}}
+a.lcard{background:var(--surface);border-radius:18px;box-shadow:var(--shadow);padding:22px 22px 18px;display:flex;flex-direction:column;gap:8px;text-decoration:none;color:inherit;transition:transform .15s}
+a.lcard:hover{transform:translateY(-2px)}
+a.lcard .k{font-size:18px;font-weight:600;letter-spacing:-.02em}
+a.lcard .t{font-size:13.5px;color:var(--ink-2);line-height:1.45;flex:1}
+a.lcard .go{font-size:13px;color:var(--acc);font-weight:500;margin-top:6px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--surface);border-radius:12px;box-shadow:var(--shadow);padding:10px 14px;display:flex;flex-direction:column;gap:2px;min-width:118px}
+.chip b{font-size:14px;letter-spacing:-.01em}
+.chip span{font-size:11.5px;color:var(--ink-3)}
+.chip em{font-style:normal;font-size:13px;font-weight:600;color:var(--ink-2)}
+.callout{background:var(--surface);border-radius:14px;box-shadow:var(--shadow);padding:13px 16px;font-size:13px;color:var(--ink-2);line-height:1.55;border-left:3px solid var(--acc)}
+.callout b{color:var(--ink)}
+footer{font-size:12px;color:var(--ink-3);line-height:1.6}
+@media (prefers-reduced-motion:reduce){a.lcard{transition:none}}
+</style>
+<style id="sitenav-css">
+.sitenav{position:sticky;top:0;z-index:20;backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);background:rgba(251,251,253,.8);border-bottom:.5px solid rgba(0,0,0,.08);margin:0 calc(-1 * clamp(16px,5vw,48px));padding:0 clamp(16px,5vw,48px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sitenav{background:rgba(29,29,31,.72);border-bottom-color:rgba(255,255,255,.1)}}
+:root[data-theme="dark"] .sitenav{background:rgba(29,29,31,.72);border-bottom-color:rgba(255,255,255,.1)}
+.sitenav .in{max-width:1000px;margin:0 auto;display:flex;align-items:center;gap:22px;height:46px;font-size:13px;overflow-x:auto;white-space:nowrap}
+.sitenav a{color:inherit;text-decoration:none;opacity:.75}
+.sitenav a:hover,.sitenav a.on{opacity:1}
+.sitenav a.on{font-weight:600}
+.sitenav .brand{font-weight:600;opacity:1;letter-spacing:-.01em;flex:none}
+.sitenav .chan{display:inline-flex;gap:2px;background:rgba(0,0,0,.05);border-radius:999px;padding:3px;margin-right:auto;flex:none}
+.sitenav .chan a{opacity:.72;padding:4px 12px;border-radius:999px;font-weight:500}
+.sitenav .chan a:hover{opacity:1}
+.sitenav .chan a.on{opacity:1;font-weight:600;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sitenav .chan{background:rgba(255,255,255,.08)}:root:not([data-theme="light"]) .sitenav .chan a.on{background:rgba(255,255,255,.18);box-shadow:none}}
+:root[data-theme="dark"] .sitenav .chan{background:rgba(255,255,255,.08)}
+:root[data-theme="dark"] .sitenav .chan a.on{background:rgba(255,255,255,.18);box-shadow:none}
+</style>
+
+<nav class="sitenav"><div class="in"><a class="brand" href="index.html">1004nail</a><span class="chan"><a href="index.html">로켓그로스</a><a href="hub.html" class=on>로켓HUB</a></span><a href="hub_daily.html">일별</a><a href="hub_monthly.html">월별</a><a href="hub_totals.html">누적 합계</a><a href="hub_ranking.html" class=on>판매 순위</a><a href="hub_centers.html">물류창고별</a></div></nav>
+<div class="wrap">
+<header>
+  <p class="eyebrow">쿠팡 로켓HUB · 로켓배송 입고</p>
+  <h1>로켓HUB 판매 순위</h1>
+  <p class="sub">쿠팡에 가장 많이 공급한 SKU 순위입니다.<br>누적 상위 10개와 달마다 상위 5개를 금액·수량 기준으로 볼 수 있습니다.</p>
+</header>
+<div class="bar-top"><span class="note" id="note"></span>
+  <div class="seg" role="group" aria-label="기준"><button data-k="a" aria-pressed="true">입고 금액</button><button data-k="q" aria-pressed="false">입고 수량</button></div></div>
+<div class="card" id="cum"></div>
+<div class="sec-h"><h2>월별 상위 5</h2><span class="note">▲▼는 전월 대비 순위 변동</span></div>
+<div class="months" id="months"></div>
+<footer>출처: 쿠팡 로켓HUB 입고 내역(Coupang_Stocked_Data_List) · 2026년 1월 ~ 2026년 9월 21일 · 금액은 부가세 포함 총액(공급가액 + 세액) · 반출은 수량·금액에서 뺍니다 · 날짜는 입고 시각 기준</footer>
+</div>
+
+<script>
+document.addEventListener("click", function (e) {
+  var b = e.target.closest(".xbtn[aria-controls]");
+  if (!b) return;
+  var t = document.getElementById(b.getAttribute("aria-controls"));
+  var on = b.getAttribute("aria-expanded") === "true";
+  b.setAttribute("aria-expanded", on ? "false" : "true");
+  if (t) t.hidden = on;
+});
+function topScroll() {
+  document.querySelectorAll(".tblwrap").forEach(function (w) {
+    if (w.previousElementSibling && w.previousElementSibling.classList.contains("tblwrap-top")) return;
+    var tbl = w.querySelector("table"); if (!tbl) return;
+    var top = document.createElement("div"); top.className = "tblwrap-top";
+    var inner = document.createElement("div"); top.appendChild(inner);
+    w.parentNode.insertBefore(top, w);
+    function sync() { inner.style.width = tbl.scrollWidth + "px"; top.style.display = tbl.scrollWidth > w.clientWidth + 1 ? "" : "none"; }
+    sync(); if (window.ResizeObserver) new ResizeObserver(sync).observe(w);
+    var lock = false;
+    top.addEventListener("scroll", function () { if (lock) return; lock = true; w.scrollLeft = top.scrollLeft; lock = false; });
+    w.addEventListener("scroll", function () { if (lock) return; lock = true; top.scrollLeft = w.scrollLeft; lock = false; });
+  });
+}
+topScroll();
+</script>
+<script>
+const R = {"a": {"cum": [{"rank": 1, "name": "루핀 찐딱베이스젤 10ml", "sku": "15292283", "a": 38398500, "q": 10971, "share": 20.3}, {"rank": 2, "name": "천사네일 니퍼 단일 색상", "sku": "1956741", "a": 28291900, "q": 6218, "share": 15.0}, {"rank": 3, "name": "루핀 네일 젤크리너 500ml (미경화젤 제거 / 유수분 제거)", "sku": "16958136", "a": 23564640, "q": 4463, "share": 12.5}, {"rank": 4, "name": "루핀 찐광 탑젤 10ml (퍼펙트탑젤 / 젤탑)", "sku": "12799917", "a": 18219600, "q": 5061, "share": 9.6}, {"rank": 5, "name": "샤이니 프로라인 롱(Long) 타입 큐티클 제거 JAW12 니퍼, 1개", "sku": "12078302", "a": 12236000, "q": 874, "share": 6.5}, {"rank": 6, "name": "샤이니 프로라인 숏(Short) 타입 큐티클 제거 JAW12 니퍼, 1개", "sku": "12078284", "a": 11270000, "q": 805, "share": 6.0}, {"rank": 7, "name": "루핀 미라클 전문가용 니퍼 5.5mm 네일아트 큐티클 제거 정리 셀프네일 케어 1/2JAW", "sku": "16072080", "a": 10773000, "q": 1197, "share": 5.7}, {"rank": 8, "name": "루핀 네일 젤리무버 1000ml (쏙오프 제거 / 젤네일 제거 / 젤네일 필수템)", "sku": "16958137", "a": 9873600, "q": 1496, "share": 5.2}, {"rank": 9, "name": "천사네일 전문가용 네일아트 T701 블루니퍼 / 네일케어 / 큐티클제거 / 손톱케어", "sku": "1956742", "a": 9508200, "q": 1219, "share": 5.0}, {"rank": 10, "name": "[장패드-블랙] 루핀 먼지먹는 실리콘 논슬립 패드 작업판(55x32cm)", "sku": "17277867", "a": 4620000, "q": 600, "share": 2.4}], "total": 189119075, "top10": 166755440, "months": [{"label": "2026년 1월", "partial": false, "upto": 31, "rows": [{"rank": 1, "name": "루핀 네일 젤크리너 500ml (미경화젤 제거 / 유수분 제거)", "sku": "16958136", "a": 5280000, "q": 1000, "share": 18.7, "delta": null, "new": false}, {"rank": 2, "name": "천사네일 니퍼 단일 색상", "sku": "1956741", "a": 5187000, "q": 1140, "share": 18.3, "delta": null, "new": false}, {"rank": 3, "name": "루핀 찐딱베이스젤 10ml", "sku": "15292283", "a": 3472000, "q": 992, "share": 12.3, "delta": null, "new": false}, {"rank": 4, "name": "루핀 찐광 탑젤 10ml (퍼펙트탑젤 / 젤탑)", "sku": "12799917", "a": 3333600, "q": 926, "share": 11.8, "delta": null, "new": false}, {"rank": 5, "name": "루핀 미라클 전문가용 니퍼 5.5mm 네일아트 큐티클 제거 정리 셀프네일 케어 1/2JAW", "sku": "16072080", "a": 1935000, "q": 215, "share": 6.8, "delta": null, "new": false}], "n": 29, "total": 28300585, "top5": 19207600}, {"label": "2026년 2월", "partial": false, "upto": 28, "rows": [{"rank": 1, "name": "루핀 찐딱베이스젤 10ml", "sku": "15292283", "a": 4067000, "q": 1162, "share": 27.1, "delta": 2, "new": false}, {"rank": 2, "name": "루핀 미라클 전문가용 니퍼 5.5mm 네일아트 큐티클 제거 정리 셀프네일 케어 1/2JAW", "sku": "16072080", "a": 2520000, "q": 280, "share": 16.8, "delta": 3, "new": false}, {"rank": 3, "name": "루핀 찐광 탑젤 10ml (퍼펙트탑젤 / 젤탑)", "sku": "12799917", "a": 1695600, "q": 471, "share": 11.3, "delta": 1, "new": false}, {"rank": 4, "name": "샤이니 프로라인 숏(Short) 타입 큐티클 제거 JAW12 니퍼, 1개", "sku": "12078284", "a": 1610000, "q": 115, "share": 10.7, "delta": 6, "new": false}, {"rank": 5, "name": "루핀 네일 젤크리너 500ml (미경화젤 제거 / 유수분 제거)", "sku": "16958136", "a": 1320000, "q": 250, "share": 8.8, "delta": -4, "new": false}], "n": 28, "total": 14986405, "top5": 11212600}, {"label": "2026년 3월", "partial": false, "upto": 31, "rows": [{"rank": 1, "name": "루핀 네일 젤크리너 500ml (미경화젤 제거 / 유수분 제거)", "sku": "16958136", "a": 4878720, "q": 924, "share": 17.2, "delta": 4, "new": false}, {"rank": 2, "name": "루핀 찐광 탑젤 10ml (퍼펙트탑젤 / 젤탑)", "sku": "12799917", "a": 4543200, "q": 1262, "share": 16.0, "delta": 1, "new": false}, {"rank": 3, "name": "루핀 찐딱베이스젤 10ml", "sku": "15292283", "a": 4004000, "q": 1144, "share": 14.1, "delta": -2, "new": false}, {"rank": 4, "name": "천사네일 니퍼 단일 색상", "sku": "1956741", "a": 3180450, "q": 699, "share": 11.2, "delta": 3, "new": false}, {"rank": 5, "name": "루핀 미라클 전문가용 니퍼 5.5mm 네일아트 큐티클 제거 정리 셀프네일 케어 1/2JAW", "sku": "16072080", "a": 2160000, "q": 240, "share": 7.6, "delta": -3, "new": false}], "n": 36, "total": 28358480, "top5": 18766370}, {"label": "2026년 4월", "partial": false, "upto": 30, "rows": [{"rank": 1, "name": "천사네일 니퍼 단일 색상", "sku": "1956741", "a": 4641000, "q": 1020, "share": 27.0, "delta": 3, "new": false}, {"rank": 2, "name": "루핀 찐딱베이스젤 10ml", "sku": "15292283", "a": 3122000, "q": 892, "share": 18.2, "delta": 1, "new": false}, {"rank": 3, "name": "루핀 네일 젤리무버 1000ml (쏙오프 제거 / 젤네일 제거 / 젤네일 필수템)", "sku": "16958137", "a": 1623600, "q": 246, "share": 9.5, "delta": 6, "new": false}, {"rank": 4, "name": "샤이니 프로라인 롱(Long) 타입 큐티클 제거 JAW12 니퍼, 1개", "sku": "12078302", "a": 1400000, "q": 100, "share": 8.1, "delta": 2, "new": false}, {"rank": 5, "name": "루핀 미라클 전문가용 니퍼 5.5mm 네일아트 큐티클 제거 정리 셀프네일 케어 1/2JAW", "sku": "16072080", "a": 1368000, "q": 152, "share": 8.0, "delta": 0, "new": false}], "n": 31, "total": 17180575, "top5": 12154600}, {"label": "2026년 5월", "partial": false, "upto": 31, "rows": [{"rank": 1, "name": "루핀 찐딱베이스젤 10ml", "sku": "15292283", "a": 5470500, "q": 1563, "share": 22.4, "delta": 1, "new": false}, {"rank": 2, "name": "루핀 네일 젤크리너 500ml (미경화젤 제거 / 유수분 제거)", "sku": "16958136", "a": 3590400, "q": 680, "share": 14.7, "delta": 18, "new": false}, {"rank": 3, "name": "루핀 미라클 전문가용 니퍼 5.5mm 네일아트 큐티클 제거 정리 셀프네일 케어 1/2JAW", "sku": "16072080", "a": 2790000, "q": 310, "share": 11.4, "delta": 2, "new": false}, {"rank": 4, "name": "루핀 찐광 탑젤 10ml (퍼펙트탑젤 / 젤탑)", "sku": "12799917", "a": 2008800, "q": 558, "share": 8.2, "delta": null, "new": true}, {"rank": 5, "name": "루핀 네일 젤리무버 1000ml (쏙오프 제거 / 젤네일 제거 / 젤네일 필수템)", "sku": "16958137", "a": 1650000, "q": 250, "share": 6.7, "delta": -2, "new": false}], "n": 38, "total": 24450630, "top5": 15509700}, {"label": "2026년 6월", "partial": false, "upto": 30, "rows": [{"rank": 1, "name": "루핀 찐딱베이스젤 10ml", "sku": "15292283", "a": 7476000, "q": 2136, "share": 30.2, "delta": 0, "new": false}, {"rank": 2, "name": "천사네일 니퍼 단일 색상", "sku": "1956741", "a": 4727450, "q": 1039, "share": 19.1, "delta": 6, "new": false}, {"rank": 3, "name": "루핀 찐광 탑젤 10ml (퍼펙트탑젤 / 젤탑)", "sku": "12799917", "a": 3495600, "q": 971, "share": 14.1, "delta": 1, "new": false}, {"rank": 4, "name": "루핀 네일 젤크리너 500ml (미경화젤 제거 / 유수분 제거)", "sku": "16958136", "a": 1689600, "q": 320, "share": 6.8, "delta": -2, "new": false}, {"rank": 5, "name": "루핀 네일 젤리무버 1000ml (쏙오프 제거 / 젤네일 제거 / 젤네일 필수템)", "sku": "16958137", "a": 1650000, "q": 250, "share": 6.7, "delta": 0, "new": false}], "n": 35, "total": 24767820, "top5": 19038650}, {"label": "2026년 7월", "partial": false, "upto": 31, "rows": [{"rank": 1, "name": "천사네일 니퍼 단일 색상", "sku": "1956741", "a": 2548000, "q": 560, "share": 22.5, "delta": 1, "new": false}, {"rank": 2, "name": "루핀 네일 젤크리너 500ml (미경화젤 제거 / 유수분 제거)", "sku": "16958136", "a": 1789920, "q": 339, "share": 15.8, "delta": 2, "new": false}, {"rank": 3, "name": "샤이니 프로라인 롱(Long) 타입 큐티클 제거 JAW12 니퍼, 1개", "sku": "12078302", "a": 1400000, "q": 100, "share": 12.4, "delta": 6, "new": false}, {"rank": 4, "name": "샤이니 프로라인 숏(Short) 타입 큐티클 제거 JAW12 니퍼, 1개", "sku": "12078284", "a": 1260000, "q": 90, "share": 11.1, "delta": 2, "new": false}, {"rank": 5, "name": "루핀 찐딱베이스젤 10ml", "sku": "15292283", "a": 924000, "q": 264, "share": 8.2, "delta": -4, "new": false}], "n": 30, "total": 11320560, "top5": 7921920}, {"label": "2026년 8월", "partial": false, "upto": 31, "rows": [{"rank": 1, "name": "루핀 찐딱베이스젤 10ml", "sku": "15292283", "a": 6923000, "q": 1978, "share": 28.5, "delta": 4, "new": false}, {"rank": 2, "name": "천사네일 니퍼 단일 색상", "sku": "1956741", "a": 3549000, "q": 780, "share": 14.6, "delta": -1, "new": false}, {"rank": 3, "name": "루핀 네일 젤크리너 500ml (미경화젤 제거 / 유수분 제거)", "sku": "16958136", "a": 3115200, "q": 590, "share": 12.8, "delta": -1, "new": false}, {"rank": 4, "name": "루핀 찐광 탑젤 10ml (퍼펙트탑젤 / 젤탑)", "sku": "12799917", "a": 2667600, "q": 741, "share": 11.0, "delta": 2, "new": false}, {"rank": 5, "name": "샤이니 프로라인 롱(Long) 타입 큐티클 제거 JAW12 니퍼, 1개", "sku": "12078302", "a": 1960000, "q": 140, "share": 8.1, "delta": -2, "new": false}], "n": 36, "total": 24298250, "top5": 18214800}, {"label": "2026년 9월", "partial": true, "upto": 21, "rows": [{"rank": 1, "name": "루핀 찐딱베이스젤 10ml", "sku": "15292283", "a": 2940000, "q": 840, "share": 19.0, "delta": 0, "new": false}, {"rank": 2, "name": "천사네일 니퍼 단일 색상", "sku": "1956741", "a": 2548000, "q": 560, "share": 16.5, "delta": 0, "new": false}, {"rank": 3, "name": "샤이니 프로라인 숏(Short) 타입 큐티클 제거 JAW12 니퍼, 1개", "sku": "12078284", "a": 2380000, "q": 170, "share": 15.4, "delta": null, "new": true}, {"rank": 4, "name": "루핀 네일 젤크리너 500ml (미경화젤 제거 / 유수분 제거)", "sku": "16958136", "a": 1848000, "q": 350, "share": 12.0, "delta": -1, "new": false}, {"rank": 5, "name": "루핀 네일 젤리무버 1000ml (쏙오프 제거 / 젤네일 제거 / 젤네일 필수템)", "sku": "16958137", "a": 1122000, "q": 170, "share": 7.3, "delta": 2, "new": false}], "n": 33, "total": 15455770, "top5": 10838000}]}, "q": {"cum": [{"rank": 1, "name": "루핀 찐딱베이스젤 10ml", "sku": "15292283", "a": 38398500, "q": 10971, "share": 28.7}, {"rank": 2, "name": "천사네일 니퍼 단일 색상", "sku": "1956741", "a": 28291900, "q": 6218, "share": 16.2}, {"rank": 3, "name": "루핀 찐광 탑젤 10ml (퍼펙트탑젤 / 젤탑)", "sku": "12799917", "a": 18219600, "q": 5061, "share": 13.2}, {"rank": 4, "name": "루핀 네일 젤크리너 500ml (미경화젤 제거 / 유수분 제거)", "sku": "16958136", "a": 23564640, "q": 4463, "share": 11.7}, {"rank": 5, "name": "루핀 네일 젤리무버 1000ml (쏙오프 제거 / 젤네일 제거 / 젤네일 필수템)", "sku": "16958137", "a": 9873600, "q": 1496, "share": 3.9}, {"rank": 6, "name": "루핀 아크릴 파우더 0.5온즈 / 화이트 핑크 클리어, 클리어,15g", "sku": "16677064", "a": 4336500, "q": 1239, "share": 3.2}, {"rank": 7, "name": "천사네일 전문가용 네일아트 T701 블루니퍼 / 네일케어 / 큐티클제거 / 손톱케어", "sku": "1956742", "a": 9508200, "q": 1219, "share": 3.2}, {"rank": 8, "name": "루핀 미라클 전문가용 니퍼 5.5mm 네일아트 큐티클 제거 정리 셀프네일 케어 1/2JAW", "sku": "16072080", "a": 10773000, "q": 1197, "share": 3.1}, {"rank": 9, "name": "루핀 아크릴 파우더 0.5온즈 / 화이트 핑크 클리어, 화이트,15g", "sku": "16677065", "a": 3290000, "q": 940, "share": 2.5}, {"rank": 10, "name": "샤이니 프로라인 롱(Long) 타입 큐티클 제거 JAW12 니퍼, 1개", "sku": "12078302", "a": 12236000, "q": 874, "share": 2.3}], "total": 38289, "top10": 33678, "months": [{"label": "2026년 1월", "partial": false, "upto": 31, "rows": [{"rank": 1, "name": "천사네일 니퍼 단일 색상", "sku": "1956741", "a": 5187000, "q": 1140, "share": 19.9, "delta": null, "new": false}, {"rank": 2, "name": "루핀 네일 젤크리너 500ml (미경화젤 제거 / 유수분 제거)", "sku": "16958136", "a": 5280000, "q": 1000, "share": 17.5, "delta": null, "new": false}, {"rank": 3, "name": "루핀 찐딱베이스젤 10ml", "sku": "15292283", "a": 3472000, "q": 992, "share": 17.3, "delta": null, "new": false}, {"rank": 4, "name": "루핀 찐광 탑젤 10ml (퍼펙트탑젤 / 젤탑)", "sku": "12799917", "a": 3333600, "q": 926, "share": 16.2, "delta": null, "new": false}, {"rank": 5, "name": "천사네일 전문가용 네일아트 T701 블루니퍼 / 네일케어 / 큐티클제거 / 손톱케어", "sku": "1956742", "a": 1872000, "q": 240, "share": 4.2, "delta": null, "new": false}], "n": 29, "total": 5723, "top5": 4298}, {"label": "2026년 2월", "partial": false, "upto": 28, "rows": [{"rank": 1, "name": "루핀 찐딱베이스젤 10ml", "sku": "15292283", "a": 4067000, "q": 1162, "share": 39.7, "delta": 2, "new": false}, {"rank": 2, "name": "루핀 찐광 탑젤 10ml (퍼펙트탑젤 / 젤탑)", "sku": "12799917", "a": 1695600, "q": 471, "share": 16.1, "delta": 2, "new": false}, {"rank": 3, "name": "루핀 미라클 전문가용 니퍼 5.5mm 네일아트 큐티클 제거 정리 셀프네일 케어 1/2JAW", "sku": "16072080", "a": 2520000, "q": 280, "share": 9.6, "delta": 3, "new": false}, {"rank": 4, "name": "루핀 네일 젤크리너 500ml (미경화젤 제거 / 유수분 제거)", "sku": "16958136", "a": 1320000, "q": 250, "share": 8.5, "delta": -2, "new": false}, {"rank": 5, "name": "천사네일 니퍼 단일 색상", "sku": "1956741", "a": 637000, "q": 140, "share": 4.8, "delta": -4, "new": false}], "n": 28, "total": 2924, "top5": 2303}, {"label": "2026년 3월", "partial": false, "upto": 31, "rows": [{"rank": 1, "name": "루핀 찐광 탑젤 10ml (퍼펙트탑젤 / 젤탑)", "sku": "12799917", "a": 4543200, "q": 1262, "share": 21.6, "delta": 1, "new": false}, {"rank": 2, "name": "루핀 찐딱베이스젤 10ml", "sku": "15292283", "a": 4004000, "q": 1144, "share": 19.6, "delta": -1, "new": false}, {"rank": 3, "name": "루핀 네일 젤크리너 500ml (미경화젤 제거 / 유수분 제거)", "sku": "16958136", "a": 4878720, "q": 924, "share": 15.8, "delta": 1, "new": false}, {"rank": 4, "name": "천사네일 니퍼 단일 색상", "sku": "1956741", "a": 3180450, "q": 699, "share": 11.9, "delta": 1, "new": false}, {"rank": 5, "name": "루핀 미라클 전문가용 니퍼 5.5mm 네일아트 큐티클 제거 정리 셀프네일 케어 1/2JAW", "sku": "16072080", "a": 2160000, "q": 240, "share": 4.1, "delta": -2, "new": false}], "n": 36, "total": 5850, "top5": 4269}, {"label": "2026년 4월", "partial": false, "upto": 30, "rows": [{"rank": 1, "name": "천사네일 니퍼 단일 색상", "sku": "1956741", "a": 4641000, "q": 1020, "share": 32.0, "delta": 3, "new": false}, {"rank": 2, "name": "루핀 찐딱베이스젤 10ml", "sku": "15292283", "a": 3122000, "q": 892, "share": 27.9, "delta": 0, "new": false}, {"rank": 3, "name": "루핀 네일 젤리무버 1000ml (쏙오프 제거 / 젤네일 제거 / 젤네일 필수템)", "sku": "16958137", "a": 1623600, "q": 246, "share": 7.7, "delta": 5, "new": false}, {"rank": 4, "name": "루핀 미라클 전문가용 니퍼 5.5mm 네일아트 큐티클 제거 정리 셀프네일 케어 1/2JAW", "sku": "16072080", "a": 1368000, "q": 152, "share": 4.8, "delta": 1, "new": false}, {"rank": 5, "name": "천사네일 전문가용 네일아트 T701 블루니퍼 / 네일케어 / 큐티클제거 / 손톱케어", "sku": "1956742", "a": 1092000, "q": 140, "share": 4.4, "delta": 2, "new": false}], "n": 31, "total": 3192, "top5": 2450}, {"label": "2026년 5월", "partial": false, "upto": 31, "rows": [{"rank": 1, "name": "루핀 찐딱베이스젤 10ml", "sku": "15292283", "a": 5470500, "q": 1563, "share": 32.8, "delta": 1, "new": false}, {"rank": 2, "name": "루핀 네일 젤크리너 500ml (미경화젤 제거 / 유수분 제거)", "sku": "16958136", "a": 3590400, "q": 680, "share": 14.3, "delta": 16, "new": false}, {"rank": 3, "name": "루핀 찐광 탑젤 10ml (퍼펙트탑젤 / 젤탑)", "sku": "12799917", "a": 2008800, "q": 558, "share": 11.7, "delta": null, "new": true}, {"rank": 4, "name": "루핀 미라클 전문가용 니퍼 5.5mm 네일아트 큐티클 제거 정리 셀프네일 케어 1/2JAW", "sku": "16072080", "a": 2790000, "q": 310, "share": 6.5, "delta": 0, "new": false}, {"rank": 5, "name": "천사네일 니퍼 단일 색상", "sku": "1956741", "a": 1274000, "q": 280, "share": 5.9, "delta": -4, "new": false}], "n": 38, "total": 4758, "top5": 3391}, {"label": "2026년 6월", "partial": false, "upto": 30, "rows": [{"rank": 1, "name": "루핀 찐딱베이스젤 10ml", "sku": "15292283", "a": 7476000, "q": 2136, "share": 38.0, "delta": 0, "new": false}, {"rank": 2, "name": "천사네일 니퍼 단일 색상", "sku": "1956741", "a": 4727450, "q": 1039, "share": 18.5, "delta": 3, "new": false}, {"rank": 3, "name": "루핀 찐광 탑젤 10ml (퍼펙트탑젤 / 젤탑)", "sku": "12799917", "a": 3495600, "q": 971, "share": 17.3, "delta": 0, "new": false}, {"rank": 4, "name": "루핀 네일 젤크리너 500ml (미경화젤 제거 / 유수분 제거)", "sku": "16958136", "a": 1689600, "q": 320, "share": 5.7, "delta": -2, "new": false}, {"rank": 5, "name": "루핀 네일 젤리무버 1000ml (쏙오프 제거 / 젤네일 제거 / 젤네일 필수템)", "sku": "16958137", "a": 1650000, "q": 250, "share": 4.4, "delta": 1, "new": false}], "n": 35, "total": 5628, "top5": 4716}, {"label": "2026년 7월", "partial": false, "upto": 31, "rows": [{"rank": 1, "name": "천사네일 니퍼 단일 색상", "sku": "1956741", "a": 2548000, "q": 560, "share": 26.6, "delta": 1, "new": false}, {"rank": 2, "name": "루핀 네일 젤크리너 500ml (미경화젤 제거 / 유수분 제거)", "sku": "16958136", "a": 1789920, "q": 339, "share": 16.1, "delta": 2, "new": false}, {"rank": 3, "name": "루핀 찐딱베이스젤 10ml", "sku": "15292283", "a": 924000, "q": 264, "share": 12.6, "delta": -2, "new": false}, {"rank": 4, "name": "루핀 찐광 탑젤 10ml (퍼펙트탑젤 / 젤탑)", "sku": "12799917", "a": 475200, "q": 132, "share": 6.3, "delta": -1, "new": false}, {"rank": 5, "name": "루핀 아크릴 파우더 0.5온즈 / 화이트 핑크 클리어, 클리어,15g", "sku": "16677064", "a": 448000, "q": 128, "share": 6.1, "delta": 5, "new": false}], "n": 30, "total": 2102, "top5": 1423}, {"label": "2026년 8월", "partial": false, "upto": 31, "rows": [{"rank": 1, "name": "루핀 찐딱베이스젤 10ml", "sku": "15292283", "a": 6923000, "q": 1978, "share": 37.3, "delta": 2, "new": false}, {"rank": 2, "name": "천사네일 니퍼 단일 색상", "sku": "1956741", "a": 3549000, "q": 780, "share": 14.7, "delta": -1, "new": false}, {"rank": 3, "name": "루핀 찐광 탑젤 10ml (퍼펙트탑젤 / 젤탑)", "sku": "12799917", "a": 2667600, "q": 741, "share": 14.0, "delta": 1, "new": false}, {"rank": 4, "name": "루핀 네일 젤크리너 500ml (미경화젤 제거 / 유수분 제거)", "sku": "16958136", "a": 3115200, "q": 590, "share": 11.1, "delta": -2, "new": false}, {"rank": 5, "name": "천사네일 전문가용 네일아트 T701 블루니퍼 / 네일케어 / 큐티클제거 / 손톱케어", "sku": "1956742", "a": 1716000, "q": 220, "share": 4.1, "delta": 11, "new": false}], "n": 36, "total": 5307, "top5": 4309}, {"label": "2026년 9월", "partial": true, "upto": 21, "rows": [{"rank": 1, "name": "루핀 찐딱베이스젤 10ml", "sku": "15292283", "a": 2940000, "q": 840, "share": 29.9, "delta": 0, "new": false}, {"rank": 2, "name": "천사네일 니퍼 단일 색상", "sku": "1956741", "a": 2548000, "q": 560, "share": 20.0, "delta": 0, "new": false}, {"rank": 3, "name": "루핀 네일 젤크리너 500ml (미경화젤 제거 / 유수분 제거)", "sku": "16958136", "a": 1848000, "q": 350, "share": 12.5, "delta": 1, "new": false}, {"rank": 4, "name": "샤이니 프로라인 숏(Short) 타입 큐티클 제거 JAW12 니퍼, 1개", "sku": "12078284", "a": 2380000, "q": 170, "share": 6.1, "delta": null, "new": true}, {"rank": 5, "name": "루핀 네일 젤리무버 1000ml (쏙오프 제거 / 젤네일 제거 / 젤네일 필수템)", "sku": "16958137", "a": 1122000, "q": 170, "share": 6.1, "delta": 1, "new": false}], "n": 33, "total": 2805, "top5": 2090}]}};
+let K = "a";
+const fm = n => Math.round(n).toLocaleString("ko-KR");
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const man = n => (n / 10000).toLocaleString("ko-KR", {maximumFractionDigits: 0}) + "만";
+function chg(r){ if (r.new) return '<span class="chg new">신규</span>'; if (r.delta === null || r.delta === undefined) return ""; if (r.delta === 0) return '<span class="chg">유지</span>'; return `<span class="chg ${r.delta>0?"up":"down"}">${r.delta>0?"▲":"▼"}${Math.abs(r.delta)}</span>`; }
+function list(rows, mx){
+  return `<ol class="rank">${rows.map(r => `<li class="${r.rank===1?"first":""}"><span class="rk">${r.rank}</span>
+    <span class="mid"><span class="rn">${esc(r.name)}${chg(r)}</span><span class="track"><span class="fill" style="width:${((K==="a"?r.a:r.q)/mx*100).toFixed(1)}%"></span></span></span>
+    <span class="amt">${K==="a" ? `<span class="q">${man(r.a)}<small>원</small></span><span class="w">${fm(r.q)}개 · ${r.share}%</span>` : `<span class="q">${fm(r.q)}<small>개</small></span><span class="w">${fm(r.a)}원 · ${r.share}%</span>`}</span></li>`).join("")}</ol>`;
+}
+function render(){
+  const D = R[K], unit = K==="a" ? "원" : "개";
+  const cmx = Math.max(...D.cum.map(r => K==="a"?r.a:r.q), 1);
+  document.getElementById("cum").innerHTML = `<h2>누적 상위 10<small>전체 ${fm(D.total)}${unit} 중 상위 10개 ${(D.top10/D.total*100).toFixed(0)}%</small></h2>${list(D.cum, cmx)}`;
+  const mmx = Math.max(...D.months.flatMap(m => m.rows.map(r => K==="a"?r.a:r.q)), 1);
+  document.getElementById("months").innerHTML = D.months.map(m => `<div class="card"><h2>${esc(m.label)}<small>SKU ${m.n}개 입고${m.partial?` · ${m.upto}일까지`:""}</small></h2>
+    ${m.rows.length ? list(m.rows, mmx) : '<p class="note">입고 없음</p>'}
+    <div class="foot">상위 5개 ${fm(m.top5)}${unit} · 이 달 ${fm(m.total)}${unit}의 ${(m.top5/(m.total||1)*100).toFixed(0)}%</div></div>`).join("");
+  document.getElementById("note").textContent = K==="a" ? "부가세 포함 입고 금액 기준입니다." : "반출을 뺀 입고 수량 기준입니다.";
+}
+document.querySelectorAll(".seg button").forEach(b => b.onclick = () => { K = b.dataset.k; document.querySelectorAll(".seg button").forEach(x => x.setAttribute("aria-pressed", x===b)); render(); });
+render();
+</script>

@@ -1,0 +1,201 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>로켓HUB 월별</title>
+<meta name="description" content="로켓HUB 월별 입고 금액·수량·발주 건수">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap">
+<style>
+:root{color-scheme:light;--ground:#f5f5f7;--surface:#fff;--surface-2:#f5f5f7;--ink:#1d1d1f;--ink-2:#6e6e73;--ink-3:#86868b;--hair:#d2d2d7;--hair-2:#e8e8ed;--acc:#f56300;--acc-soft:#fbdcc4;--blue:#0071e3;--up:#1a7f37;--down:#d70015;--shadow:0 2px 12px rgba(0,0,0,.06),0 0 0 .5px rgba(0,0,0,.04)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--ground:#000;--surface:#1d1d1f;--surface-2:#2c2c2e;--ink:#f5f5f7;--ink-2:#a1a1a6;--ink-3:#86868b;--hair:#424245;--hair-2:#333336;--acc:#f0620f;--acc-soft:#4a2a15;--blue:#2997ff;--up:#30d158;--down:#ff453a;--shadow:0 0 0 .5px rgba(255,255,255,.06)}}
+:root[data-theme="dark"]{color-scheme:dark;--ground:#000;--surface:#1d1d1f;--surface-2:#2c2c2e;--ink:#f5f5f7;--ink-2:#a1a1a6;--ink-3:#86868b;--hair:#424245;--hair-2:#333336;--acc:#f0620f;--acc-soft:#4a2a15;--blue:#2997ff;--up:#30d158;--down:#ff453a;--shadow:0 0 0 .5px rgba(255,255,255,.06)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;font-size:15px;line-height:1.45;padding-inline:clamp(16px,5vw,48px);padding-block:0 72px;font-variant-numeric:tabular-nums;word-break:keep-all;overflow-wrap:break-word;-webkit-font-smoothing:antialiased;letter-spacing:-.01em}
+.wrap{max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:26px;padding-top:56px}
+header{display:flex;flex-direction:column;gap:10px}
+header .eyebrow,header h1{text-align:center}
+.eyebrow{margin:0;font-size:13px;font-weight:600;color:var(--acc)}
+h1{margin:0;font-size:clamp(30px,5vw,44px);font-weight:700;letter-spacing:-.03em;line-height:1.08}
+.sub{margin:0;color:var(--ink-2);font-size:16px;line-height:1.5}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media (max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)}}
+.tile{background:var(--surface);border-radius:16px;box-shadow:var(--shadow);padding:16px 18px;display:flex;flex-direction:column;gap:3px;min-width:0}
+.tile .l{font-size:12px;color:var(--ink-2);font-weight:500}
+.tile .v{font-size:clamp(20px,3.2vw,26px);font-weight:700;letter-spacing:-.03em;line-height:1.1}
+.tile .v small{font-size:12.5px;font-weight:500;color:var(--ink-3);margin-left:2px}
+.tile .d{font-size:11.5px;color:var(--ink-3);line-height:1.45}
+.card{background:var(--surface);border-radius:18px;box-shadow:var(--shadow);padding:20px 22px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.card.flush{padding:8px 0 12px}
+.card h2{margin:0;font-size:19px;font-weight:600;letter-spacing:-.02em;display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.card h2 small{font-size:12.5px;font-weight:400;color:var(--ink-3)}
+.sec-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.sec-h h2{margin:0;font-size:22px;font-weight:700;letter-spacing:-.025em}
+.note{font-size:13px;color:var(--ink-2);line-height:1.5}
+.bar-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pills button{appearance:none;border:0;font:inherit;font-size:13.5px;font-weight:500;padding:7px 14px;border-radius:999px;background:var(--surface);color:var(--ink-2);box-shadow:var(--shadow);cursor:pointer}
+.pills button[aria-pressed="true"]{background:var(--ink);color:var(--surface)}
+.seg{display:inline-flex;background:var(--surface-2);border-radius:999px;padding:3px}
+.seg button{appearance:none;border:0;background:transparent;color:var(--ink-2);font:inherit;font-size:13.5px;font-weight:500;padding:6px 15px;border-radius:999px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+button:focus-visible,a:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.vbars{display:flex;align-items:stretch;gap:8px;height:210px}
+.vbars .b{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0}
+.vbars .col{flex:1;width:100%;display:flex;align-items:flex-end;justify-content:center}
+.vbars .col i{display:block;width:100%;max-width:52px;background:var(--acc);border-radius:6px 6px 2px 2px;min-height:2px}
+.vbars .b.part .col i{background:repeating-linear-gradient(135deg,var(--acc) 0 6px,var(--acc-soft) 6px 9px)}
+.vbars .v{font-size:11px;color:var(--ink-2);font-weight:600;white-space:nowrap}
+.vbars .x{font-size:12px;color:var(--ink-3);font-weight:500}
+.dbars{display:flex;align-items:stretch;gap:2px;height:160px}
+.dbars .c{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0}
+.dbars .c .col{flex:1;width:100%;display:flex;align-items:flex-end}
+.dbars .c i{display:block;width:100%;background:var(--acc);border-radius:3px 3px 1px 1px;min-height:2px}
+.dbars .c i.z{background:var(--hair-2)}
+.dbars .c span{font-size:9.5px;color:var(--ink-3)}
+.dbars .c.we span{color:var(--down)}
+.tblwrap{overflow-x:auto}
+.tblwrap-top{overflow-x:auto;overflow-y:hidden;height:14px}
+.tblwrap-top>div{height:1px}
+.tblwrap-top::-webkit-scrollbar,.tblwrap::-webkit-scrollbar{height:10px}
+.tblwrap-top::-webkit-scrollbar-track,.tblwrap::-webkit-scrollbar-track{background:transparent}
+.tblwrap-top::-webkit-scrollbar-thumb,.tblwrap::-webkit-scrollbar-thumb{background:rgba(128,128,128,.42);border-radius:999px;border:2px solid transparent;background-clip:padding-box}
+table.t{width:100%;border-collapse:collapse;font-size:13.5px}
+table.t th,table.t td{padding:9px 10px;text-align:right;border-bottom:.5px solid var(--hair-2);white-space:nowrap;vertical-align:middle}
+table.t thead th{font-size:11.5px;font-weight:600;color:var(--ink-2);border-bottom:.5px solid var(--hair)}
+table.t thead tr.grp th{text-align:center;color:var(--ink);font-size:12.5px;border-bottom:0;padding-bottom:3px}
+table.t thead tr.grp th.g{box-shadow:inset 0 -2px 0 var(--acc)}
+table.t th:first-child,table.t td:first-child{text-align:left;padding-left:22px}
+table.t th:last-child,table.t td:last-child{padding-right:22px}
+table.t td.nm{white-space:normal;min-width:220px;max-width:360px;font-weight:600;line-height:1.35}
+table.t td.nm small{display:block;font-weight:400;font-size:11px;color:var(--ink-3)}
+table.t td.z{color:var(--ink-3)}
+table.t td.neg{color:var(--down)}
+table.t td.tot{font-weight:700}
+table.t tr.sum td{font-weight:700;border-top:.5px solid var(--hair);background:var(--surface-2)}
+table.t.stick th:first-child,table.t.stick td:first-child{position:sticky;left:0;z-index:2;background:var(--surface);box-shadow:1px 0 0 var(--hair-2),7px 0 9px -7px rgba(0,0,0,.16)}
+table.t.stick tr.sum td:first-child{background:var(--surface-2)}
+.sn{display:inline-block;min-width:20px;margin-right:8px;text-align:right;font-size:12px;font-weight:600;color:var(--ink-3)}
+.share{position:relative;min-width:130px}
+.share i{position:absolute;left:10px;top:50%;height:12px;margin-top:-6px;background:var(--acc-soft);border-radius:999px}
+.share span{position:relative;font-size:12px;color:var(--ink-2)}
+.xbtn{appearance:none;border:0;background:var(--surface-2);color:var(--ink);font:inherit;font-size:12.5px;font-weight:600;padding:3px 10px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.xbtn::after{content:" \25BE";font-size:9px;color:var(--ink-3)}
+.xbtn[aria-expanded="true"]{background:var(--acc);color:#fff}
+.xbtn[aria-expanded="true"]::after{content:" \25B4";color:#fff}
+tr.det td{background:var(--surface-2);padding:10px 22px}
+tr.det[hidden]{display:none}
+table.mini{width:100%;border-collapse:collapse;font-size:12.5px}
+table.mini th,table.mini td{padding:4px 10px 4px 0;border-bottom:.5px solid var(--hair-2);text-align:right;white-space:nowrap}
+table.mini th{font-size:11px;color:var(--ink-3);font-weight:600}
+table.mini td:first-child,table.mini th:first-child{text-align:left;white-space:normal;min-width:180px}
+table.mini tr:last-child td{border-bottom:0}
+ol.rank{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+ol.rank li{display:grid;grid-template-columns:26px 1fr auto;gap:10px;align-items:center;padding:9px 0;border-bottom:.5px solid var(--hair-2)}
+ol.rank li:last-child{border-bottom:0}
+.rk{font-size:14px;font-weight:700;color:var(--ink-3);text-align:center}
+li.first .rk{color:var(--acc)}
+.mid{min-width:0;display:flex;flex-direction:column;gap:4px}
+.rn{font-size:13.5px;font-weight:600;line-height:1.35;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.track{height:6px;border-radius:999px;background:var(--surface-2);overflow:hidden}
+.fill{height:100%;border-radius:999px;background:var(--acc-soft)}
+li.first .fill{background:var(--acc)}
+.amt{text-align:right;white-space:nowrap}
+.amt .q{font-size:16px;font-weight:700;letter-spacing:-.02em}
+.amt .q small{font-size:11px;font-weight:500;color:var(--ink-3);margin-left:1px}
+.amt .w{display:block;font-size:11.5px;color:var(--ink-3)}
+.chg{font-size:11px;font-weight:600;padding:1px 7px;border-radius:999px;background:var(--surface-2);color:var(--ink-3);white-space:nowrap}
+.chg.up{color:var(--up)}.chg.down{color:var(--down)}.chg.new{color:var(--acc)}
+.months{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media (max-width:820px){.months{grid-template-columns:1fr}}
+.foot{font-size:12px;color:var(--ink-2);border-top:.5px solid var(--hair-2);padding-top:10px}
+.today{background:var(--surface);border-radius:20px;box-shadow:var(--shadow);padding:22px 26px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px 24px;align-items:end}
+.today .h{grid-column:1/-1;display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.today .h b{font-size:17px;font-weight:600;letter-spacing:-.02em}
+.today .h a{font-size:13px;color:var(--acc);text-decoration:none;font-weight:500}
+.today .l{display:block;font-size:12.5px;color:var(--ink-2);font-weight:500}
+.today .v{display:block;font-size:clamp(24px,4.5vw,32px);font-weight:700;letter-spacing:-.035em;line-height:1.05;margin:2px 0}
+.today .v small{font-size:14px;font-weight:500;color:var(--ink-3);margin-left:2px}
+.today .d{display:block;font-size:12.5px;color:var(--ink-3)}
+.today .mtd{grid-column:1/-1;font-size:13px;color:var(--ink-2);border-top:.5px solid var(--hair-2);padding-top:12px}
+@media (max-width:700px){.today{grid-template-columns:1fr}}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media (max-width:700px){.grid{grid-template-columns:1fr}}
+a.lcard{background:var(--surface);border-radius:18px;box-shadow:var(--shadow);padding:22px 22px 18px;display:flex;flex-direction:column;gap:8px;text-decoration:none;color:inherit;transition:transform .15s}
+a.lcard:hover{transform:translateY(-2px)}
+a.lcard .k{font-size:18px;font-weight:600;letter-spacing:-.02em}
+a.lcard .t{font-size:13.5px;color:var(--ink-2);line-height:1.45;flex:1}
+a.lcard .go{font-size:13px;color:var(--acc);font-weight:500;margin-top:6px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--surface);border-radius:12px;box-shadow:var(--shadow);padding:10px 14px;display:flex;flex-direction:column;gap:2px;min-width:118px}
+.chip b{font-size:14px;letter-spacing:-.01em}
+.chip span{font-size:11.5px;color:var(--ink-3)}
+.chip em{font-style:normal;font-size:13px;font-weight:600;color:var(--ink-2)}
+.callout{background:var(--surface);border-radius:14px;box-shadow:var(--shadow);padding:13px 16px;font-size:13px;color:var(--ink-2);line-height:1.55;border-left:3px solid var(--acc)}
+.callout b{color:var(--ink)}
+footer{font-size:12px;color:var(--ink-3);line-height:1.6}
+@media (prefers-reduced-motion:reduce){a.lcard{transition:none}}
+</style>
+<style id="sitenav-css">
+.sitenav{position:sticky;top:0;z-index:20;backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);background:rgba(251,251,253,.8);border-bottom:.5px solid rgba(0,0,0,.08);margin:0 calc(-1 * clamp(16px,5vw,48px));padding:0 clamp(16px,5vw,48px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sitenav{background:rgba(29,29,31,.72);border-bottom-color:rgba(255,255,255,.1)}}
+:root[data-theme="dark"] .sitenav{background:rgba(29,29,31,.72);border-bottom-color:rgba(255,255,255,.1)}
+.sitenav .in{max-width:1000px;margin:0 auto;display:flex;align-items:center;gap:22px;height:46px;font-size:13px;overflow-x:auto;white-space:nowrap}
+.sitenav a{color:inherit;text-decoration:none;opacity:.75}
+.sitenav a:hover,.sitenav a.on{opacity:1}
+.sitenav a.on{font-weight:600}
+.sitenav .brand{font-weight:600;opacity:1;letter-spacing:-.01em;flex:none}
+.sitenav .chan{display:inline-flex;gap:2px;background:rgba(0,0,0,.05);border-radius:999px;padding:3px;margin-right:auto;flex:none}
+.sitenav .chan a{opacity:.72;padding:4px 12px;border-radius:999px;font-weight:500}
+.sitenav .chan a:hover{opacity:1}
+.sitenav .chan a.on{opacity:1;font-weight:600;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sitenav .chan{background:rgba(255,255,255,.08)}:root:not([data-theme="light"]) .sitenav .chan a.on{background:rgba(255,255,255,.18);box-shadow:none}}
+:root[data-theme="dark"] .sitenav .chan{background:rgba(255,255,255,.08)}
+:root[data-theme="dark"] .sitenav .chan a.on{background:rgba(255,255,255,.18);box-shadow:none}
+</style>
+
+<nav class="sitenav"><div class="in"><a class="brand" href="index.html">1004nail</a><span class="chan"><a href="index.html">로켓그로스</a><a href="hub.html" class=on>로켓HUB</a></span><a href="hub_daily.html">일별</a><a href="hub_monthly.html" class=on>월별</a><a href="hub_totals.html">누적 합계</a><a href="hub_ranking.html">판매 순위</a><a href="hub_centers.html">물류창고별</a></div></nav>
+<div class="wrap">
+<header>
+  <p class="eyebrow">쿠팡 로켓HUB · 로켓배송 입고</p>
+  <h1>로켓HUB 월별 입고</h1>
+  <p class="sub">쿠팡이 달마다 발주해 물류창고에 입고한 금액과 수량입니다.<br>소비자 판매가 아니라 쿠팡에 공급한 실적이라, 발주가 몰리는 달과 비는 달의 차이가 큽니다.</p>
+</header>
+<div class="kpis">
+  <div class="tile"><span class="l">누적 입고 금액</span><span class="v">18,912만<small>원</small></span><span class="d">189,119,075원</span></div>
+  <div class="tile"><span class="l">월평균 (완료된 달)</span><span class="v">2,171만<small>원</small></span><span class="d">8개월 평균</span></div>
+  <div class="tile"><span class="l">최고 달</span><span class="v">3월</span><span class="d">28,358,480원 · 5,850개</span></div>
+  <div class="tile"><span class="l">누적 발주</span><span class="v">1,146<small>건</small></span><span class="d">입고일 245일 · 물류창고 40곳</span></div>
+</div>
+<div class="card"><h2>월별 입고 금액<small>부가세 포함 · 빗금은 진행 중인 달</small></h2><div class="vbars"><div class="b" title="2026년 1월 28,300,585원 · 5,723개"><span class="v">2,830만</span><span class="col"><i style="height:99.8%"></i></span><span class="x">1월</span></div><div class="b" title="2026년 2월 14,986,405원 · 2,924개"><span class="v">1,499만</span><span class="col"><i style="height:52.8%"></i></span><span class="x">2월</span></div><div class="b" title="2026년 3월 28,358,480원 · 5,850개"><span class="v">2,836만</span><span class="col"><i style="height:100.0%"></i></span><span class="x">3월</span></div><div class="b" title="2026년 4월 17,180,575원 · 3,192개"><span class="v">1,718만</span><span class="col"><i style="height:60.6%"></i></span><span class="x">4월</span></div><div class="b" title="2026년 5월 24,450,630원 · 4,758개"><span class="v">2,445만</span><span class="col"><i style="height:86.2%"></i></span><span class="x">5월</span></div><div class="b" title="2026년 6월 24,767,820원 · 5,628개"><span class="v">2,477만</span><span class="col"><i style="height:87.3%"></i></span><span class="x">6월</span></div><div class="b" title="2026년 7월 11,320,560원 · 2,102개"><span class="v">1,132만</span><span class="col"><i style="height:39.9%"></i></span><span class="x">7월</span></div><div class="b" title="2026년 8월 24,298,250원 · 5,307개"><span class="v">2,430만</span><span class="col"><i style="height:85.7%"></i></span><span class="x">8월</span></div><div class="b part" title="2026년 9월 15,455,770원 · 2,805개"><span class="v">1,546만</span><span class="col"><i style="height:54.5%"></i></span><span class="x">9월*</span></div></div></div>
+<div class="card flush"><div class="tblwrap"><table class="t stick">
+<thead><tr><th>월</th><th>입고일</th><th>발주</th><th>SKU</th><th>물류창고</th><th>수량</th><th>공급가액</th><th>세액</th><th>합계</th><th>반출</th><th>전월 대비</th></tr></thead>
+<tbody><tr><td><b>2026년 1월</b></td><td>29</td><td>197</td><td>29</td><td>31</td><td>5,723</td><td>25,727,915</td><td>2,572,670</td><td class="tot">28,300,585</td><td class="z">–</td><td></td></tr><tr><td><b>2026년 2월</b></td><td>24</td><td>110</td><td>28</td><td>26</td><td>2,924</td><td>13,624,305</td><td>1,362,100</td><td class="tot">14,986,405</td><td class="z">–</td><td><span class="chg down">▼ 47%</span></td></tr><tr><td><b>2026년 3월</b></td><td>28</td><td>207</td><td>36</td><td>30</td><td>5,850</td><td>25,780,808</td><td>2,577,672</td><td class="tot">28,358,480</td><td class="z">–</td><td><span class="chg up">▲ 89%</span></td></tr><tr><td><b>2026년 4월</b></td><td>28</td><td>127</td><td>31</td><td>27</td><td>3,192</td><td>15,618,537</td><td>1,562,038</td><td class="tot">17,180,575</td><td class="neg">−252,000</td><td><span class="chg down">▼ 39%</span></td></tr><tr><td><b>2026년 5월</b></td><td>30</td><td>119</td><td>38</td><td>30</td><td>4,758</td><td>22,228,281</td><td>2,222,349</td><td class="tot">24,450,630</td><td class="z">–</td><td><span class="chg up">▲ 42%</span></td></tr><tr><td><b>2026년 6월</b></td><td>28</td><td>109</td><td>35</td><td>25</td><td>5,628</td><td>22,516,498</td><td>2,251,322</td><td class="tot">24,767,820</td><td class="z">–</td><td><span class="chg up">▲ 1%</span></td></tr><tr><td><b>2026년 7월</b></td><td>30</td><td>105</td><td>30</td><td>25</td><td>2,102</td><td>10,291,287</td><td>1,029,273</td><td class="tot">11,320,560</td><td class="z">–</td><td><span class="chg down">▼ 54%</span></td></tr><tr><td><b>2026년 8월</b></td><td>31</td><td>101</td><td>36</td><td>29</td><td>5,307</td><td>22,089,631</td><td>2,208,619</td><td class="tot">24,298,250</td><td class="z">–</td><td><span class="chg up">▲ 115%</span></td></tr><tr><td><b>2026년 9월</b></td><td>17</td><td>72</td><td>33</td><td>27</td><td>2,805</td><td>14,050,622</td><td>1,405,148</td><td class="tot">15,455,770</td><td class="z">–</td><td><span class="chg">21일까지</span></td></tr><tr class="sum"><td>합계</td><td>245</td><td>1,146</td><td>56</td><td>40</td><td>38,289</td><td>171,927,884</td><td>17,191,191</td><td>189,119,075</td><td class="neg">−252,000</td><td></td></tr></tbody></table></div></div>
+<div class="sec-h"><h2>달마다 많이 들어간 상품</h2><span class="note">입고 금액 상위 3개</span></div>
+<div class="months"><div class="card"><h2>2026년 1월<small>28,300,585원</small></h2><ol class="rank"><li class="first"><span class="rk">1</span><span class="mid"><span class="rn">루핀 네일 젤크리너 500ml (미경화젤 제거 / 유수분 제거)</span><span class="track"><span class="fill" style="width:18.7%"></span></span></span><span class="amt"><span class="q">528만</span><span class="w">1,000개 · 19%</span></span></li><li class=""><span class="rk">2</span><span class="mid"><span class="rn">천사네일 니퍼 단일 색상</span><span class="track"><span class="fill" style="width:18.3%"></span></span></span><span class="amt"><span class="q">519만</span><span class="w">1,140개 · 18%</span></span></li><li class=""><span class="rk">3</span><span class="mid"><span class="rn">루핀 찐딱베이스젤 10ml</span><span class="track"><span class="fill" style="width:12.3%"></span></span></span><span class="amt"><span class="q">347만</span><span class="w">992개 · 12%</span></span></li></ol></div><div class="card"><h2>2026년 2월<small>14,986,405원</small></h2><ol class="rank"><li class="first"><span class="rk">1</span><span class="mid"><span class="rn">루핀 찐딱베이스젤 10ml</span><span class="track"><span class="fill" style="width:27.1%"></span></span></span><span class="amt"><span class="q">407만</span><span class="w">1,162개 · 27%</span></span></li><li class=""><span class="rk">2</span><span class="mid"><span class="rn">루핀 미라클 전문가용 니퍼 5.5mm 네일아트 큐티클 제거 정리 셀프네일 케어 1/2JAW</span><span class="track"><span class="fill" style="width:16.8%"></span></span></span><span class="amt"><span class="q">252만</span><span class="w">280개 · 17%</span></span></li><li class=""><span class="rk">3</span><span class="mid"><span class="rn">루핀 찐광 탑젤 10ml (퍼펙트탑젤 / 젤탑)</span><span class="track"><span class="fill" style="width:11.3%"></span></span></span><span class="amt"><span class="q">170만</span><span class="w">471개 · 11%</span></span></li></ol></div><div class="card"><h2>2026년 3월<small>28,358,480원</small></h2><ol class="rank"><li class="first"><span class="rk">1</span><span class="mid"><span class="rn">루핀 네일 젤크리너 500ml (미경화젤 제거 / 유수분 제거)</span><span class="track"><span class="fill" style="width:17.2%"></span></span></span><span class="amt"><span class="q">488만</span><span class="w">924개 · 17%</span></span></li><li class=""><span class="rk">2</span><span class="mid"><span class="rn">루핀 찐광 탑젤 10ml (퍼펙트탑젤 / 젤탑)</span><span class="track"><span class="fill" style="width:16.0%"></span></span></span><span class="amt"><span class="q">454만</span><span class="w">1,262개 · 16%</span></span></li><li class=""><span class="rk">3</span><span class="mid"><span class="rn">루핀 찐딱베이스젤 10ml</span><span class="track"><span class="fill" style="width:14.1%"></span></span></span><span class="amt"><span class="q">400만</span><span class="w">1,144개 · 14%</span></span></li></ol></div><div class="card"><h2>2026년 4월<small>17,180,575원</small></h2><ol class="rank"><li class="first"><span class="rk">1</span><span class="mid"><span class="rn">천사네일 니퍼 단일 색상</span><span class="track"><span class="fill" style="width:27.0%"></span></span></span><span class="amt"><span class="q">464만</span><span class="w">1,020개 · 27%</span></span></li><li class=""><span class="rk">2</span><span class="mid"><span class="rn">루핀 찐딱베이스젤 10ml</span><span class="track"><span class="fill" style="width:18.2%"></span></span></span><span class="amt"><span class="q">312만</span><span class="w">892개 · 18%</span></span></li><li class=""><span class="rk">3</span><span class="mid"><span class="rn">루핀 네일 젤리무버 1000ml (쏙오프 제거 / 젤네일 제거 / 젤네일 필수템)</span><span class="track"><span class="fill" style="width:9.5%"></span></span></span><span class="amt"><span class="q">162만</span><span class="w">246개 · 9%</span></span></li></ol></div><div class="card"><h2>2026년 5월<small>24,450,630원</small></h2><ol class="rank"><li class="first"><span class="rk">1</span><span class="mid"><span class="rn">루핀 찐딱베이스젤 10ml</span><span class="track"><span class="fill" style="width:22.4%"></span></span></span><span class="amt"><span class="q">547만</span><span class="w">1,563개 · 22%</span></span></li><li class=""><span class="rk">2</span><span class="mid"><span class="rn">루핀 네일 젤크리너 500ml (미경화젤 제거 / 유수분 제거)</span><span class="track"><span class="fill" style="width:14.7%"></span></span></span><span class="amt"><span class="q">359만</span><span class="w">680개 · 15%</span></span></li><li class=""><span class="rk">3</span><span class="mid"><span class="rn">루핀 미라클 전문가용 니퍼 5.5mm 네일아트 큐티클 제거 정리 셀프네일 케어 1/2JAW</span><span class="track"><span class="fill" style="width:11.4%"></span></span></span><span class="amt"><span class="q">279만</span><span class="w">310개 · 11%</span></span></li></ol></div><div class="card"><h2>2026년 6월<small>24,767,820원</small></h2><ol class="rank"><li class="first"><span class="rk">1</span><span class="mid"><span class="rn">루핀 찐딱베이스젤 10ml</span><span class="track"><span class="fill" style="width:30.2%"></span></span></span><span class="amt"><span class="q">748만</span><span class="w">2,136개 · 30%</span></span></li><li class=""><span class="rk">2</span><span class="mid"><span class="rn">천사네일 니퍼 단일 색상</span><span class="track"><span class="fill" style="width:19.1%"></span></span></span><span class="amt"><span class="q">473만</span><span class="w">1,039개 · 19%</span></span></li><li class=""><span class="rk">3</span><span class="mid"><span class="rn">루핀 찐광 탑젤 10ml (퍼펙트탑젤 / 젤탑)</span><span class="track"><span class="fill" style="width:14.1%"></span></span></span><span class="amt"><span class="q">350만</span><span class="w">971개 · 14%</span></span></li></ol></div><div class="card"><h2>2026년 7월<small>11,320,560원</small></h2><ol class="rank"><li class="first"><span class="rk">1</span><span class="mid"><span class="rn">천사네일 니퍼 단일 색상</span><span class="track"><span class="fill" style="width:22.5%"></span></span></span><span class="amt"><span class="q">255만</span><span class="w">560개 · 23%</span></span></li><li class=""><span class="rk">2</span><span class="mid"><span class="rn">루핀 네일 젤크리너 500ml (미경화젤 제거 / 유수분 제거)</span><span class="track"><span class="fill" style="width:15.8%"></span></span></span><span class="amt"><span class="q">179만</span><span class="w">339개 · 16%</span></span></li><li class=""><span class="rk">3</span><span class="mid"><span class="rn">샤이니 프로라인 롱(Long) 타입 큐티클 제거 JAW12 니퍼, 1개</span><span class="track"><span class="fill" style="width:12.4%"></span></span></span><span class="amt"><span class="q">140만</span><span class="w">100개 · 12%</span></span></li></ol></div><div class="card"><h2>2026년 8월<small>24,298,250원</small></h2><ol class="rank"><li class="first"><span class="rk">1</span><span class="mid"><span class="rn">루핀 찐딱베이스젤 10ml</span><span class="track"><span class="fill" style="width:28.5%"></span></span></span><span class="amt"><span class="q">692만</span><span class="w">1,978개 · 28%</span></span></li><li class=""><span class="rk">2</span><span class="mid"><span class="rn">천사네일 니퍼 단일 색상</span><span class="track"><span class="fill" style="width:14.6%"></span></span></span><span class="amt"><span class="q">355만</span><span class="w">780개 · 15%</span></span></li><li class=""><span class="rk">3</span><span class="mid"><span class="rn">루핀 네일 젤크리너 500ml (미경화젤 제거 / 유수분 제거)</span><span class="track"><span class="fill" style="width:12.8%"></span></span></span><span class="amt"><span class="q">312만</span><span class="w">590개 · 13%</span></span></li></ol></div><div class="card"><h2>2026년 9월<small>15,455,770원 · 21일까지</small></h2><ol class="rank"><li class="first"><span class="rk">1</span><span class="mid"><span class="rn">루핀 찐딱베이스젤 10ml</span><span class="track"><span class="fill" style="width:19.0%"></span></span></span><span class="amt"><span class="q">294만</span><span class="w">840개 · 19%</span></span></li><li class=""><span class="rk">2</span><span class="mid"><span class="rn">천사네일 니퍼 단일 색상</span><span class="track"><span class="fill" style="width:16.5%"></span></span></span><span class="amt"><span class="q">255만</span><span class="w">560개 · 16%</span></span></li><li class=""><span class="rk">3</span><span class="mid"><span class="rn">샤이니 프로라인 숏(Short) 타입 큐티클 제거 JAW12 니퍼, 1개</span><span class="track"><span class="fill" style="width:15.4%"></span></span></span><span class="amt"><span class="q">238만</span><span class="w">170개 · 15%</span></span></li></ol></div></div>
+<footer>출처: 쿠팡 로켓HUB 입고 내역(Coupang_Stocked_Data_List) · 2026년 1월 ~ 2026년 9월 21일 · 금액은 부가세 포함 총액(공급가액 + 세액) · 반출은 수량·금액에서 뺍니다 · 날짜는 입고 시각 기준</footer>
+</div>
+
+<script>
+document.addEventListener("click", function (e) {
+  var b = e.target.closest(".xbtn[aria-controls]");
+  if (!b) return;
+  var t = document.getElementById(b.getAttribute("aria-controls"));
+  var on = b.getAttribute("aria-expanded") === "true";
+  b.setAttribute("aria-expanded", on ? "false" : "true");
+  if (t) t.hidden = on;
+});
+function topScroll() {
+  document.querySelectorAll(".tblwrap").forEach(function (w) {
+    if (w.previousElementSibling && w.previousElementSibling.classList.contains("tblwrap-top")) return;
+    var tbl = w.querySelector("table"); if (!tbl) return;
+    var top = document.createElement("div"); top.className = "tblwrap-top";
+    var inner = document.createElement("div"); top.appendChild(inner);
+    w.parentNode.insertBefore(top, w);
+    function sync() { inner.style.width = tbl.scrollWidth + "px"; top.style.display = tbl.scrollWidth > w.clientWidth + 1 ? "" : "none"; }
+    sync(); if (window.ResizeObserver) new ResizeObserver(sync).observe(w);
+    var lock = false;
+    top.addEventListener("scroll", function () { if (lock) return; lock = true; w.scrollLeft = top.scrollLeft; lock = false; });
+    w.addEventListener("scroll", function () { if (lock) return; lock = true; top.scrollLeft = w.scrollLeft; lock = false; });
+  });
+}
+topScroll();
+</script>
+
