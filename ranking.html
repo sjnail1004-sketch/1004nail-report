@@ -103,6 +103,12 @@ footer{font-size:12px;color:var(--ink-3);line-height:1.6}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sitenav .chan{background:rgba(255,255,255,.08)}:root:not([data-theme="light"]) .sitenav .chan a.on{background:#8fd14f;color:#0b1a00;box-shadow:none}}
 :root[data-theme="dark"] .sitenav .chan{background:rgba(255,255,255,.08)}
 :root[data-theme="dark"] .sitenav .chan a.on{background:#8fd14f;color:#0b1a00;box-shadow:none}
+.sitenav .in{gap:10px}
+.sitenav .in>a:not(.brand){padding:4px 10px;border-radius:999px}
+.sitenav .in>a.on:not(.brand){background:#b6e86a;color:#1d1d1f;box-shadow:0 1px 3px rgba(60,110,0,.25)}
+.sitenav .chan{margin-left:8px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sitenav .in>a.on:not(.brand){background:#8fd14f;color:#0b1a00;box-shadow:none}}
+:root[data-theme="dark"] .sitenav .in>a.on:not(.brand){background:#8fd14f;color:#0b1a00;box-shadow:none}
 </style>
 
 <nav class="sitenav"><div class="in"><a class="brand" href="index.html">1004nail</a><span class="chan"><a href="index.html" class=on>로켓그로스</a><a href="hub.html">로켓HUB</a></span><a href="daily.html">일일 보고</a><a href="monthly.html">월별 분석(생활용품)</a><a href="totals.html">판매 상품 합계(생활용품)</a><a href="ranking.html" class=on>판매 순위</a><a href="unsold.html">판매 0 옵션</a><a href="dupes.html">중복 옵션ID</a></div></nav>
