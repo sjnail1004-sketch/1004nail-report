@@ -156,6 +156,7 @@ ol.rank li.p80 .pbtn{border-bottom-color:#9ccc6a}
 ol.rank li.p80 .rk{color:#3f7a0c}
 ol.rank li.p80 .fill{background:#8fd14f}
 ol.rank li.p80 .track{background:#d4efb2}
+.bnote{font-size:11.5px;color:var(--ink-3);margin-top:-6px}
 .p80n{font-size:12.5px;color:var(--ink-2);background:var(--surface-2);border-left:3px solid #8fd14f;border-radius:8px;padding:8px 12px;margin-top:-4px}
 .p80n b{color:#3f7a0c}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) ol.rank li.p80{background:#223512}:root:not([data-theme="light"]) ol.rank li.p80 .pbtn,:root:not([data-theme="light"]) ol.rank li.p80 .amt .q,:root:not([data-theme="light"]) ol.rank li.p80 .rk,:root:not([data-theme="light"]) .p80n b{color:#b6e86a}:root:not([data-theme="light"]) ol.rank li.p80 .track{background:#33501a}}
@@ -253,7 +254,7 @@ footer{font-size:12px;color:var(--ink-3);line-height:1.6}
 <div class="bar-top"><span class="note" id="note"></span>
   <div class="seg" role="group" aria-label="기준"><button data-k="a" aria-pressed="true">입고 금액</button><button data-k="q" aria-pressed="false">입고 수량</button></div></div>
 <div class="card" id="cum"></div>
-<div class="sec-h"><h2>월별 상위 5</h2><span class="note">▲▼는 전월 대비 순위 변동</span></div>
+<div class="sec-h"><h2>월별 상위 5</h2><span class="note">▲▼는 전월 대비 순위 변동 · 막대 길이 = 9개월 중 한 달 최고 기록 대비라 달끼리 비교할 수 있습니다</span></div>
 <div class="months" id="months"></div>
 <footer>출처: 쿠팡 로켓HUB 입고 내역(Coupang_Stocked_Data_List) · 2026년 1월 ~ 2026년 9월 21일 · 금액은 부가세 포함 총액(공급가액 + 세액) · 반출은 수량·금액에서 뺍니다 · 날짜는 입고 시각 기준</footer>
 </div>
@@ -299,7 +300,7 @@ function render(){
   const D = R[K], unit = K==="a" ? "원" : "개";
   const cmx = Math.max(...D.cum.map(r => K==="a"?r.a:r.q), 1);
   document.getElementById("cum").innerHTML = `<h2>누적 상위 10<small>전체 ${fm(D.total)}${unit} 중 상위 10개 ${(D.top10/D.total*100).toFixed(0)}%</small></h2>
-    <div class="p80n"><b>8:2 법칙</b> · 초록색 ${D.p80.length}개 SKU(전체 ${D.nsku}개의 ${(D.p80.length/D.nsku*100).toFixed(0)}%)가 ${K==="a"?"입고 금액":"입고 수량"}의 ${(D.p80sum/D.total*100).toFixed(1)}%를 차지합니다</div>${list(D.cum, cmx, D.p80)}`;
+    <div class="bnote">막대 길이 = 누적 1위 대비 크기 · 오른쪽 %는 전체 대비 비중</div><div class="p80n"><b>8:2 법칙</b> · 초록색 ${D.p80.length}개 SKU(전체 ${D.nsku}개의 ${(D.p80.length/D.nsku*100).toFixed(0)}%)가 ${K==="a"?"입고 금액":"입고 수량"}의 ${(D.p80sum/D.total*100).toFixed(1)}%를 차지합니다</div>${list(D.cum, cmx, D.p80)}`;
   const mmx = Math.max(...D.months.flatMap(m => m.rows.map(r => K==="a"?r.a:r.q)), 1);
   document.getElementById("months").innerHTML = D.months.map(m => `<div class="card"><h2>${esc(m.label)}<small>SKU ${m.n}개 입고${m.partial?` · ${m.upto}일까지`:""}</small></h2>
     ${m.rows.length ? list(m.rows, mmx) : '<p class="note">입고 없음</p>'}
@@ -313,7 +314,7 @@ function monthly(sku){
   const done = rows.filter((x, i) => !R.part[i]), n = done.length || 1;
   const aq = done.reduce((t, x) => t + x[0], 0) / n, aa = done.reduce((t, x) => t + x[1], 0) / n;
   const ap = Math.min((K==="a" ? aa : aq) / mx * 100, 100).toFixed(1);
-  return `<div class="mph">월별 입고 · ${K==="a" ? "금액" : "수량"} 기준 · 연두색은 가장 많이 들어온 달 · 점선은 월평균</div>` + rows.map((x, i) => `
+  return `<div class="mph">월별 입고 · ${K==="a" ? "금액" : "수량"} 기준 · 막대 길이 = 이 상품의 최다 달 대비 · 연두색은 최다 달 · 점선은 월평균</div>` + rows.map((x, i) => `
     <div class="mr${i===top && v(x)>0 ? " top" : ""}"><span class="ml">${esc(R.ml[i])}</span>
       <span class="mb"><i style="width:${(Math.max(v(x),0)/mx*100).toFixed(1)}%"></i><b class="avg" style="left:${ap}%"></b></span>
       <span class="mq">${x[0] ? fm(x[0]) + "개" : "–"}</span><span class="ma">${x[1] ? fm(x[1]) + "원" : "–"}</span></div>`).join("")
