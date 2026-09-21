@@ -52,6 +52,12 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--acc);outline-offset
 .dbars .c i.z{background:var(--hair-2)}
 .dbars .c span{font-size:9.5px;color:var(--ink-3)}
 .dbars .c.we span{color:var(--down)}
+.dbars .c i.best{background:#8fd14f}
+table.t tr.best td{background:#e4f6c8}
+table.t tr.best td.tot{color:#2d5a00}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) table.t tr.best td{background:#2c4213}:root:not([data-theme="light"]) table.t tr.best td.tot{color:#b6e86a}}
+:root[data-theme="dark"] table.t tr.best td{background:#2c4213}
+:root[data-theme="dark"] table.t tr.best td.tot{color:#b6e86a}
 .tblwrap{overflow-x:auto}
 .tblwrap-top{overflow-x:auto;overflow-y:hidden;height:14px}
 .tblwrap-top>div{height:1px}
@@ -170,7 +176,7 @@ footer{font-size:12px;color:var(--ink-3);line-height:1.6}
 <div class="callout"><b>최근 입고 9월 21일 (월)</b> · 334,400원 · 56개 · 발주 2건 · 물류창고 2곳</div>
 <div class="pills" id="pills" role="group" aria-label="월 선택"></div>
 <div class="kpis" id="tiles"></div>
-<div class="card"><h2>날짜별 입고 금액<small>부가세 포함 · 빨간 날짜는 주말</small></h2><div class="dbars" id="chart"></div></div>
+<div class="card"><h2>날짜별 입고 금액<small>부가세 포함 · 연두색은 이 달 최다 입고일 · 빨간 날짜는 주말</small></h2><div class="dbars" id="chart"></div></div>
 <div class="card flush"><div class="tblwrap"><table class="t">
 <thead><tr><th>날짜</th><th>발주</th><th>SKU</th><th>물류창고</th><th>수량</th><th>금액</th></tr></thead>
 <tbody id="rows"></tbody></table></div></div>
@@ -226,12 +232,12 @@ function render(){
   for (let i = 1; i <= M.ndays; i++) {
     const wd = new Date(M.y, M.mo - 1, i).getDay(), we = (wd === 0 || wd === 6) ? " we" : "", d = by[i];
     s += d && d.a > 0
-      ? `<div class="c${we}" title="${M.mo}/${i} (${d.wd}) ${fm(d.a)}원 · ${fm(d.q)}개"><span class="col"><i style="height:${(d.a / mx * 100).toFixed(1)}%"></i></span><span>${i}</span></div>`
+      ? `<div class="c${we}" title="${M.mo}/${i} (${d.wd}) ${fm(d.a)}원 · ${fm(d.q)}개"><span class="col"><i${d === best ? ' class="best"' : ""} style="height:${(d.a / mx * 100).toFixed(1)}%"></i></span><span>${i}</span></div>`
       : `<div class="c${we}"><span class="col"><i class="z"></i></span><span>${i}</span></div>`;
   }
   document.getElementById("chart").innerHTML = s;
   document.getElementById("rows").innerHTML = [...M.days].reverse().map((d, k) => `
-    <tr><td><button class="xbtn" aria-expanded="false" aria-controls="dd-${k}">${M.mo}/${+d.d.slice(8)} (${d.wd})</button></td>
+    <tr${d === best ? ' class="best"' : ""}><td><button class="xbtn" aria-expanded="false" aria-controls="dd-${k}">${M.mo}/${+d.d.slice(8)} (${d.wd})</button></td>
       <td>${d.po}</td><td>${d.sku}</td><td>${d.c}</td><td>${fm(d.q)}</td><td class="${d.a < 0 ? "neg" : "tot"}">${fm(d.a)}</td></tr>
     <tr class="det" id="dd-${k}" hidden><td colspan="6"><table class="mini"><thead><tr><th>SKU</th><th>물류창고</th><th>수량</th><th>금액</th></tr></thead><tbody>
       ${d.lines.map(l => `<tr><td>${esc(l[0])}</td><td>${esc(l[1])}</td><td>${fm(l[2])}</td><td>${fm(l[3])}</td></tr>`).join("")}</tbody></table></td></tr>`).join("");

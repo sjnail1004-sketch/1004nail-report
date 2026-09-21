@@ -52,6 +52,12 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--acc);outline-offset
 .dbars .c i.z{background:var(--hair-2)}
 .dbars .c span{font-size:9.5px;color:var(--ink-3)}
 .dbars .c.we span{color:var(--down)}
+.dbars .c i.best{background:#8fd14f}
+table.t tr.best td{background:#e4f6c8}
+table.t tr.best td.tot{color:#2d5a00}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) table.t tr.best td{background:#2c4213}:root:not([data-theme="light"]) table.t tr.best td.tot{color:#b6e86a}}
+:root[data-theme="dark"] table.t tr.best td{background:#2c4213}
+:root[data-theme="dark"] table.t tr.best td.tot{color:#b6e86a}
 .tblwrap{overflow-x:auto}
 .tblwrap-top{overflow-x:auto;overflow-y:hidden;height:14px}
 .tblwrap-top>div{height:1px}
