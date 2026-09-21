@@ -41,6 +41,15 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--acc);outline-offset
 .vbars .b{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0}
 .vbars .col{flex:1;width:100%;display:flex;align-items:flex-end;justify-content:center;position:relative}
 .vbars .b.top .col i{background:#8fd14f}
+.vbars .b.low .col i{background:#ff6b6b}
+.vbars .b.low .v{color:#c4001a}
+table.t tr.worst td,table.t.stick tr.worst td:first-child{background:#ffe3e3}
+table.t tr.worst td.tot{color:#c4001a}
+table.t.stick tr.best td:first-child{background:#e4f6c8}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) table.t tr.worst td,:root:not([data-theme="light"]) table.t.stick tr.worst td:first-child{background:#4a1a1a}:root:not([data-theme="light"]) table.t tr.worst td.tot,:root:not([data-theme="light"]) .vbars .b.low .v{color:#ff8a80}:root:not([data-theme="light"]) table.t.stick tr.best td:first-child{background:#2c4213}}
+:root[data-theme="dark"] table.t tr.worst td,:root[data-theme="dark"] table.t.stick tr.worst td:first-child{background:#4a1a1a}
+:root[data-theme="dark"] table.t tr.worst td.tot,:root[data-theme="dark"] .vbars .b.low .v{color:#ff8a80}
+:root[data-theme="dark"] table.t.stick tr.best td:first-child{background:#2c4213}
 .vbars .b.top .v{color:#3f7a0c}
 table.t tr.best td{background:#e4f6c8}
 table.t tr.best td.tot{color:#2d5a00}
