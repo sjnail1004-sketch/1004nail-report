@@ -53,6 +53,13 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--acc);outline-offset
 .dbars .c span{font-size:9.5px;color:var(--ink-3)}
 .dbars .c.we span{color:var(--down)}
 .dbars .c i.best{background:#8fd14f}
+.dbars .c[data-d]{cursor:pointer;border-radius:4px}
+.dbars .c[data-d]:hover i{filter:brightness(1.12)}
+.dbars .c[data-d]:hover span{color:var(--ink);font-weight:600}
+.dbars .c[data-d]:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
+table.t tr.flash td{box-shadow:inset 0 2px 0 var(--acc),inset 0 -2px 0 var(--acc)}
+table.t tr.flash td:first-child{box-shadow:inset 2px 2px 0 var(--acc),inset 0 -2px 0 var(--acc)}
+table.t tr.flash td:last-child{box-shadow:inset -2px 2px 0 var(--acc),inset 0 -2px 0 var(--acc)}
 table.t tr.best td{background:#e4f6c8}
 table.t tr.best td.tot{color:#2d5a00}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) table.t tr.best td{background:#2c4213}:root:not([data-theme="light"]) table.t tr.best td.tot{color:#b6e86a}}
