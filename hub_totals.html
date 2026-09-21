@@ -130,7 +130,7 @@ li.first .rk{color:var(--acc)}
 .mid{min-width:0;display:flex;flex-direction:column;gap:4px}
 .rn{font-size:13.5px;font-weight:600;line-height:1.35;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .track{height:6px;border-radius:999px;background:var(--surface-2);overflow:hidden}
-.fill{height:100%;border-radius:999px;background:var(--acc-soft)}
+.fill{display:block;height:100%;border-radius:999px;background:var(--acc-soft)}
 li.first .fill{background:var(--acc)}
 .amt{text-align:right;white-space:nowrap}
 .amt .q{font-size:16px;font-weight:700;letter-spacing:-.02em}
@@ -140,6 +140,19 @@ li.first .fill{background:var(--acc)}
 .chg.up{color:var(--up)}.chg.down{color:var(--down)}.chg.new{color:var(--acc)}
 .pbtn{appearance:none;border:0;background:none;padding:0;font:inherit;color:inherit;text-align:left;cursor:pointer;border-bottom:1px dashed var(--hair)}
 .pbtn:hover{color:var(--acc);border-bottom-color:var(--acc)}
+ol.rank li.p80{background:#eaf8d8;margin:0 -12px;padding-left:12px;padding-right:12px;border-radius:10px;border-bottom-color:transparent}
+ol.rank li.p80 + li.p80{margin-top:3px}
+ol.rank li.p80 .pbtn,ol.rank li.p80 .amt .q{color:#2d5a00}
+ol.rank li.p80 .pbtn{border-bottom-color:#9ccc6a}
+ol.rank li.p80 .rk{color:#3f7a0c}
+ol.rank li.p80 .fill{background:#8fd14f}
+ol.rank li.p80 .track{background:#d4efb2}
+.p80n{font-size:12.5px;color:var(--ink-2);background:var(--surface-2);border-left:3px solid #8fd14f;border-radius:8px;padding:8px 12px;margin-top:-4px}
+.p80n b{color:#3f7a0c}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) ol.rank li.p80{background:#223512}:root:not([data-theme="light"]) ol.rank li.p80 .pbtn,:root:not([data-theme="light"]) ol.rank li.p80 .amt .q,:root:not([data-theme="light"]) ol.rank li.p80 .rk,:root:not([data-theme="light"]) .p80n b{color:#b6e86a}:root:not([data-theme="light"]) ol.rank li.p80 .track{background:#33501a}}
+:root[data-theme="dark"] ol.rank li.p80{background:#223512}
+:root[data-theme="dark"] ol.rank li.p80 .pbtn,:root[data-theme="dark"] ol.rank li.p80 .amt .q,:root[data-theme="dark"] ol.rank li.p80 .rk,:root[data-theme="dark"] .p80n b{color:#b6e86a}
+:root[data-theme="dark"] ol.rank li.p80 .track{background:#33501a}
 .pbtn[aria-expanded="true"]{color:var(--acc);border-bottom-color:var(--acc)}
 ol.rank li .mp{grid-column:1/-1;background:var(--surface-2);border-radius:12px;padding:10px 14px;display:flex;flex-direction:column;gap:3px;margin-top:4px}
 ol.rank li .mp[hidden]{display:none}
@@ -224,7 +237,7 @@ footer{font-size:12px;color:var(--ink-3);line-height:1.6}
 <header>
   <p class="eyebrow">쿠팡 로켓HUB · 로켓배송 입고</p>
   <h1>로켓HUB 누적 합계</h1>
-  <p class="sub">SKU별로 달마다 입고된 금액과 수량, 그리고 누계입니다.<br>누계 금액이 큰 순서로 정렬했습니다.</p>
+  <p class="sub">SKU별로 월별 입고된 금액과 수량, 그리고 누계입니다.<br>누계 금액이 큰 순서로 정렬했습니다.</p>
 </header>
 <div class="kpis">
   <div class="tile"><span class="l">누적 입고 금액</span><span class="v">189,119,075<small>원</small></span><span class="d">공급가액 171,927,884원</span></div>
