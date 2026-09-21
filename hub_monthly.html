@@ -99,6 +99,12 @@ table.t td.tot{font-weight:700}
 table.t tr.sum td{font-weight:700;border-top:.5px solid var(--hair);background:var(--surface-2)}
 table.t.stick th:first-child,table.t.stick td:first-child{position:sticky;left:0;z-index:2;background:var(--surface);box-shadow:1px 0 0 var(--hair-2),7px 0 9px -7px rgba(0,0,0,.16)}
 table.t.stick tr.sum td:first-child{background:var(--surface-2)}
+table.t td.p80{background:#d9f3b3;color:#2d5a00}
+.tile.p80t{box-shadow:var(--shadow),inset 3px 0 0 #8fd14f}
+.tile.p80t .v{color:#3f7a0c}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) table.t td.p80{background:#2c4213;color:#b6e86a}:root:not([data-theme="light"]) .tile.p80t .v{color:#b6e86a}}
+:root[data-theme="dark"] table.t td.p80{background:#2c4213;color:#b6e86a}
+:root[data-theme="dark"] .tile.p80t .v{color:#b6e86a}
 .sn{display:inline-block;min-width:20px;margin-right:8px;text-align:right;font-size:12px;font-weight:600;color:var(--ink-3)}
 .share{position:relative;min-width:130px}
 .share i{position:absolute;left:10px;top:50%;height:12px;margin-top:-6px;background:var(--acc-soft);border-radius:999px}
@@ -181,6 +187,7 @@ a.lcard .go{font-size:13px;color:var(--acc);font-weight:500;margin-top:6px}
 .chip em{font-style:normal;font-size:13px;font-weight:600;color:var(--ink-2)}
 .callout{background:var(--surface);border-radius:14px;box-shadow:var(--shadow);padding:13px 16px;font-size:13px;color:var(--ink-2);line-height:1.55;border-left:3px solid var(--acc)}
 .callout b{color:var(--ink)}
+.callout.g{border-left-color:#8fd14f}
 footer{font-size:12px;color:var(--ink-3);line-height:1.6}
 @media (prefers-reduced-motion:reduce){a.lcard{transition:none}}
 </style>
