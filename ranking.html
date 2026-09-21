@@ -61,6 +61,10 @@ li.first .fill{background:var(--bar1)}
 .foot2{font-size:11.5px;color:var(--ink-3);margin-top:-8px}
 .foot .unit{font-weight:500;opacity:.75}
 .empty{color:var(--ink-3);padding:20px 0;text-align:center}
+.bnote{font-size:11.5px;color:var(--ink-3);margin-top:-6px}
+.sec-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.sec-h h2{margin:0;font-size:22px;font-weight:700;letter-spacing:-.025em}
+.sec-h .note{font-size:12.5px;color:var(--ink-2)}
 .warn{font-size:12px;color:var(--down);background:var(--surface-2);border-radius:10px;padding:9px 12px;line-height:1.5}
 .exp{appearance:none;border:0;background:var(--surface-2);color:var(--ink-2);font:inherit;font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;gap:3px;white-space:nowrap}
 .exp:hover{color:var(--ink)}
@@ -104,14 +108,14 @@ footer{font-size:12px;color:var(--ink-3);line-height:1.6}
 :root[data-theme="dark"] .sitenav .chan{background:rgba(255,255,255,.08)}
 :root[data-theme="dark"] .sitenav .chan a.on{background:#8fd14f;color:#0b1a00;box-shadow:none}
 .sitenav .in{gap:10px}
-.sitenav .in>a:not(.brand){padding:4px 10px;border-radius:999px}
+.sitenav .in>a:not(.brand){padding:4px 10px;border-radius:999px;flex:none}
 .sitenav .in>a.on:not(.brand){background:#b6e86a;color:#1d1d1f;box-shadow:0 1px 3px rgba(60,110,0,.25)}
 .sitenav .chan{margin-left:8px}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sitenav .in>a.on:not(.brand){background:#8fd14f;color:#0b1a00;box-shadow:none}}
 :root[data-theme="dark"] .sitenav .in>a.on:not(.brand){background:#8fd14f;color:#0b1a00;box-shadow:none}
 </style>
 
-<nav class="sitenav"><div class="in"><a class="brand" href="index.html">1004nail</a><span class="chan"><a href="index.html" class=on>로켓그로스</a><a href="hub.html">로켓HUB</a></span><a href="daily.html">일일 보고</a><a href="monthly.html">월별 분석(생활용품)</a><a href="totals.html">판매 상품 합계(생활용품)</a><a href="ranking.html" class=on>판매 순위</a><a href="unsold.html">판매 0 옵션</a><a href="dupes.html">중복 옵션ID</a></div></nav><script>(function(){var n=document.querySelector('.sitenav .in');if(!n)return;var a=n.querySelector(':scope>a.on:not(.brand)');if(!a)return;var r=a.offsetLeft-n.offsetLeft+a.offsetWidth;if(r>n.clientWidth)n.scrollLeft=r-n.clientWidth+36;})();</script>
+<nav class="sitenav"><div class="in"><a class="brand" href="index.html">1004nail</a><span class="chan"><a href="index.html" class=on>로켓그로스</a><a href="hub.html">로켓HUB</a></span><a href="daily.html">일일 보고</a><a href="monthly.html">월별 분석(생활용품)</a><a href="totals.html">판매 상품 합계(생활용품)</a><a href="ranking.html" class=on>판매 순위</a><a href="unsold.html">판매 0 옵션</a><a href="dupes.html">중복 옵션ID</a></div></nav><script>(function(){function f(){var n=document.querySelector('.sitenav .in');if(!n)return;var a=n.querySelector(':scope>a.on:not(.brand)');if(!a)return;var r=a.offsetLeft-n.offsetLeft+a.offsetWidth;n.scrollLeft=r>n.clientWidth?r-n.clientWidth+36:0;}f();addEventListener('load',f);if(document.fonts)document.fonts.ready.then(f);})();</script>
 <div class="wrap">
 <header>
   <p class="eyebrow">쿠팡 로켓그로스 · 전 카테고리</p>
@@ -127,6 +131,7 @@ footer{font-size:12px;color:var(--ink-3);line-height:1.6}
   </div>
 </div>
 <div id="cum"></div>
+<div class="sec-h"><h2>월별 상위 5</h2><span class="note" id="mnote"></span></div>
 <div class="months" id="months"></div>
 <footer id="foot"></footer>
 <footer id="foot2"></footer>
@@ -152,7 +157,7 @@ function optsHtml(r, id) {
   const unsold = r.ot - r.o.length;
   const w = r.color ? "색상" : "옵션";
   return `<div class="opts" id="${id}" hidden>
-    <div class="oh">팔린 ${w} ${r.o.length}개${unsold > 0 ? ` · 이 달 한 개도 안 팔린 ${w} ${unsold}개` : ""} · 낱개 기준</div>
+    <div class="oh">팔린 ${w} ${r.o.length}개${unsold > 0 ? ` · 이 달 한 개도 안 팔린 ${w} ${unsold}개` : ""} · 낱개 기준 · 막대 길이 = 이 상품 1위 ${w} 대비</div>
     <ol class="olist">${r.o.map((x, i) => `
       <li><span class="oi">${i + 1}</span><span class="on" title="${esc(x[0])}">${esc(x[0])}${x[3] ? '<span class="tag">이름 미등록</span>' : ""}</span><span class="ob"><i style="width:${(x[1] / mx * 100).toFixed(1)}%"></i></span><span class="oq">${f(x[1])}<small>개</small></span><span class="ow">${f(x[2])}원</span></li>`).join("")}</ol>
   </div>`;
@@ -187,6 +192,7 @@ function renderCum() {
         <div><span class="l">순 판매 금액</span><span class="v">${f(c.total_net)}<small>원</small></span></div>
       </div>
       <div class="cap">GMV는 취소를 빼기 전 주문 금액 합계입니다. 다른 페이지의 금액은 모두 <b>순 판매 금액</b> 기준입니다. · 월평균 ${f(Math.round(c.total_qty / c.nmonths))}개 · 쿠팡 수량(환산 전) ${f(c.sold_qty)}개</div>
+      <div class="bnote">막대 길이 = 누적 1위 대비 크기 · 오른쪽 %는 누적 전체 대비 비중 · 낱개 기준</div>
       ${rankList(c.rows, maxq, "cum-" + g)}
       <div class="foot">상위 5개 합계 ${f(c.top5_qty)}개 · 누적 전체 ${f(c.total_qty)}개의 ${(c.top5_qty / (c.total_qty || 1) * 100).toFixed(0)}% <span class="unit">낱개 기준</span></div>
       ${STALE.length ? `<div class="warn">⚠ ${STALE.map(x => `${esc(x.label)} 월별 파일이 ${f(x.want - x.have)}개만큼 뒤처져 있습니다 (파일 ${f(x.have)}개 · 일별 합계 ${f(x.want)}개)`).join(" / ")}. WING 판매통계에서 해당 월 파일을 다시 받아 넣으면 누적이 맞아집니다.</div>` : ""}
@@ -196,6 +202,7 @@ function render() {
   renderCum();
   const M = D[g];
   const maxq = Math.max(...M.flatMap(m => m.rows.map(r => r.qty)), 1);
+  document.getElementById("mnote").textContent = `▲▼는 전월 대비 순위 변동 · 막대 길이 = ${M.length}개월 중 한 달 최고 기록 대비라 달끼리 비교할 수 있습니다 · %는 그 달 전체 대비 비중`;
   document.getElementById("months").innerHTML = M.map((m, mi) => `
     <div class="card">
       <h2>${esc(m.label)}<small>상품 ${m.prods_all}개 중 판매 ${m.prods}개 · 상위 ${Math.min(5, m.rows.length)}개</small></h2>
