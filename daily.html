@@ -315,7 +315,6 @@ function paint() {
 document.querySelectorAll("table.gt tbody tr[data-ym]").forEach(tr => tr.addEventListener("click", () => {
   const idx = idxOf(tr.dataset.ym); if (!idx.length) return;
   drawMonth(tr.dataset.ym); sel = idx[idx.length - 1]; paint();
-  document.querySelector(".trendbox").scrollIntoView({behavior: "smooth", block: "center"});
 }));
 document.getElementById("day-back").addEventListener("click", () => { drawMonth(CUR_YM); sel = LAST; paint(); });
 drawMonth(CUR_YM); paint();
