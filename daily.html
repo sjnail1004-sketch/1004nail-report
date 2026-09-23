@@ -24,15 +24,16 @@ h1{margin:0;font-size:clamp(28px,6vw,36px);font-weight:700;letter-spacing:-.03em
 .card{background:var(--surface);border-radius:18px;box-shadow:var(--shadow);padding:18px 20px;display:flex;flex-direction:column;gap:12px}
 .card h2{margin:0;font-size:15px;font-weight:600;letter-spacing:-.02em}
 .card h2 small{font-weight:400;color:var(--ink-3);font-size:12.5px;margin-left:6px}
-.trendbox{position:relative;padding-top:12px}
-.goal{position:absolute;left:0;right:0;border-top:1.5px solid var(--down);pointer-events:none;z-index:1}
+.trendbox{position:relative;padding-top:12px;padding-right:74px}
+.goal{position:absolute;left:0;right:74px;border-top:1.5px solid var(--down);pointer-events:none;z-index:1}
 .goal.b{border-top-color:var(--blue)}
 .goal.b span{color:var(--blue)}
 .goal.g{border-top-color:#5cb82e}
 .goal.g span{color:#3f7a0c}
 .goal.p{border-top-color:#9b59b6}
 .goal.p span{color:#7d3c98}
-.goal span{position:absolute;right:0;transform:translateY(-50%);font-size:10px;font-weight:600;color:var(--down);background:var(--surface);padding:0 4px;border-radius:3px;letter-spacing:0}
+.goal span{position:absolute;left:100%;margin-left:6px;transform:translateY(-50%);font-size:10px;font-weight:600;color:var(--down);white-space:nowrap;letter-spacing:0}
+@media (max-width:560px){.trendbox{padding-right:62px}.goal{right:62px}.goal span{font-size:9px;margin-left:4px}}
 .trend{display:flex;gap:2px;align-items:flex-end;overflow:hidden;padding:2px 0}
 .day{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10.5px;color:var(--ink-3);appearance:none;border:0;background:transparent;font-family:inherit;padding:2px 0;border-radius:8px;cursor:pointer}
 .day:hover .bar{filter:brightness(.94)}
@@ -186,7 +187,7 @@ footer{font-size:12px;color:var(--ink-3);line-height:1.6}
 :root[data-theme="dark"] .sitenav .in>a.on:not(.brand){background:#8fd14f;color:#0b1a00;box-shadow:none}
 </style>
 
-<nav class="sitenav"><div class="in"><a class="brand" href="index.html">1004nail<small title="마지막 업데이트 2026년 9월 23일 9:13">업데이트 9/23 오전 9:13</small></a><span class="chan"><a href="index.html" class=on title="로켓그로스 누적 순 판매 금액 (1/1~9/22)">로켓그로스<small>133,793,920원</small></a><a href="hub.html" title="로켓HUB 누적 입고 금액, 부가세 포함·반출 차감 (1/1~9/21)">로켓HUB<small>189,119,075원</small></a><a href="pos.html" title="포스원 당월(9월) 순매입 금액, 반품·할인 차감 (9/23까지)">포스원 매입<small>60,128,698원</small></a></span><a href="daily.html" class=on>일일 보고</a><a href="monthly.html">월별 분석(생활용품)</a><a href="totals.html">판매 상품 합계(생활용품)</a><a href="ranking.html">판매 순위</a><a href="unsold.html">판매 0 옵션</a><a href="dupes.html">중복 옵션ID</a></div></nav><script>(function(){function f(){var n=document.querySelector('.sitenav .in');if(!n)return;var a=n.querySelector(':scope>a.on:not(.brand)');if(!a)return;var r=a.offsetLeft-n.offsetLeft+a.offsetWidth;n.scrollLeft=r>n.clientWidth?r-n.clientWidth+36:0;}f();addEventListener('load',f);if(document.fonts)document.fonts.ready.then(f);})();</script>
+<nav class="sitenav"><div class="in"><a class="brand" href="index.html">1004nail<small title="마지막 업데이트 2026년 9월 23일 9:26">업데이트 9/23 오전 9:26</small></a><span class="chan"><a href="index.html" class=on title="로켓그로스 누적 순 판매 금액 (1/1~9/22)">로켓그로스<small>133,793,920원</small></a><a href="hub.html" title="로켓HUB 누적 입고 금액, 부가세 포함·반출 차감 (1/1~9/21)">로켓HUB<small>189,119,075원</small></a><a href="pos.html" title="포스원 당월(9월) 순매입 금액, 반품·할인 차감 (9/23까지)">포스원 매입<small>60,128,698원</small></a></span><a href="daily.html" class=on>일일 보고</a><a href="monthly.html">월별 분석(생활용품)</a><a href="totals.html">판매 상품 합계(생활용품)</a><a href="ranking.html">판매 순위</a><a href="unsold.html">판매 0 옵션</a><a href="dupes.html">중복 옵션ID</a></div></nav><script>(function(){function f(){var n=document.querySelector('.sitenav .in');if(!n)return;var a=n.querySelector(':scope>a.on:not(.brand)');if(!a)return;var r=a.offsetLeft-n.offsetLeft+a.offsetWidth;n.scrollLeft=r>n.clientWidth?r-n.clientWidth+36:0;}f();addEventListener('load',f);if(document.fonts)document.fonts.ready.then(f);})();</script>
 <div class="wrap">
 <header>
   <p class="eyebrow">쿠팡 로켓그로스 · 일일 판매</p>
