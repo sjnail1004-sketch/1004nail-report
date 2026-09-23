@@ -157,6 +157,9 @@ ol.rank li.p80 .rk{color:#3f7a0c}
 ol.rank li.p80 .fill{background:#8fd14f}
 ol.rank li.p80 .track{background:#d4efb2}
 .bnote{font-size:11.5px;color:var(--ink-3);margin-top:-6px}
+.closeall{margin-left:auto;appearance:none;border:0;background:var(--surface-2);color:var(--ink-2);font:inherit;font-size:11.5px;font-weight:600;padding:3px 11px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.closeall:hover{color:var(--ink)}
+.cardbar{display:flex;justify-content:flex-end;margin-bottom:-6px}
 .p80n{font-size:12.5px;color:var(--ink-2);background:var(--surface-2);border-left:3px solid #8fd14f;border-radius:8px;padding:8px 12px;margin-top:-4px}
 .p80n b{color:#3f7a0c}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) ol.rank li.p80{background:#223512}:root:not([data-theme="light"]) ol.rank li.p80 .pbtn,:root:not([data-theme="light"]) ol.rank li.p80 .amt .q,:root:not([data-theme="light"]) ol.rank li.p80 .rk,:root:not([data-theme="light"]) .p80n b{color:#b6e86a}:root:not([data-theme="light"]) ol.rank li.p80 .track{background:#33501a}}
@@ -256,7 +259,7 @@ footer{font-size:12px;color:var(--ink-3);line-height:1.6}
 :root[data-theme="dark"] .sitenav .in>a.on:not(.brand){background:#8fd14f;color:#0b1a00;box-shadow:none}
 </style>
 
-<nav class="sitenav"><div class="in"><a class="brand" href="index.html">1004nail<small title="마지막 업데이트 2026년 9월 23일 15:20">업데이트 9/23 오후 3:20</small></a><span class="chan"><a href="index.html" title="로켓그로스 누적 순 판매 금액 (1/1~9/22)">로켓그로스<small>누적 133,793,920원</small></a><a href="hub.html" class=on title="로켓HUB 누적 입고 금액, 부가세 포함·반출 차감 (1/1~9/23)">로켓HUB<small>누적 189,721,415원</small></a><a href="pos.html" title="포스원 당월(9월) 순매입 금액, 반품·할인 차감 (9/23까지)">포스원 매입<small>당월 60,128,698원</small></a></span></div><div class="in sub"><a href="hub_daily.html">일별</a><span class="sep">|</span><a href="hub_monthly.html">월별</a><span class="sep">|</span><a href="hub_totals.html">누적 합계</a><span class="sep">|</span><a href="hub_ranking.html">판매 순위</a><span class="sep">|</span><a href="hub_centers.html">물류창고별</a><span class="sep">|</span><a href="hub_reorder.html">발주 관리</a></div></nav>
+<nav class="sitenav"><div class="in"><a class="brand" href="index.html">1004nail<small title="마지막 업데이트 2026년 9월 23일 15:25">업데이트 9/23 오후 3:25</small></a><span class="chan"><a href="index.html" title="로켓그로스 누적 순 판매 금액 (1/1~9/22)">로켓그로스<small>누적 133,793,920원</small></a><a href="hub.html" class=on title="로켓HUB 누적 입고 금액, 부가세 포함·반출 차감 (1/1~9/23)">로켓HUB<small>누적 189,721,415원</small></a><a href="pos.html" title="포스원 당월(9월) 순매입 금액, 반품·할인 차감 (9/23까지)">포스원 매입<small>당월 60,128,698원</small></a></span></div><div class="in sub"><a href="hub_daily.html">일별</a><span class="sep">|</span><a href="hub_monthly.html">월별</a><span class="sep">|</span><a href="hub_totals.html">누적 합계</a><span class="sep">|</span><a href="hub_ranking.html">판매 순위</a><span class="sep">|</span><a href="hub_centers.html">물류창고별</a><span class="sep">|</span><a href="hub_reorder.html">발주 관리</a></div></nav>
 <div class="wrap">
 <header>
   <p class="eyebrow">쿠팡 로켓HUB · 로켓배송 입고</p>
@@ -290,6 +293,39 @@ document.addEventListener("click", function (e) {
   b.setAttribute("aria-expanded", on ? "false" : "true");
   if (t) t.hidden = on;
 });
+// 카드마다 '전체 펼치기 / 전체 접기' 버튼 (표를 나중에 그리는 페이지도 있어 load 뒤에 붙인다)
+function setupCloseAll() {
+document.querySelectorAll(".card").forEach(function (card) {
+  var tg = card.querySelectorAll("[aria-controls][aria-expanded]");
+  if (tg.length < 2 || card.querySelector(":scope > h2 > .closeall, :scope > .sec-h > .closeall, :scope > .cardbar > .closeall")) return;
+  var head = card.querySelector("h2") || card.querySelector(".sec-h");
+  if (!head) {
+    head = document.createElement("div");
+    head.className = "cardbar";
+    card.insertBefore(head, card.firstChild);
+  }
+  var b = document.createElement("button");
+  b.type = "button"; b.className = "closeall";
+  head.appendChild(b);
+  function anyOpen() {
+    return [].some.call(tg, function (t) { return t.getAttribute("aria-expanded") === "true"; });
+  }
+  function sync() { b.textContent = anyOpen() ? "전체 접기" : "전체 펼치기"; }
+  sync();
+  b.addEventListener("click", function () {
+    var close = anyOpen();
+    [].forEach.call(tg, function (t) {
+      t.setAttribute("aria-expanded", close ? "false" : "true");
+      var pnl = document.getElementById(t.getAttribute("aria-controls"));
+      if (pnl) pnl.hidden = close;
+    });
+    sync();
+  });
+  card.addEventListener("click", function () { setTimeout(sync, 0); });
+});
+}
+setupCloseAll();
+addEventListener("load", setupCloseAll);
 function topScroll() {
   document.querySelectorAll(".tblwrap").forEach(function (w) {
     if (w.previousElementSibling && w.previousElementSibling.classList.contains("tblwrap-top")) return;
