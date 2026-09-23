@@ -26,11 +26,11 @@ h1{margin:0;font-size:clamp(30px,5vw,44px);font-weight:700;letter-spacing:-.03em
 .tile.duet{appearance:none;border:0;font:inherit;text-align:left;cursor:pointer;color:inherit;text-decoration:none;transition:transform .15s}
 .tile.duet:hover{transform:translateY(-2px)}
 .tile.duet .go{display:block;margin-top:3px;font-size:11.5px;font-weight:600;color:var(--acc)}
-.tile.duet[aria-expanded="true"] .go::after{content:" B4"}
-.tile.duet[aria-expanded="false"] .go::after{content:" BE"}
+.tile.duet[aria-expanded="true"] .go::after{content:" ▴"}
+.tile.duet[aria-expanded="false"] .go::after{content:" ▾"}
 .tile.duet .go .c,.tile.duet[aria-expanded="true"] .go .o{display:none}
 .tile.duet[aria-expanded="true"] .go .c{display:inline}
-.tile.duet.jump .go::after{content:" 93"}
+.tile.duet.jump .go::after{content:" ↓"}
 #due-s{scroll-margin-top:110px}
 @media (prefers-reduced-motion:reduce){.tile.duet{transition:none}}
 .card{background:var(--surface);border-radius:18px;box-shadow:var(--shadow);padding:20px 22px;display:flex;flex-direction:column;gap:14px;min-width:0}
@@ -143,6 +143,9 @@ ol.rank li .mp[hidden]{display:none}
 :root[data-theme="dark"] ol.rank li.p80{background:#223512}
 :root[data-theme="dark"] ol.rank li.p80 .track{background:#33501a}
 :root[data-theme="dark"] .amt .w.due{color:#ffb340}
+.closeall{margin-left:auto;appearance:none;border:0;background:var(--surface-2);color:var(--ink-2);font:inherit;font-size:11.5px;font-weight:600;padding:3px 11px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.closeall:hover{color:var(--ink)}
+.cardbar{display:flex;justify-content:flex-end;margin-bottom:-6px}
 .p80n{font-size:12.5px;color:var(--ink-2);background:var(--surface-2);border-left:3px solid var(--g);border-radius:8px;padding:8px 12px}
 .p80n b{color:var(--g-ink)}
 .more{appearance:none;border:0;background:var(--surface-2);color:var(--ink);font:inherit;font-size:13px;font-weight:600;padding:8px 14px;border-radius:999px;cursor:pointer;align-self:center}
@@ -212,7 +215,7 @@ footer{font-size:12px;color:var(--ink-3);line-height:1.6}
 :root[data-theme="dark"] .sitenav .in>a.on:not(.brand){background:#8fd14f;color:#0b1a00;box-shadow:none}
 </style>
 
-<nav class="sitenav"><div class="in"><a class="brand" href="index.html">1004nail<small title="마지막 업데이트 2026년 9월 23일 9:52">업데이트 9/23 오전 9:52</small></a><span class="chan"><a href="index.html" title="로켓그로스 누적 순 판매 금액 (1/1~9/22)">로켓그로스<small>133,793,920원</small></a><a href="hub.html" title="로켓HUB 누적 입고 금액, 부가세 포함·반출 차감 (1/1~9/21)">로켓HUB<small>189,119,075원</small></a><a href="pos.html" class=on title="포스원 당월(9월) 순매입 금액, 반품·할인 차감 (9/23까지)">포스원 매입<small>60,128,698원</small></a></span></div><div class="in sub"><a href="pos_sales.html" class=on>월별 매출</a><a href="pos_channels.html">채널별 매출</a><a href="pos_purchase.html">월별 매입</a><a href="pos_suppliers.html">매입처별</a><a href="pos_compare.html">매출·매입 비교</a></div></nav>
+<nav class="sitenav"><div class="in"><a class="brand" href="index.html">1004nail<small title="마지막 업데이트 2026년 9월 23일 9:56">업데이트 9/23 오전 9:56</small></a><span class="chan"><a href="index.html" title="로켓그로스 누적 순 판매 금액 (1/1~9/22)">로켓그로스<small>133,793,920원</small></a><a href="hub.html" title="로켓HUB 누적 입고 금액, 부가세 포함·반출 차감 (1/1~9/21)">로켓HUB<small>189,119,075원</small></a><a href="pos.html" class=on title="포스원 당월(9월) 순매입 금액, 반품·할인 차감 (9/23까지)">포스원 매입<small>60,128,698원</small></a></span></div><div class="in sub"><a href="pos_sales.html" class=on>월별 매출</a><a href="pos_channels.html">채널별 매출</a><a href="pos_purchase.html">월별 매입</a><a href="pos_suppliers.html">매입처별</a><a href="pos_compare.html">매출·매입 비교</a></div></nav>
 <div class="wrap">
 <header>
   <p class="eyebrow">포스원 · ㈜에스제이네일 전체</p>
@@ -262,6 +265,32 @@ document.addEventListener("click", function (e) {
   var on = b.getAttribute("aria-expanded") === "true";
   b.setAttribute("aria-expanded", on ? "false" : "true");
   if (t) { t.hidden = on; mpRender(t.matches(".mp[data-k]") ? t : t.querySelector(".mp[data-k]")); }
+});
+document.querySelectorAll(".card").forEach(function (card) {
+  var tg = card.querySelectorAll("[aria-controls][aria-expanded]");
+  if (tg.length < 2) return;
+  var head = card.querySelector("h2");
+  if (!head) {
+    head = document.createElement("div");
+    head.className = "cardbar";
+    card.insertBefore(head, card.firstChild);
+  }
+  var b = document.createElement("button");
+  b.type = "button"; b.className = "closeall"; b.textContent = "전체 접기"; b.hidden = true;
+  head.appendChild(b);
+  function sync() {
+    b.hidden = ![].some.call(tg, function (t) { return t.getAttribute("aria-expanded") === "true"; });
+  }
+  b.addEventListener("click", function () {
+    [].forEach.call(tg, function (t) {
+      if (t.getAttribute("aria-expanded") !== "true") return;
+      t.setAttribute("aria-expanded", "false");
+      var pnl = document.getElementById(t.getAttribute("aria-controls"));
+      if (pnl) pnl.hidden = true;
+    });
+    sync();
+  });
+  card.addEventListener("click", function () { setTimeout(sync, 0); });
 });
 document.querySelectorAll("button.more[data-list]").forEach(function (b) {
   b.addEventListener("click", function () {
