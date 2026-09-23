@@ -31,7 +31,7 @@ h1{margin:0;font-size:clamp(30px,5vw,44px);font-weight:700;letter-spacing:-.03em
 .tile.duet .go .c,.tile.duet[aria-expanded="true"] .go .o{display:none}
 .tile.duet[aria-expanded="true"] .go .c{display:inline}
 .tile.duet.jump .go::after{content:" ↓"}
-#due-s{scroll-margin-top:110px}
+[id^="due-"]{scroll-margin-top:96px}
 @media (prefers-reduced-motion:reduce){.tile.duet{transition:none}}
 .card{background:var(--surface);border-radius:18px;box-shadow:var(--shadow);padding:20px 22px;display:flex;flex-direction:column;gap:14px;min-width:0}
 .card.flush{padding:8px 0 12px}
@@ -225,7 +225,7 @@ footer{font-size:12px;color:var(--ink-3);line-height:1.6}
 :root[data-theme="dark"] .sitenav .in>a.on:not(.brand){background:#8fd14f;color:#0b1a00;box-shadow:none}
 </style>
 
-<nav class="sitenav"><div class="in"><a class="brand" href="index.html">1004nail<small title="마지막 업데이트 2026년 9월 23일 11:05">업데이트 9/23 오전 11:05</small></a><span class="chan"><a href="index.html" title="로켓그로스 누적 순 판매 금액 (1/1~9/22)">로켓그로스<small>누적 133,793,920원</small></a><a href="hub.html" title="로켓HUB 누적 입고 금액, 부가세 포함·반출 차감 (1/1~9/21)">로켓HUB<small>누적 189,119,075원</small></a><a href="pos.html" class=on title="포스원 당월(9월) 순매입 금액, 반품·할인 차감 (9/23까지)">포스원 매입<small>당월 60,128,698원</small></a></span></div><div class="in sub"><a href="pos_sales.html">월별 매출</a><span class="sep">|</span><a href="pos_channels.html">채널별 매출</a><span class="sep">|</span><a href="pos_purchase.html">월별 매입</a><span class="sep">|</span><a href="pos_suppliers.html" class=on>매입처별</a><span class="sep">|</span><a href="pos_compare.html">매출·매입 비교</a></div></nav>
+<nav class="sitenav"><div class="in"><a class="brand" href="index.html">1004nail<small title="마지막 업데이트 2026년 9월 23일 13:48">업데이트 9/23 오후 1:48</small></a><span class="chan"><a href="index.html" title="로켓그로스 누적 순 판매 금액 (1/1~9/22)">로켓그로스<small>누적 133,793,920원</small></a><a href="hub.html" title="로켓HUB 누적 입고 금액, 부가세 포함·반출 차감 (1/1~9/21)">로켓HUB<small>누적 189,119,075원</small></a><a href="pos.html" class=on title="포스원 당월(9월) 순매입 금액, 반품·할인 차감 (9/23까지)">포스원 매입<small>당월 60,128,698원</small></a></span></div><div class="in sub"><a href="pos_sales.html">월별 매출</a><span class="sep">|</span><a href="pos_channels.html">채널별 매출</a><span class="sep">|</span><a href="pos_purchase.html">월별 매입</a><span class="sep">|</span><a href="pos_suppliers.html" class=on>매입처별</a><span class="sep">|</span><a href="pos_compare.html">매출·매입 비교</a></div></nav>
 <div class="wrap">
 <header>
   <p class="eyebrow">포스원 · ㈜에스제이네일 전체</p>
@@ -272,7 +272,10 @@ document.addEventListener("click", function (e) {
   var t = document.getElementById(b.getAttribute("aria-controls"));
   var on = b.getAttribute("aria-expanded") === "true";
   b.setAttribute("aria-expanded", on ? "false" : "true");
-  if (t) { t.hidden = on; mpRender(t.matches(".mp[data-k]") ? t : t.querySelector(".mp[data-k]")); }
+  if (!t) return;
+  t.hidden = on;
+  mpRender(t.matches(".mp[data-k]") ? t : t.querySelector(".mp[data-k]"));
+  if (!on && b.classList.contains("duet")) t.scrollIntoView({behavior: "smooth", block: "start"});
 });
 document.querySelectorAll(".card").forEach(function (card) {
   var tg = card.querySelectorAll("[aria-controls][aria-expanded]");
